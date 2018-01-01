@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Local files that I don't want to commit.
+cth_*
