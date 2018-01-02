@@ -17,6 +17,5 @@
 ### Ch4 Data Structures: Objects and Arrays
 - [x] range.
 - [x] reverse.
-- [ ] list.
-- [ ] deepEquals.
-	
+- [x] list.
+- [ ] deepEqual.
