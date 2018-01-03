@@ -29,6 +29,7 @@ function expect(observed, expected) {
     if (!silent)
         out += (++expect.counter).toString() + ": ";
     
+    var mismatch = false;
     if (typeof observed == 'undefined' && 
         typeof expected == 'undefined') 
     {
@@ -41,12 +42,21 @@ function expect(observed, expected) {
     }
     else {
         out += "[??] ";
+        mismatch = true;
     }
     
-    if (typeof expected != 'undefined')
-        out += expected.toString();
+    if (typeof observed != 'undefined')
+        out += observed.toString();
     else
         out += "undefined";
+    if (mismatch) {
+        out += " (Expected: ";
+        if (typeof expected != 'undefined')
+            out += expected.toString();
+        else
+            out += "undefined";
+        out += ")";
+    }
         
     if (!silent)
         console.log(out);
