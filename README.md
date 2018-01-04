@@ -18,4 +18,10 @@
 - [x] range.
 - [x] reverse.
 - [x] list.
-- [ ] deepEqual.
+- [x] deepEqual.
+
+### Ch5 Higher-Order Functions
+- [x] flatten.
+- [x] ageDifference.
+- [ ] lifeExpectancy.
+- [ ] everyAndSome.
