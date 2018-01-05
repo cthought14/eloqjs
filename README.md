@@ -27,7 +27,7 @@
 - [x] everyAndSome.
 
 ### Ch6 The Secret Life of Objects
-- [ ] Vector
-- [ ] StretchCell
-- [ ] Seq
+- [ ] Vector.
+- [ ] StretchCell.
+- [ ] Seq.
 
