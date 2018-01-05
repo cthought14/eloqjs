@@ -23,5 +23,11 @@
 ### Ch5 Higher-Order Functions
 - [x] flatten.
 - [x] ageDifference.
-- [ ] lifeExpectancy.
-- [ ] everyAndSome.
+- [x] lifeExpectancy.
+- [x] everyAndSome.
+
+### Ch6 The Secret Life of Objects
+- [ ] Vector
+- [ ] StretchCell
+- [ ] Seq
+
