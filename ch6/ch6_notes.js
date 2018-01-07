@@ -1,5 +1,6 @@
 // Examples. Chapter 6.
 "use strict";
+//var MOUNTAINS;
 
 //
 // 121 - Constructors
@@ -92,9 +93,9 @@ for (var name in map2)
 console.log("## 127 Laying out a table");
     
 /*
---------------
-Cell interface
---------------
+------------------
+TextCell interface
+------------------
 
 minHeight()
     // Cell's minimum height in lines.
@@ -136,6 +137,7 @@ var arr2_max =
         arr2.reduce(function(max, elem) {
             return Math.max(max, elem);
         }, 0);
+// This fails: 
 expect(arr2_max, -2);
 
 // An alternative is to use the iterative approach used in 
@@ -249,7 +251,7 @@ for (var i = 0; i < 5; i++) {
 }
 
 console.log("rows_ex1:");
-console.log(drawTable(rows_ex1));
+console.log(drawTable(rows_ex1)); console.log("");
 
 // It is likely that we will have some tabular data formatted like this,
 // as a plain "text matrix" of strings, where each string represents a cell. 
@@ -280,6 +282,195 @@ function Rows(textMatrix) {
 
 var rows_ex2 = new Rows(textMatrix_ex1);
 console.log("rows_ex2: ");
-console.log(drawTable(rows_ex2));
+console.log(drawTable(rows_ex2)); console.log("");
 
-// (131)
+//
+//
+
+function UnderlinedCell(inner) {
+    this.inner = inner;
+}
+
+UnderlinedCell.prototype.minWidth = function() {
+    return this.inner.minWidth();
+};
+
+UnderlinedCell.prototype.minHeight = function() {
+    return this.inner.minHeight() + 1;
+};
+
+UnderlinedCell.prototype.draw = function(width, height) {
+    return this.inner.draw(width, height - 1)
+                .concat([repeat("-", width)]);
+};
+    
+function dataTable(data) {
+    // Example keys:  ["name", "height", "country"]
+    var keys = Object.keys(data[0]);
+    var headers = keys.map(function(name) {
+        return new UnderlinedCell(new TextCell(name));
+    });
+    var body = data.map(function(row) {
+        return keys.map(function(name) {
+            return new TextCell(String(row[name]));
+        });
+    });
+    return [headers].concat(body);
+}
+
+//console.log(dataTable(MOUNTAINS));
+console.log(drawTable(dataTable(MOUNTAINS))); console.log("");
+
+// I would like to be able to represent data in a matrix format,
+// like this:
+
+var textMatrix_ex2 = [ 
+    ["heading1", "heading2", "heading3"],
+    ["r1c1", "r1c2 ABCDEFG", "r1c3"],
+    ["r2c1", "r2c2", "r2c3"],
+    ["r3c1", "r3c2", "r3c3"],
+];
+
+// Modified version of Rows constructor to underline the text 
+// of the cells of the first row.
+
+function RowsWithHeadings(textMatrix) {
+    var rows1 = [];
+    var row = [];
+    for (var j = 0; j < textMatrix[0].length; j++) {
+        row.push(new UnderlinedCell(new TextCell(textMatrix[0][j])));
+    }
+    rows1.push(row);
+    for (var i = 1; i < textMatrix.length; i++) {
+        var row = [];
+        for (var j = 0; j < textMatrix[0].length; j++) {
+            row.push(new TextCell(textMatrix[i][j]));
+        }
+        rows1.push(row);
+    }
+    return rows1;
+}
+
+//console.log(RowsWithHeadings(textMatrix_ex2));
+//console.log(drawTable(RowsWithHeadings(textMatrix_ex2))); console.log("");
+
+// Modified version of dataTable constructor to convert data from the
+// same format supported by RowsWithHeadings. This replaces RowsWithHeadings():
+
+function dataTableFromMatrix(data) {
+    var keys = data[0];
+    var headers = keys.map(function(name) {
+        return new UnderlinedCell(new TextCell(String(name)));
+    });
+    var body = data.slice(1).map(function(row) {
+        return row.map(function(_elem, i) {
+            return new TextCell(String(row[i]));
+        });
+    });
+    return [headers].concat(body);
+}
+
+//console.log(dataTableFromMatrix(textMatrix_ex2));
+console.log(drawTable(dataTableFromMatrix(textMatrix_ex2))); console.log("");
+
+//
+// 133 Getters and setters
+//
+console.log("## 133 Getters and setters");
+
+var pile = {
+    elements: ["eggshell", "orange peel", "worm"],
+    get height() {
+        return this.elements.length;
+    },
+    set height(value) {
+        console.warn("pile: Can't set height to", value);
+    }
+};
+
+expect(pile.height, 3);
+pile.height = 100;
+expect(pile.height, 3);
+
+// Syntax for adding a get property to an object prototype.
+
+Object.defineProperty(TextCell.prototype, "heightProp", {
+    get: function() { return this.text.length; },
+    set: function() { console.warn("TextCell: Can't set height"); },
+});
+
+var cell_ex1 = new TextCell("no\nway");
+expect(cell_ex1.heightProp, 2);
+cell_ex1.heightProp = 100;
+expect(cell_ex1.heightProp, 2);
+
+//
+// 134 Inheritance
+//
+console.log("## 134 Inheritance");
+
+function RTextCell(text) {
+    TextCell.call(this, text);
+}
+
+RTextCell.prototype = Object.create(TextCell.prototype);
+RTextCell.prototype.draw = function(width, height) {
+    // Similar to TextCell.draw().
+    var result = [];
+    for (var i = 0; i < height; i++) {
+        var line = this.text[i] || "";
+        var padding = repeat(" ", width - line.length);
+        // Put padding on the left instead of the right.
+        result.push(padding + line);
+    }
+    return result;
+};
+
+function dataTable2(data) {
+    var keys = Object.keys(data[0]);
+    var headers = keys.map(function(name) {
+        return new UnderlinedCell(new TextCell(name));
+    });
+    var body = data.map(function(row) {
+        return keys.map(function(name) {
+            var value = row[name];
+            // Right-align if it is a number.
+            if (typeof value == "number")
+                return new RTextCell(String(value));
+            return new TextCell(String(row[name]));
+        });
+    });
+    return [headers].concat(body);
+}
+
+console.log(drawTable(dataTable2(MOUNTAINS))); console.log("");
+
+//
+// 136 The instanceof operator
+//
+console.log("## 136 The instanceof operator");
+
+expect(new RTextCell("A") instanceof RTextCell, true);
+expect(new RTextCell("A") instanceof TextCell, true);
+expect(new TextCell("A") instanceof RTextCell, false);
+expect([1] instanceof Array, true);
+// UnderlinedCell is defined using composition, not inheritance. So this is false:
+expect(new UnderlinedCell("A") instanceof TextCell, false);
+
+function hasTextCellInterface(obj) {
+    return typeof obj.constructor == "function" 
+        && typeof obj.minHeight == "function" 
+        && typeof obj.minWidth == "function" 
+        && typeof obj.draw == "function";
+};
+
+// The important thing is whether all of the cell types have the same interface.
+
+expect(hasTextCellInterface(new RTextCell("A")), true);
+expect(hasTextCellInterface(new TextCell("A")), true);
+expect(hasTextCellInterface(new UnderlinedCell("A")), true);
+
+//
+// 137 (End of chapter)
+//
+console.log("## 137 (End of chapter)");
