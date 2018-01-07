@@ -57,7 +57,11 @@ function expect(observed, expected) {
             out += "undefined";
         out += ")";
     }
-        
-    if (!silent)
+
+    if (!mismatch && !silent)
         console.log(out);
+    else if (!mismatch && silent)
+        ;
+    else
+        console.warn(out);
 }
