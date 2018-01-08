@@ -27,7 +27,10 @@
 - [x] everyAndSome.
 
 ### Ch6 The Secret Life of Objects
-- [ ] Vector.
-- [ ] StretchCell.
-- [ ] Seq.
+- [x] Vector.
+- [x] StretchCell.
+- [x] Seq.
 
+### Ch7 Project: Electronic Life
+- [ ] SmartPlantEater.
+- [ ] Predator.
