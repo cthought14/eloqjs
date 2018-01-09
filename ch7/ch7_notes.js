@@ -122,39 +122,6 @@ var directions = {
 //                  #
 //                 o#
 //                  #
-
-var view_ex1 = {
-    _steps: 0,
-    look: function(direction) { 
-        if (this._steps == 0) {
-            if (direction == "e" || direction == "ne" || direction == "se")
-                return "#";
-            return " ";
-        }
-        if (this._steps == 1) {
-            if (direction == "nw" || direction == "n" || direction == "ne"
-                    || direction == "e" || direction == "se")
-                return "#";
-            return " ";
-        }
-        if (this._steps == 2) {
-            if (direction == "n" || direction == "ne")
-                return "#";
-            return " ";
-        }
-    },
-    find: function(character) {
-        if (this._steps == 0) {
-            if (character == " ") return "n";
-            return null;
-        }
-        if (this._steps == 1) {
-            if (character == " ") return "w";
-            return null;
-        }
-        return null;
-    },
-};
         
 // Critter interface
 // -----------------
