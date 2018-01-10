@@ -6,24 +6,6 @@
 //
 console.log("### 140 Definition");
 
-var plan = 
- ["############################",
-  "#      #    #      o      ##",
-  "#                          #",
-  "#          #####           #",
-  "##         #   #    ##     #",
-  "###           ##     #     #",
-  "#           ###      #     #",
-  "#    ####                  #",
-  "#    ##      o             #",
-  "# o   #        o       ### #",
-  "#     #                    #",
-  "############################"];
-
-// "#" : wall
-// "o" : critter
-// " " : empty space    
-
 //
 // 141
 //
@@ -52,6 +34,9 @@ expect(grid_flat[2 + (1 * 3)], "bottom right");
 //      : bool
 // get(vector) : char
 // set(vector, value)
+// width : int
+// height : int
+// forEach(f, context)
 
 function Grid(width, height) {
     this.space = new Array(width * height);
@@ -72,10 +57,21 @@ Grid.prototype.set = function(vector, value) {
     this.space[vector.x + this.width * vector.y] = value;
 };
 
-var grid = new Grid(5, 5);
-expect(grid.get(new Vector(1,1)), undefined);
-grid.set(new Vector(1,1), "X");
-expect(grid.get(new Vector(1,1)), "X");
+// 148
+Grid.prototype.forEach = function(f, context) {
+    for (var y = 0; y < this.height; y++) {
+        for (var x = 0; x < this.width; x++) {
+            var value = this.space[x + y * this.width];
+            if (value != null)
+                f.call(context, value, new Vector(x, y));
+        }
+    }
+};
+
+var grid_ex1 = new Grid(5, 5);
+expect(grid_ex1.get(new Vector(1,1)), undefined);
+grid_ex1.set(new Vector(1,1), "X");
+expect(grid_ex1.get(new Vector(1,1)), "X");
 
 //
 // 143
@@ -208,9 +204,177 @@ console.log(c1.act(view_ex1));
 // 
 console.log("### 144 The world object");
 
-  
-// ... 146
+// Construct an `element` object.
+function elementFromChar(legend, ch) {
+    if (ch == " ")
+        return null;
+    var element = new legend[ch]();
+    // .originChar property is stored in the
+    // relevant Object (e.g. Wall, BouncingCritter, etc.).
+    element.originChar = ch;
+    return element;
+}
+
+function charFromElement(element) {
+    if (element == null)
+        return " ";
+    else
+        return element.originChar;
+}
 
 //
-// 146 
 //
+
+function World(map, legend) {
+    var grid = new Grid(map[0].length, map.length);
+    this.grid = grid; // Each grid position is an `element`.
+    this.legend = legend;
+    var self = this; // Workaround for the problem mentioned in 
+                     // 'this and its scope'.
+    
+    map.forEach(function(line, y) {
+        for (var x = 0; x < line.length; x++)  {
+            self.grid.set(new Vector(x, y),
+                    elementFromChar(legend, line[x]));
+        }
+    });
+}
+
+World.prototype.toString = function() {
+    var output = "";
+    for (var y = 0; y < this.grid.height; y++) {
+        for (var x = 0; x < this.grid.width; x++) {
+            var element = this.grid.get(new Vector(x, y));
+            output += charFromElement(element);
+        }
+        output += "\n";
+    }
+    return output;
+};
+
+//
+//
+
+function Wall() {}
+
+//
+//
+
+var plan = 
+ ["############################",
+  "#      #    #      o      ##",
+  "#                          #",
+  "#          #####           #",
+  "##         #   #    ##     #",
+  "###           ##     #     #",
+  "#           ###      #     #",
+  "#    ####                  #",
+  "#    ##      o             #",
+  "# o   #        o       ### #",
+  "#     #                    #",
+  "############################"];
+
+// "#" : wall
+// "o" : critter
+// " " : empty space    
+
+var legend = {
+    "#": Wall,
+    "o": BouncingCritter,
+};
+
+var world = new World(plan, legend);
+
+console.log(world.toString());
+
+//
+// 146
+//
+console.log("### 146 this and its scope");
+
+var test_ex0 = {
+    prop: 10,
+    addPropTo: function(array) {
+        return array.map(function(elt) {
+            return this.prop + elt;
+        });
+    }
+};
+
+// Does not work:
+//expect(test_ex0.addPropTo([10,20,30]), [20,30,40]);
+
+var test_ex1 = {
+    prop: 10,
+    addPropTo: function(array) {
+        // 'self' workaround:
+        var self = this;
+        return array.map(function(elt) {
+            return self.prop + elt;
+        });
+    }
+};
+
+expect(test_ex1.addPropTo([10,20,30]), [20,30,40]);
+
+var test_ex2 = {
+    prop: 10,
+    addPropTo: function(array) {
+        // 'bind' workaround:
+        return array.map(function(elt) {
+            return this.prop + elt;
+        }.bind(this));
+    }
+};
+
+test_ex2.setProp = function(newProp) { 
+    this.prop = newProp;
+};
+test_ex2.setProp(110);
+
+expect(test_ex2.addPropTo([10,20,30]), [120,130,140]);
+
+var test_ex3 = {
+    prop: 10,
+    addPropTo: function(array) {
+        // Most standard higher-order methods on arrays take
+        // an optional `context` parameter that behaves similarly
+        // to bind(this):
+        return array.map(function(elt) {
+            return this.prop + elt;
+        }, this);
+    }
+};
+
+expect(test_ex3.addPropTo([10,20,30]), [20,30,40]);
+            
+// To add your own context parameter to your own higher-order 
+// function, use the call() method. See Grid::forEach().
+            
+var grid_ex2 = new Grid(3, 3);
+grid_ex2.set(new Vector(0,0), "A");
+grid_ex2.set(new Vector(1,1), "B");
+grid_ex2.set(new Vector(2,2), "C");
+grid_ex2.forEach(function(value, vector) {
+    var pos = "(" + vector.x + ", " + vector.y + ")";
+    console.log(pos + " Grid element: " + value);
+});
+
+var grid_ex3 = new Grid(3, 3);
+grid_ex3.name = "grid_ex3";
+grid_ex3.show = function() {
+    console.log("show()");
+    // Why doesn't the following produce output?
+    this.forEach(function(value, vector) {
+        var pos = "(" + vector.x + ", " + vector.y + ")";
+        console.log("{" + name + "} " + pos + " Grid element: " + value);
+    }, this);
+};
+
+grid_ex3.show();
+
+//
+// 148
+//
+console.log("### 148 Animating life");
+
