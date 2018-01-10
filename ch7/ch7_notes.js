@@ -100,6 +100,7 @@ var directions = {
 
 // View
 // -----------
+// View(world, vector)
 // look(direction) : char
 //      -- The character (e.g. "#") in the specified direction
 //      if it is next to the critter, otherwise, " " if nothing
@@ -118,10 +119,41 @@ var directions = {
 //                  #
 //                 o#
 //                  #
+
+// 150
+function View(world, vector) {
+    this.world = world;
+    this.vector = vector;
+}
+
+View.prototype.look = function(dir) {
+    var target = this.vector.plus(directions[dir]);
+    if (this.world.grid.isInside(target))
+        // => Then target is inside the world's grid.
+        return charFromElement(this.world.grid.get(target));
+    else
+        // Treat everything outside of the grid as a wall.
+        return "#";
+};
+
+View.prototype.findAll = function(ch) {
+    var found = [];
+    for (var dir in directions)
+        if (this.look(dir) == ch)
+            found.push(dir);
+    return found;
+};
+
+View.prototype.find = function(ch) {
+    var found = this.findAll(ch);
+    if (found.length == 0)
+        return null;
+    return randomElement(found);
+};
         
 // Critter interface
 // -----------------
-// act(view : View)
+// act(view : View) : Action
 //      -- Defines what the character does.
 
 // BouncingCritter 
@@ -138,6 +170,11 @@ var directionNames = "n ne e se s sw w nw".split(" ");
 function BouncingCritter() {
     this.direction = randomElement(directionNames);
 };
+
+// Action 
+// ------------------
+// type : string
+// direction : string
 
 BouncingCritter.prototype.act = function(view) {
     if (view.look(this.direction) != " ")
@@ -225,6 +262,14 @@ function charFromElement(element) {
 //
 //
 
+// World
+// -----------
+// World(map, legend)
+// grid : Grid
+// legend : Legend
+// toString()
+// turn()
+
 function World(map, legend) {
     var grid = new Grid(map[0].length, map.length);
     this.grid = grid; // Each grid position is an `element`.
@@ -250,6 +295,41 @@ World.prototype.toString = function() {
         output += "\n";
     }
     return output;
+};
+
+// 148
+World.prototype.turn = function() {
+    var acted = [];
+    this.grid.forEach(function(critter, vector) {
+        if (critter.act && acted.indexOf(critter) == -1) { 
+            // => Then critter is a critter that did not already act.
+            acted.push(critter);
+            this.letAct(critter, vector);
+        }
+    }, this);
+};
+
+// 149
+World.prototype.letAct = function(critter, vector) {
+    var action = critter.act(new View(this, vector));
+    if (action && action.type == "move") {
+        var dest = this.checkDestination(action, vector);
+        if (dest && this.grid.get(dest) == null) {
+            this.grid.set(vector, null);
+            this.grid.set(dest, critter);
+        }
+    }
+};
+
+World.prototype.checkDestination = function(action, vector) {
+    if (directions.hasOwnProperty(action.direction)) {
+        // => Then action.direction is a valid direction.
+        var dest = vector.plus(directions[action.direction]);
+        if (this.grid.isInside(dest))
+            // => Then dest is inside grid.
+            return dest;
+        // Implicitly return undefined.
+    }
 };
 
 //
@@ -284,7 +364,6 @@ var legend = {
 };
 
 var world = new World(plan, legend);
-
 console.log(world.toString());
 
 //
@@ -378,3 +457,32 @@ grid_ex3.show();
 //
 console.log("### 148 Animating life");
 
+//
+// 151
+//
+console.log("### 151 It moves");
+for (var i = 0; i < 5; i++) {
+    world.turn();
+    console.log(world.toString());
+}
+
+//
+// Animate the world on the web console.
+//
+showOnConsole // From webConsole.js
+var world = new World(plan, legend);
+
+var worldView = {
+    step: 0,
+    nSteps: 500,
+    nextStep: function() { 
+        if (this.step++ >= this.nSteps)
+            return;
+        world.turn();
+        showOnConsole(world.toString());
+    },
+};
+
+setInterval(function() { 
+    worldView.nextStep();
+}, 100);
