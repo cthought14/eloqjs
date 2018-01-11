@@ -94,6 +94,20 @@ var directions = {
     "nw":   new Vector(-1,-1),
 };
 
+var directionNames = "n ne e se s sw w nw".split(" ");
+
+// 152
+// dirPlus(dir, n) 
+//      -- Take direction dir and move clockwise n steps
+//      (e.g. "n" to "ne"). Return new direction. If n
+//      is negative, move -n steps counterclockwise.
+
+function dirPlus(dir, n) {
+    var index = directionNames.indexOf(dir);
+    return directionNames[(index + n + 8) % 8];
+}
+
+
 // A critter can only see the squares directly around it on
 // the grid. I.e., it can only see in directions n, ne, e, se,
 // s, sw, w, or nw.
@@ -155,6 +169,8 @@ View.prototype.find = function(ch) {
 // -----------------
 // act(view : View) : Action
 //      -- Defines what the character does.
+// energy : double
+//      -- In a LifelikeWorld, a critter dies when energy reaches 0.0.
 
 // BouncingCritter 
 //      -- Stupid critter that follows its nose until
@@ -164,8 +180,6 @@ View.prototype.find = function(ch) {
 function randomElement(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
-
-var directionNames = "n ne e se s sw w nw".split(" ");
 
 function BouncingCritter() {
     this.direction = randomElement(directionNames);
@@ -269,6 +283,7 @@ function charFromElement(element) {
 // legend : Legend
 // toString()
 // turn()
+// letAct(critter, vector)
 
 function World(map, legend) {
     var grid = new Grid(map[0].length, map.length);
@@ -472,17 +487,171 @@ for (var i = 0; i < 5; i++) {
 showOnConsole // From webConsole.js
 var world = new World(plan, legend);
 
-var worldView = {
-    step: 0,
-    nSteps: 500,
-    nextStep: function() { 
-        if (this.step++ >= this.nSteps)
-            return;
-        world.turn();
-        showOnConsole(world.toString());
-    },
+function animateWorld(world) {
+    var worldView = {
+        step: 0,
+        nSteps: 500,
+        nextStep: function() { 
+            if (this.step++ >= this.nSteps)
+                return;
+            world.turn();
+            showOnConsole(world.toString());
+        },
+    };
+
+    setInterval(function() { 
+        worldView.nextStep();
+    }, 100);
+}
+
+animateWorld(world);
+
+//
+// 152
+//
+console.log("### 152 More life forms");
+
+// A WallFollower is a critter that moves along walls, keeping its left
+// side to the wall.
+
+function WallFollower() {
+    this.dir = "s";
+}
+
+WallFollower.prototype.act = function(view) {
+    var start = this.dir;
+    if (view.look(dirPlus(this.dir, -3)) != " ")
+        start = this.dir = dirPlus(this.dir, -2);
+    while (view.look(this.dir) != " ") {
+        this.dir = dirPlus(this.dir, 1);
+        if (this.dir == start) break;
+    }
+    return {type: "move", direction: this.dir};
+};
+              
+/*
+Example 1. If x is the WallFollower and is heading south, it should 
+move west when it hits the south wall.
+*/
+
+var plan_ex1 = 
+ ["########",
+  "#      #",
+  "#     x#",
+  "#      #",
+  "########"];
+
+var legend_ex1 = {
+    "#": Wall,
+    "o": BouncingCritter,
+    "x": WallFollower,
 };
 
-setInterval(function() { 
-    worldView.nextStep();
-}, 100);
+function _charAt(world, x, y) {
+    return charFromElement(world.grid.get(new Vector(x, y)));
+}
+
+var world_ex1 = new World(plan_ex1, legend_ex1);
+expect(_charAt(world_ex1, 6, 2), "x"); world_ex1.turn();
+expect(_charAt(world_ex1, 6, 3), "x"); world_ex1.turn();
+expect(_charAt(world_ex1, 5, 3), "x");
+console.log(world_ex1.toString());
+
+/*
+Example 2. If a WallFollower is following a wall and hits open space
+it will move southeast to continue following.
+*/
+
+var plan_ex2 = 
+ ["        ",
+  "  ##### ",
+  " x#   # ",
+  "  ##### ",
+  "        "];
+
+var legend_ex2 = {
+    "#": Wall,
+    "o": BouncingCritter,
+    "x": WallFollower,
+};
+
+var world_ex2 = new World(plan_ex2, legend_ex2);
+expect(_charAt(world_ex2, 1, 2), "x"); world_ex2.turn();
+expect(_charAt(world_ex2, 1, 3), "x"); world_ex2.turn();
+expect(_charAt(world_ex2, 2, 4), "x"); world_ex2.turn();
+expect(_charAt(world_ex2, 3, 4), "x");
+console.log(world_ex2.toString());
+
+//
+// 153
+// 
+console.log("### 153 A more lifelike simulation");
+
+// LifelikeWorld : World
+// --------------------------
+// LifelikeWorld(map, legend)
+// letAct(critter, vector) 
+
+function LifelikeWorld(map, legend) {
+    World.call(this, map, legend);
+}
+
+LifelikeWorld.prototype = Object.create(World.prototype);
+
+var actionTypes = Object.create(null);
+
+LifelikeWorld.prototype.letAct = function(critter, vector) {
+    var action = critter.act(new View(this, vector));
+    var actionFn = actionTypes[action.type];
+    var handled = action && 
+            action.type in actionTypes &&
+            actionFn.call(this, critter, vector, action);
+    // Usage: fn.call(context, arg1ToFn, arg2ToFn, ...);
+    
+    if (!handled) {
+        critter.energy -= 0.2;
+        if (critter.energy <= 0)
+            this.grid.set(vector, null);
+    }
+};
+        
+//
+// 154
+//
+console.log("### 154 Action handlers");
+
+// actionTypes
+// ----------------
+// grow(critter)
+//      -- Always succeeds. Critter gains a bit of energy.
+// move(critter, vector, action)
+//      -- Critter tries to move to the destination vector
+//      using action. It takes some energy to move, and
+//      movement can fail if the destination is occupied 
+//      or if the critter has insufficient energy.
+// eat(critter, vector, action)
+//      -- Critter can eat if it is at the location specified
+//      by vector. Eating transfers the energy of whatever
+//      is at the destination to critter and removes the 
+//      eaten from the grid.
+// reproduce(critter, vector, action)
+//      -- Critter reproduces asexually to the destination 
+//      vector. Fails if critter does not have enough energy.
+//      If reproduction is successful, critter's energy is reduced.
+
+
+// Example action handler declaration:
+//      function anActionHandler(critter, vector, action) { ... }
+
+actionTypes.grow = function(critter) {
+    critter.energy += 0.5;
+    return true;
+};
+/*
+actionTypes.move = function(critter, vector, action) {
+*/    
+        
+//
+// 156
+//        
+        
