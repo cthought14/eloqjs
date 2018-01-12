@@ -171,6 +171,8 @@ View.prototype.find = function(ch) {
 //      -- Defines what the character does.
 // energy : double
 //      -- In a LifelikeWorld, a critter dies when energy reaches 0.0.
+// originChar : char
+//      -- The character that represents this critter, e.g. "o".
 
 // BouncingCritter 
 //      -- Stupid critter that follows its nose until
@@ -255,7 +257,7 @@ console.log(c1.act(view_ex1));
 // 
 console.log("### 144 The world object");
 
-// Construct an `element` object.
+// Construct a new object (Critter) based on the legend and character.
 function elementFromChar(legend, ch) {
     if (ch == " ")
         return null;
@@ -487,15 +489,22 @@ for (var i = 0; i < 5; i++) {
 showOnConsole // From webConsole.js
 var world = new World(plan, legend);
 
+function showText(id, text) {
+    var counter = document.getElementById("counter");
+    if (!counter) return;
+    counter.textContent = text;
+}
+
 function animateWorld(world) {
     var worldView = {
         step: 0,
-        nSteps: 500,
+        nSteps: 1000,
         nextStep: function() { 
             if (this.step++ >= this.nSteps)
                 return;
             world.turn();
             showOnConsole(world.toString());
+            showText("counter", "Time: " + this.step);
         },
     };
 
@@ -504,7 +513,7 @@ function animateWorld(world) {
     }, 100);
 }
 
-animateWorld(world);
+//animateWorld(world);
 
 //
 // 152
@@ -647,11 +656,114 @@ actionTypes.grow = function(critter) {
     critter.energy += 0.5;
     return true;
 };
-/*
+
 actionTypes.move = function(critter, vector, action) {
-*/    
+    // `this` is a World.
+    var dest = this.checkDestination(action, vector);
+    if (dest == null || 
+                critter.energy <= 1 ||
+                this.grid.get(dest) != null)
+        return false;
+    critter.energy -= 1;
+    this.grid.set(vector, null);
+    this.grid.set(dest, critter);
+};
+
+actionTypes.eat = function(critter, vector, action) {
+    var dest = this.checkDestination(action, vector);
+    var atDest = dest != null && this.grid.get(dest);
+    // atDest => Something can be eaten at the destination vector.
+    if (!atDest || atDest.energy == null)
+        return false;
+    critter.energy += atDest.energy;
+    this.grid.set(dest, null);
+    return true;
+};
+
+actionTypes.reproduce = function(critter, vector, action) {
+    var baby = elementFromChar(this.legend, critter.originChar);
+    var dest = this.checkDestination(action, vector);
+    if (dest == null ||
+                critter.energy <= 2 * baby.energy ||
+                this.grid.get(dest) != null)
+        return false;
+    critter.energy -= 2 * baby.energy;
+    this.grid.set(dest, baby);
+    return true;
+};
         
+actionTypes.sit = function(critter, vector, action) {
+    critter.energy -= 0.01;
+    return true;
+};
+    
 //
 // 156
 //        
-        
+console.log("### 156 Populating the new world");
+
+// Plant "*"
+function Plant() { 
+    // this.energy is in range [3.0, 7.0)
+    this.energy = 3 + Math.random() * 4;
+}
+
+Plant.prototype.act = function(view) {
+    if (this.energy > 15) {
+        var space = view.find(" ");
+        if (space)
+            return {type: "reproduce", direction: space};
+    }
+    if (this.energy < 20)
+        return {type: "grow"};
+    // Otherwise, do nothing.
+    return {type: "sit"};
+};
+
+// PlantEater "O"
+function PlantEater() {
+    this.energy = 20;
+    //this.energy = 40;
+}
+
+PlantEater.prototype.act = function(view) {
+    var space = view.find(" ");
+    if (this.energy > 60 && space)
+        return {type: "reproduce", direction: space};
+    var plant = view.find("*");
+    if (plant)
+        return {type: "eat", direction: plant};
+    if (space)
+        return {type: "move", direction: space};
+    // Otherwise, do nothing.
+    return {type: "sit"};
+};
+
+//
+// 157
+//
+console.log("### 157 Bringing it to life");
+
+var valley = new LifelikeWorld([
+   "############################",
+   "#####                 ######",
+   "##   ***                **##",
+   "#   *##**         **  O  *##",
+   "#    ***          ##**    *#",
+   "#       O    O    ##***    #",
+   "#                 ##**     #",
+   "#   O       #*             #",
+   "#*          #**       O    #",
+   "#***        ##**    O    **#",
+   "##****     ###***       *###",
+   "############################",
+], {"#": Wall,
+    "O": PlantEater,
+    "*": Plant}
+);
+
+//animateWorld(valley);
+
+//
+// 159
+//
