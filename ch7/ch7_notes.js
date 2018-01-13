@@ -767,3 +767,28 @@ var valley = new LifelikeWorld([
 //
 // 159
 //
+console.log("### End of chapter");
+
+//
+//
+
+function finalWorld(world, finalSteps) {
+    if (!finalSteps) finalSteps = 1000;
+    var worldView = {
+        step: 0,
+        nSteps: finalSteps,
+        nextStep: function() { 
+            if (this.step++ >= this.nSteps)
+                return;
+            world.turn();
+            if (this.step < finalSteps)
+                this.nextStep();
+            showOnConsole(world.toString());
+            showText("counter", "Time: " + this.step);
+        },
+    };
+    worldView.nextStep();
+}
+
+//
+//
