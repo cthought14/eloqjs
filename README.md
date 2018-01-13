@@ -32,5 +32,9 @@
 - [x] Seq.
 
 ### Ch7 Project: Electronic Life
-- [ ] SmartPlantEater.
-- [ ] Predator.
+- [x] SmartPlantEater.
+- [x] Predator.
+
+### Ch8 Bugs and Error Handling
+- [ ] retryMultiply.
+- [ ] withBoxUnlocked.
