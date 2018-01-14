@@ -41,7 +41,7 @@ function multiply(a, b) {
                 if (chance < MaxTries)
                     continue;
                 // Exceeded maximum number of tries:
-                throw new MultiplicatorUnitFailure();
+                throw e;
             }
             throw e;
         }
