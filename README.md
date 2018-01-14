@@ -36,5 +36,5 @@
 - [x] Predator.
 
 ### Ch8 Bugs and Error Handling
-- [ ] retryMultiply.
+- [x] retryMultiply.
 - [ ] withBoxUnlocked.
