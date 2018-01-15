@@ -66,4 +66,44 @@ console.log(/(\d)+/.exec("123"));
 // 182
 //
 console.log("### The date type");
+console.log(new Date().toString());
+expect(new Date(2009, 11, 9).toString().startsWith("Wed Dec 09 2009 00:00:00"), true);
+expect(new Date(2009, 11, 9, 12, 59, 59, 999).toString()
+            .startsWith("Wed Dec 09 2009 12:59:59"), true);
+// "Unix time". Exact value depends on the time zone.            
+console.log(new Date(2013, 11, 19).getTime());
+var unixTime1 = new Date(2013, 11, 19).getTime();
+expect(new Date(unixTime1).toString().startsWith("Thu Dec 19 2013 00:00:00"), true);
 
+function findDate(string) {
+    // string: Date in "DD-MM-YYYY" format.
+    var dateTime = /\b(\d{1,2})-(\d{1,2})-(\d{4})\b/;
+    var match = dateTime.exec(string);
+    try {
+        return new Date(Number(match[3]),
+                        Number(match[2]) - 1,
+                        Number(match[1]));
+    } catch (e) {
+        if (e instanceof TypeError)
+            return null;
+        throw e;
+    }
+}
+console.log(findDate("30-1-2003"));
+function contains(string, needle) { return string.indexOf(needle) != -1; }
+expect(contains(findDate("30-1-2003").toString(), "Jan 30 2003"), true);
+expect(findDate("100-1-30000"), null);
+expect(findDate("10-1-30000"), null);
+expect(findDate("Today is 10-1-3000").toString().slice(4,15), "Jan 10 3000");
+
+//
+// 183
+//
+console.log("### Word and string boundaries");
+expect(/cat/.test("concatenate"), true);
+expect(/\bcat\b/.test("concatenate"), false);
+
+//
+// 184
+//
+console.log("### Choice patterns");
