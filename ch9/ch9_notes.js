@@ -107,3 +107,142 @@ expect(/\bcat\b/.test("concatenate"), false);
 // 184
 //
 console.log("### Choice patterns");
+var animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
+expect(animalCount.test("15 pigs"), true);
+expect(animalCount.test("15 pigchickens"), false);
+
+//
+// 186
+//
+console.log("### Backtracking");
+var numberLiteral = /\b([01]+b|\d+|[\da-f]+h)\b/;
+expect(numberLiteral.test("10101b"), true);
+expect(numberLiteral.test("9876543210"), true);
+expect(numberLiteral.test("9fh"), true);
+
+var findX = /^.*x/;
+console.log(findX.exec("abcxe"));
+
+var worker = /([01]+)+b/;
+console.log(worker.exec("1010"));
+// Uncomment next line to make the browser do a lot of work:
+//console.log(worker.exec("101011111111111111111111111111"));
+
+//
+// 188
+//
+console.log("### The replace method");
+expect("papa".replace("p", "m"), "mapa");
+expect("Borobudur".replace(/[ou]/, "a"), "Barobudur");
+expect("Borobudur".replace(/[ou]/g, "a"), "Barabadar");
+expect(
+    "Hopper, Grace\nMcCarthy, John\nRitchie, Dennis"
+        .replace(/([\w ]+), ([\w ]+)/g, "$2 $1"),
+    "Grace Hopper\n"+
+    "John McCarthy\n"+
+    "Dennis Ritchie"
+);
+
+var s1 = "the cia and fbi";
+expect(s1.replace(/\b(fbi|cia)\b/g, function(str) {
+    return str.toUpperCase();
+}),
+    "the CIA and FBI"
+);
+
+var stock = "1 lemon, 2 cabbages, and 101 eggs";
+function minusOne(match, amount, unit) {
+    console.log(">>> Match: \"" + match + "\"");
+    amount = Number(amount) - 1;
+    if (amount == 1) // => Remove final 's'.
+        unit = unit.slice(0, -1); // --Q: -1 works on my browser. Is it standard?
+    else if (amount == 0)
+        amount = "no";
+    return amount + " " + unit;
+}
+expect(stock.replace(/(\d+) (\w+)/g, minusOne),
+    "no lemon, 1 cabbage, and 100 eggs");
+
+//
+// 189
+//
+console.log("### Greed");
+function stripComments(code) {
+    // [^] to match any character, including newlines.
+    return code.replace(/\/\/.*|\/\*[^]*\*\//g, ""); 
+}
+expect(stripComments("1 + /* 2 */3"), "1 + 3");
+expect(stripComments("x = 10;// ten!"), "x = 10;");
+expect(stripComments("1 /* a */+/* b */ 1"), "1 + 1");
+
+// Non-greedy version.
+function stripComments_ng(code) {
+    return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
+}
+expect(stripComments_ng("1 + /* 2 */3"), "1 + 3");
+expect(stripComments_ng("x = 10;// ten!"), "x = 10;");
+expect(stripComments_ng("1 /* a */+/* b */ 1"), "1 + 1");
+
+//
+// 191
+//
+console.log("### Dynamically creating RegExp objects");
+var name1 = "harry";
+var text1 = "Harry is a suspicious character.";
+var regexp1 = new RegExp("\\b(" + name1 + ")\\b", "gi");
+expect(text1.replace(regexp1, "_$1_"), 
+        "_Harry_ is a suspicious character.");
+
+var name2 = "dea+hl[]rd";
+var text2 = "This dea+hl[]rd guy is super annoying.";
+// Escape everything that's not alphanumeric or whitespace.
+var escaped2 = name2.replace(/[^\w\s]/g, "\\$&");
+var regexp2 = new RegExp("\\b(" + escaped2 + ")\\b", "gi");
+expect(text2.replace(regexp2, "_$1_"),
+        "This _dea+hl[]rd_ guy is super annoying.");
+
+//
+// 192
+//
+console.log("### The search method");
+// search is to RegExp as indexOf is to string.
+expect("  word".search(/\S/), 2);
+expect("          ".search(/\S/), -1);
+
+//
+// 192
+//
+console.log("### The lastIndex property");
+// Must use /g attribute and .exec() method.
+var pattern1 = /y/g;
+pattern1.lastIndex = 3; // The index at which scanning begins (normally 0).
+var string1 = "xyzzy";
+var match1 = pattern1.exec(string1);
+expect(match1.index, 4); // Found a "y" at position 4.
+expect(pattern1.lastIndex, string1.length); // Scan position is now at the end of the string.
+
+// What actually happens is that when /g "global" is active, and .exec() is used, 
+// the lastIndex property gets updated. This can cause unexpected results.
+var digit1 = /\d/g;
+expect(digit1.exec("here it is: 1"), ["1"].toString());
+expect(digit1.exec("and now: 1"), ["1"].toString()); // Oops.
+
+var digit2 = /\d/g;
+expect(digit2.exec("here it is: 1"), ["1"].toString());
+digit2.lastIndex = 0;
+expect(digit2.exec("and now: 1"), ["1"].toString()); 
+
+// When .match() is called on a RegExp with /g enabled, it returns an array result containing
+// all of the matches.
+
+console.log("Banana".match(/an/)); // [0] is the entire match, [1] is the first capture group, ...
+console.log("Banana".match(/an/g)); // [0] is the first match, [1] is the second match, ...
+
+//
+// 193
+//
+console.log("### Looping over matches");
+var input = "A string with 3 numbers in it... 42 and 88.";
+
+
+
