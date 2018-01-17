@@ -37,4 +37,9 @@
 
 ### Ch8 Bugs and Error Handling
 - [x] retryMultiply.
-- [ ] withBoxUnlocked.
+- [x] withBoxUnlocked.
+
+### Ch9 Regular Expressions
+- [x] regexpGolf.
+- [ ] doubleQuote.
+- [ ] findJsNumbers.
