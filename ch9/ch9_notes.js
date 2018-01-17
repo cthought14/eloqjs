@@ -243,6 +243,92 @@ console.log("Banana".match(/an/g)); // [0] is the first match, [1] is the second
 //
 console.log("### Looping over matches");
 var input = "A string with 3 numbers in it... 42 and 88.";
+var number = /\b(\d+)\b/g;
+var match;
+for (var i = 0; (match = number.exec(input)); i++) {
+    if (i == 0) {
+        expect(match[1], "3");
+        expect(match.index, 14);
+    }
+    else if (i == 1) {
+        expect(match[1], "42");
+        expect(match.index, 33);
+    }
+    else if (i == 2) {
+        expect(match[1], "88");
+        expect(match.index, 40);
+    }
+}
 
+//
+// 194
+//
+console.log("### Parsing an INI file");
+var ConfFile1 = ""+
+"searchengine=http://www.google.com/search?q=$1\n"+
+"spitefulness=9.7\n"+
+"\n"+
+"; comments are preceded by a semicolon...\n"+
+"; each section concerns an individual enemy\n"+
+"[larry]\n"+
+"fullname=Larry Doe\n"+
+"type=kindergarten bully\n"+
+"website=http://www.geocities.com/CapeCanaveral/11451\n"+
+"\n"+
+"[gargamel]\n"+
+"fullname=Gargamel\n"+
+"type=evil sorcerer\n"+
+"outputdir=/home/marijn/enemies/gargamel\n"+
+"";
 
+function parseINI(string) {
+    var currentSection = {name: null, fields: []};
+    var categories = [currentSection];
+    
+    string.split(/\r?\n/).forEach(function(line) {
+        var match;
+        if (/^\s*(;.*)?$/.test(line)) {
+            // => Empty or comment line.
+            return;
+        }
+        else if (match = line.match(/^\[(.*)\]$/)) {
+            // => Section marker.
+            currentSection = {name: match[1], fields: []};
+            categories.push(currentSection);
+        } 
+        else if (match = line.match(/^(\w+)=(.*)$/)) {
+            // => New setting.
+            currentSection.fields.push({name: match[1], 
+                                        value: match[2]});
+        }
+        else {
+            throw new Error("INI file:"+line+": Invalid syntax.");
+        }
+    });
+    
+    return categories;
+}
 
+var categories1 = parseINI(ConfFile1);
+
+function getSettings(categories) {
+    var settings = {};
+    categories.forEach(function(section) {
+        var categoryName = section.name ? section.name : "_default";
+        settings[categoryName] = {};
+        section.fields.forEach(function(field) {
+            settings[categoryName][field.name] = field.value;
+        });
+    });
+    return settings;
+}
+
+var settings1 = getSettings(categories1);
+expect(settings1._default.spitefulness, "9.7");
+expect(settings1.larry.fullname, "Larry Doe");
+expect(settings1.gargamel.outputdir, "/home/marijn/enemies/gargamel");
+
+//
+// 197
+//
+console.log("### End of chapter");
