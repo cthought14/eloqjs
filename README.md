@@ -41,5 +41,10 @@
 
 ### Ch9 Regular Expressions
 - [x] regexpGolf.
-- [ ] doubleQuote.
-- [ ] findJsNumbers.
+- [x] doubleQuote.
+- [x] isNumber.
+
+### Ch10 Modules
+- [ ] monthName.
+- [ ] electronicLife.
+- [ ] require.
