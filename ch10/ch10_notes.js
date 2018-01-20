@@ -139,7 +139,7 @@ define(["weekDay", "today"], function(weekDay, today) {
     // Should work:
     expect(weekDay.name(1), "Monday");
     
-    // TODO Fix backgroundFileRead to return a stringified version of
+    // TODO Fix backgroundReadFile() to return a stringified version of
     // the today object. --Q: How should today be defined?
     // TODO Does not work yet because today is not correctly defined:
     //console.log(today.dayNumber());
@@ -150,7 +150,7 @@ define(["weekDay", "today"], function(weekDay, today) {
 
 
 // AMD-style definition of "weekDay". 
-// Commented out; it is returned as a string by backgroundFileRead().
+// Commented out; it is returned as a string by backgroundReadFile().
 /*
 define([], function() {
     var names = ["Sunday", "Monday", "Tuesday", "Wednesday",
