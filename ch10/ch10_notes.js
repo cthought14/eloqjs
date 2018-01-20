@@ -1,5 +1,6 @@
 // Chapter 10.
 "use strict";
+_defineCache // From defineCache.js
 
 //
 // 203
@@ -130,3 +131,104 @@ expect(require("weekDay").name(2), "Tuesday");
 //
 console.log("### Slow-loading modules");
 
+// AMD-style (Asynchronous Module Definition) usage of modules 
+// "weekDay" and "today".
+
+define(["weekDay", "today"], function(weekDay, today) {
+    
+    // Should work:
+    expect(weekDay.name(1), "Monday");
+    
+    // TODO Fix backgroundFileRead to return a stringified version of
+    // the today object. --Q: How should today be defined?
+    // TODO Does not work yet because today is not correctly defined:
+    //console.log(today.dayNumber());
+    
+    // Does not work yet because today is not defined:
+    //console.log(weekDay.name(today.dayNumber()));
+});
+
+
+// AMD-style definition of "weekDay". 
+// Commented out; it is returned as a string by backgroundFileRead().
+/*
+define([], function() {
+    var names = ["Sunday", "Monday", "Tuesday", "Wednesday",
+                 "Thursday", "Friday", "Saturday"];
+    return {
+        name: function(number) { return names[number]; },
+        number: function(name) { return names.indexOf(name); }
+    };    
+});
+*/
+
+_defineCache  //var defineCache = Object.create(null);
+var currentMod = null;
+
+function getModule(name) {
+    //console.log(">>> getModule"); //debugger;
+    if (name in _defineCache())  //if (name in defineCache)
+        return _defineCache()[name];  //return defineCache[name];
+        
+    var module = {
+        exports: null,
+        loaded: false,
+        onLoad: [],
+    };
+    _defineCache(name, module);  //defineCache[name] = module;
+    backgroundReadFile(name, function(code) {
+        currentMod = module;
+        new Function("", code)();
+    });
+    return module;
+}
+
+// Fake definition for backgroundReadFile().
+
+function backgroundReadFile(name, fn) {
+    console.log(">>> backgroundReadFile()");
+    var code = "\
+define([], function() {\n\
+    var names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',\n\
+                 'Thursday', 'Friday', 'Saturday'];\n\
+    return {\n\
+        name: function(number) { return names[number]; },\n\
+        number: function(name) { return names.indexOf(name); }\n\
+    };\n\
+});\n\
+";
+    fn(code);
+}
+
+// define().
+
+function define(depNames, moduleFunction) {
+    //console.log(">>> define"); //debugger;
+    var myMod = currentMod;
+    var deps = depNames.map(getModule);
+    
+    deps.forEach(function(mod) {
+        if (!mod.loaded)
+            mod.onLoad.push(whenDepsLoaded);
+    });
+    
+    function whenDepsLoaded() {
+        if (!deps.every(function(m) { return m.loaded; })) {
+            // => Some dependency is not yet loaded.
+            return;
+        }
+        var args = deps.map(function(m) { return m.exports; });
+        var exports = moduleFunction.apply(null, args);
+        if (myMod) {
+            myMod.exports = exports;
+            myMod.loaded = true;
+            myMod.onLoad.forEach(function(f) { f(); });
+        }
+    }
+    whenDepsLoaded();
+}
+
+//
+// 212
+// 
+console.log("### Interface design");
