@@ -46,6 +46,18 @@ var weekDay1 = function() {
 expect(weekDay1.number("Sunday"), 0);
 expect(weekDay1.name(0), "Sunday");
 
+// today
+// -----------------
+// dayNumber() : int
+
+var today1 = function() {
+    return {
+        dayNumber: function() { return new Date().getDay(); },
+    };
+}();
+
+expect(weekDay1.name(today1.dayNumber()).startsWith(new Date().toString().slice(0,3)), true);
+
 // "exports" pattern.
 
 (function(exports) {
@@ -134,18 +146,10 @@ console.log("### Slow-loading modules");
 // AMD-style (Asynchronous Module Definition) usage of modules 
 // "weekDay" and "today".
 
-define(["weekDay", "today"], function(weekDay, today) {
-    
-    // Should work:
+define(["weekDay", "today"], function(weekDay, today) {    
     expect(weekDay.name(1), "Monday");
-    
-    // TODO Fix backgroundReadFile() to return a stringified version of
-    // the today object. --Q: How should today be defined?
-    // TODO Does not work yet because today is not correctly defined:
-    //console.log(today.dayNumber());
-    
-    // Does not work yet because today is not defined:
-    //console.log(weekDay.name(today.dayNumber()));
+    console.log("Today's day number:", today.dayNumber());
+    console.log("Today's day name:", weekDay.name(today.dayNumber()));
 });
 
 
@@ -159,6 +163,16 @@ define([], function() {
         name: function(number) { return names[number]; },
         number: function(name) { return names.indexOf(name); }
     };    
+});
+*/
+
+// AMD-style definition of "today".
+// Commented out; it is returned as a string by backgroundReadFile().
+/*
+define([], function() {
+    return {
+        dayNumber: function() { return new Date().getDay(); },
+    };
 });
 */
 
@@ -187,7 +201,8 @@ function getModule(name) {
 
 function backgroundReadFile(name, fn) {
     console.log(">>> backgroundReadFile()");
-    var code = "\
+    if (name == "weekDay") {
+        var code = "\
 define([], function() {\n\
     var names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',\n\
                  'Thursday', 'Friday', 'Saturday'];\n\
@@ -197,7 +212,22 @@ define([], function() {\n\
     };\n\
 });\n\
 ";
-    fn(code);
+        fn(code);
+    }
+    else if (name == "today") {
+        var code = "\
+define([], function() {\n\
+    return {\n\
+        dayNumber: function() { return new Date().getDay(); },\n\
+    };\n\
+});\n\
+";
+        fn(code);    
+    }
+    else {
+        console.warn("Unknown file:",name);
+        fn("");
+    }
 }
 
 // define().
@@ -232,3 +262,11 @@ function define(depNames, moduleFunction) {
 // 212
 // 
 console.log("### Interface design");
+console.log("### Predictability");
+console.log("### Composability");
+console.log("### Layered interfaces");
+
+//
+// 214
+//
+console.log("### End of chapter");
