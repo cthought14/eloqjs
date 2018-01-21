@@ -45,6 +45,6 @@
 - [x] isNumber.
 
 ### Ch10 Modules
-- [ ] monthName.
+- [x] monthName.
 - [ ] electronicLife.
 - [ ] require.
