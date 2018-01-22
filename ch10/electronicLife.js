@@ -179,6 +179,9 @@ console.log("randomElement: ", util.randomElement([1,2,3]));
 
 var life = function() {
 
+    //
+    //
+    
     // Critter interface
     // -----------------
     // act(view : View) : Action
@@ -208,14 +211,222 @@ var life = function() {
         return {type: "move", direction: this.direction};
     }
 
+    // World
+    // -----------
+    // World(map, legend)
+    // grid : Grid
+    // legend : Legend
+    // toString()
+    // turn()
+    // letAct(critter, vector)
+
+    function World(map, legend) {
+        var grid = new area2d.Grid(map[0].length, map.length);
+        this.grid = grid; // Each grid position is an `element`.
+        this.legend = legend;
+        var self = this; // Workaround for the problem mentioned in 
+                         // 'this and its scope'.
+        
+        map.forEach(function(line, y) {
+            for (var x = 0; x < line.length; x++)  {
+                self.grid.set(new area2d.Vector(x, y),
+                        elementFromChar(legend, line[x]));
+            }
+        });
+    }
+
+    // elementFromChar()
+    // Construct a new object (Critter) based on the legend and character.
+    function elementFromChar(legend, ch) {
+        if (ch == " ")
+            return null;
+        var element = new legend[ch]();
+        // .originChar property is stored in the
+        // relevant Object (e.g. Wall, BouncingCritter, etc.).
+        element.originChar = ch;
+        return element;
+    }
+
+    World.prototype.toString = function() {
+        var output = "";
+        for (var y = 0; y < this.grid.height; y++) {
+            for (var x = 0; x < this.grid.width; x++) {
+                var element = this.grid.get(new area2d.Vector(x, y));
+                output += charFromElement(element);
+            }
+            output += "\n";
+        }
+        return output;
+    };
+
+    // charFromElement()
+    function charFromElement(element) {
+        if (element == null)
+            return " ";
+        else
+            return element.originChar;
+    }
+
+    // 148
+    World.prototype.turn = function() {
+        var acted = [];
+        this.grid.forEach(function(critter, vector) {
+            if (critter.act && acted.indexOf(critter) == -1) { 
+                // => Then critter is a critter that did not already act.
+                acted.push(critter);
+                this.letAct(critter, vector);
+            }
+        }, this);
+    };
+
+    // 149
+    World.prototype.letAct = function(critter, vector) {
+        var action = critter.act(new View(this, vector));
+        if (action && action.type == "move") {
+            var dest = this.checkDestination(action, vector);
+            if (dest && this.grid.get(dest) == null) {
+                this.grid.set(vector, null);
+                this.grid.set(dest, critter);
+            }
+        }
+    };
+
+    World.prototype.checkDestination = function(action, vector) {
+        if (area2d.directions.hasOwnProperty(action.direction)) {
+            // => Then action.direction is a valid direction.
+            var dest = vector.plus(area2d.directions[action.direction]);
+            if (this.grid.isInside(dest))
+                // => Then dest is inside grid.
+                return dest;
+            // Implicitly return undefined.
+        }
+    };
+    
+    // Wall
+    // -------
+    
+    function Wall() {}
+    
+    //
+    // Animate the world on the web console.
+    //
+    showOnConsole // From webConsole.js
+
+    function showText(id, text) {
+        var counter = document.getElementById("counter");
+        if (!counter) return;
+        counter.textContent = text;
+    }
+
+    function animateWorld(world) {
+        var worldView = {
+            step: 0,
+            nSteps: 1000,
+            nextStep: function() { 
+                if (this.step++ >= this.nSteps)
+                    return;
+                world.turn();
+                showOnConsole(world.toString());
+                showText("counter", "Time: " + this.step);
+            },
+        };
+
+        setInterval(function() { 
+            worldView.nextStep();
+        }, 100);
+    }
+
+    // A critter can only see the squares directly around it on
+    // the grid. I.e., it can only see in directions n, ne, e, se,
+    // s, sw, w, or nw.
+
+    // View
+    // -----------
+    // View(world, vector)
+    // look(direction) : char
+    //      -- The character (e.g. "#") in the specified direction
+    //      if it is next to the critter, otherwise, " " if nothing
+    //      is there.
+    //  find(char) : direction
+    //      -- The direction in which the character is to be found
+    //      next to the critter, otherwise, null if such a character 
+    //      cannot be found next to the critter.
+    //  findAll(char) : direction[]
+    //      -- Array with all directions where the character is to
+    //      be found next to the critter. For example, if the critter
+    //      is to the west of a wall, findAll("#") is ["ne", "e", 
+    //      "se"]:
+    //
+    //                ###
+    //                  #
+    //                 o#
+    //                  #
+
+    // 150
+    function View(world, vector) {
+        this.world = world;
+        this.vector = vector;
+    }
+
+    View.prototype.look = function(dir) {
+        var target = this.vector.plus(area2d.directions[dir]);
+        if (this.world.grid.isInside(target))
+            // => Then target is inside the world's grid.
+            return charFromElement(this.world.grid.get(target));
+        else
+            // Treat everything outside of the grid as a wall.
+            return "#";
+    };
+
+    View.prototype.findAll = function(ch) {
+        var found = [];
+        for (var dir in area2d.directions)
+            if (this.look(dir) == ch)
+                found.push(dir);
+        return found;
+    };
+
+    View.prototype.find = function(ch) {
+        var found = this.findAll(ch);
+        if (found.length == 0)
+            return null;
+        return util.randomElement(found);
+    };
+
+    // WallFollower
+    // -----------------
+    
+    // A WallFollower is a critter that moves along walls, keeping its left
+    // side to the wall.
+
+    function WallFollower() {
+        this.dir = "s";
+    }
+
+    WallFollower.prototype.act = function(view) {
+        var start = this.dir;
+        if (view.look(area2d.dirPlus(this.dir, -3)) != " ")
+            start = this.dir = area2d.dirPlus(this.dir, -2);
+        while (view.look(this.dir) != " ") {
+            this.dir = area2d.dirPlus(this.dir, 1);
+            if (this.dir == start) break;
+        }
+        return {type: "move", direction: this.dir};
+    };
+                  
+    
+    
+    //
+    //
     return {
         BouncingCritter: BouncingCritter,
-        World: {},
-        elementFromChar: {},
-        charFromElement: {},
-        Wall: {},
-        View: {},
-        WallFollower: {},
+        World: World,
+        _elementFromChar: elementFromChar,
+        _charFromElement: charFromElement,
+        Wall: Wall,
+        animateWorld: animateWorld,
+        //View: View,
+        WallFollower: WallFollower,
         LifelikeWorld: {},
         Plant: {},
         PlantEater: {},
@@ -228,7 +439,7 @@ var life = function() {
 //
 })();
 
-// 15. BouncingCritter
+// . BouncingCritter
 console.log("BouncingCritter:");
 (function(){
     // An example view that simulates the following situation and has the
@@ -278,6 +489,7 @@ console.log("BouncingCritter:");
 
     var c1 = new life.BouncingCritter();
     c1.direction = "n";
+    // 15.
     expect(c1.direction, "n");
     expect(c1.act(view_ex1).direction, "n");
     view_ex1._steps++;
@@ -286,5 +498,70 @@ console.log("BouncingCritter:");
     expect(c1.act(view_ex1).direction, "s");
 })();
 
+// . World
+var ex1 = function() {
+    
+    var plan = 
+     ["############################",
+      "#      #    #      o      ##",
+      "#                          #",
+      "#          #####           #",
+      "##         #   #    ##     #",
+      "###           ##     #     #",
+      "#           ###      #     #",
+      "#    ####                  #",
+      "#    ##      o             #",
+      "# o   #        o       ### #",
+      "#     #                    #",
+      "############################"];
+
+    // "#" : wall
+    // "o" : critter
+    // " " : empty space    
+
+    var legend = {
+        "#": life.Wall,
+        "o": life.BouncingCritter,
+    };
+
+    var world = new life.World(plan, legend);
+    console.log(world.toString());
+
+    return {
+        world: world,
+    }
+}();
+
+(function() {
+    /*
+    Example 1. If x is the WallFollower and is heading south, it should 
+    move west when it hits the south wall.
+    */
+
+    var plan_ex1 = 
+     ["########",
+      "#      #",
+      "#     x#",
+      "#      #",
+      "########"];
+
+    var legend_ex1 = {
+        "#": life.Wall,
+        "o": life.BouncingCritter,
+        "x": life.WallFollower,
+    };
+
+    function _charAt(world, x, y) {
+        return life._charFromElement(world.grid.get(new area2d.Vector(x, y)));
+    }
+
+    var world_ex1 = new life.World(plan_ex1, legend_ex1);
+    // 19.
+    expect(_charAt(world_ex1, 6, 2), "x"); world_ex1.turn();
+    expect(_charAt(world_ex1, 6, 3), "x"); world_ex1.turn();
+    expect(_charAt(world_ex1, 5, 3), "x");
+    console.log(world_ex1.toString());
+
+})();
 
 console.log("TODO");
