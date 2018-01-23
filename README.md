@@ -46,5 +46,5 @@
 
 ### Ch10 Modules
 - [x] monthName.
-- [ ] electronicLife.
+- [x] electronicLife.
 - [ ] require.
