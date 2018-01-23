@@ -1,6 +1,8 @@
 // electronicLife. Chapter 10, Exercise 2. A return to electronic life.
 "use strict";
 
+var g_interval = {};
+
 // area2d
 // --------------------
 // Vector
@@ -318,7 +320,9 @@ var life = function() {
         counter.textContent = text;
     }
 
+    // animateWorld()
     function animateWorld(world) {
+        stop();
         var worldView = {
             step: 0,
             nSteps: 1000,
@@ -331,9 +335,36 @@ var life = function() {
             },
         };
 
-        setInterval(function() { 
+        g_interval = setInterval(function() { 
             worldView.nextStep();
         }, 100);
+    }
+    
+    function stop() {
+        clearInterval(g_interval);
+    }
+    
+    function clear() {
+        showOnConsole("");
+    }
+    
+    // finalWorld()
+    function finalWorld(world, finalSteps) {
+        if (!finalSteps) finalSteps = 1000;
+        var worldView = {
+            step: 0,
+            nSteps: finalSteps,
+            nextStep: function() { 
+                if (this.step++ >= this.nSteps)
+                    return;
+                world.turn();
+                if (this.step < finalSteps)
+                    this.nextStep();
+                showOnConsole(world.toString());
+                showText("counter", "Time: " + this.step);
+            },
+        };
+        worldView.nextStep();
     }
 
     // A critter can only see the squares directly around it on
@@ -414,7 +445,192 @@ var life = function() {
         return {type: "move", direction: this.dir};
     };
                   
+    // LifelikeWorld : World
+    // --------------------------
+    // LifelikeWorld(map, legend)
+    // letAct(critter, vector) 
+
+    function LifelikeWorld(map, legend) {
+        World.call(this, map, legend);
+    }
+
+    LifelikeWorld.prototype = Object.create(World.prototype);
+
+    var actionTypes = Object.create(null);
+
+    LifelikeWorld.prototype.letAct = function(critter, vector) {
+        var action = critter.act(new View(this, vector));
+        var actionFn = actionTypes[action.type];
+        var handled = action && 
+                action.type in actionTypes &&
+                actionFn.call(this, critter, vector, action);
+        // Usage: fn.call(context, arg1ToFn, arg2ToFn, ...);
+        
+        if (!handled) {
+            critter.energy -= 0.2;
+            if (critter.energy <= 0)
+                this.grid.set(vector, null);
+        }
+    };
+            
+    // actionTypes
+    // ----------------
+    // grow(critter)
+    //      -- Always succeeds. Critter gains a bit of energy.
+    // move(critter, vector, action)
+    //      -- Critter tries to move to the destination vector
+    //      using action. It takes some energy to move, and
+    //      movement can fail if the destination is occupied 
+    //      or if the critter has insufficient energy.
+    // eat(critter, vector, action)
+    //      -- Critter can eat if it is at the location specified
+    //      by vector. Eating transfers the energy of whatever
+    //      is at the destination to critter and removes the 
+    //      eaten from the grid.
+    // reproduce(critter, vector, action)
+    //      -- Critter reproduces asexually to the destination 
+    //      vector. Fails if critter does not have enough energy.
+    //      If reproduction is successful, critter's energy is reduced.
+
+
+    // Example action handler declaration:
+    //      function anActionHandler(critter, vector, action) { ... }
+
+    actionTypes.grow = function(critter) {
+        critter.energy += 0.5;
+        return true;
+    };
+
+    actionTypes.move = function(critter, vector, action) {
+        // `this` is a World.
+        var dest = this.checkDestination(action, vector);
+        if (dest == null || 
+                    critter.energy <= 1 ||
+                    this.grid.get(dest) != null)
+            return false;
+        critter.energy -= 1;
+        this.grid.set(vector, null);
+        this.grid.set(dest, critter);
+    };
+
+    actionTypes.eat = function(critter, vector, action) {
+        var dest = this.checkDestination(action, vector);
+        var atDest = dest != null && this.grid.get(dest);
+        // atDest => Something can be eaten at the destination vector.
+        if (!atDest || atDest.energy == null)
+            return false;
+        critter.energy += atDest.energy;
+        this.grid.set(dest, null);
+        return true;
+    };
+
+    actionTypes.reproduce = function(critter, vector, action) {
+        var baby = elementFromChar(this.legend, critter.originChar);
+        var dest = this.checkDestination(action, vector);
+        if (dest == null ||
+                    critter.energy <= 2 * baby.energy ||
+                    this.grid.get(dest) != null)
+            return false;
+        critter.energy -= 2 * baby.energy;
+        this.grid.set(dest, baby);
+        return true;
+    };
+            
+    actionTypes.sit = function(critter, vector, action) {
+        critter.energy -= 0.01;
+        return true;
+    };
+
+    // Plant
+    // ---------
     
+    // Plant "*"
+    function Plant() { 
+        // this.energy is in range [3.0, 7.0)
+        this.energy = 3 + Math.random() * 4;
+    }
+
+    Plant.prototype.act = function(view) {
+        if (this.energy > 15) {
+            var space = view.find(" ");
+            if (space)
+                return {type: "reproduce", direction: space};
+        }
+        if (this.energy < 20)
+            return {type: "grow"};
+        // Otherwise, do nothing.
+        return {type: "sit"};
+    };
+
+    // PlantEater
+    // --------------
+    
+    // PlantEater "O"
+    function PlantEater() {
+        this.energy = 20;
+        //this.energy = 40;
+    }
+
+    PlantEater.prototype.act = function(view) {
+        var space = view.find(" ");
+        if (this.energy > 60 && space)
+            return {type: "reproduce", direction: space};
+        var plant = view.find("*");
+        if (plant)
+            return {type: "eat", direction: plant};
+        if (space)
+            return {type: "move", direction: space};
+        // Otherwise, do nothing.
+        return {type: "sit"};
+    };
+
+    // SmartPlantEater
+    // -----------------
+    
+    // SmartPlantEater "S"
+    function SmartPlantEater() {
+        this.energy = 20;
+        this.direction = util.randomElement(area2d.directionNames);
+    }
+
+    SmartPlantEater.prototype.act = function(view) {
+        var space = view.find(" ");
+        if (this.energy > 30 && space)
+            return {type: "reproduce", direction: space};
+        var plant = view.find("*");
+        if (this.energy < 20 && plant)
+            return {type: "eat", direction: plant};
+        
+        if (!space && plant)
+            return {type: "eat", direction: plant};    
+        else if (!space)
+            return {type: "sit"};
+            
+        if (view.look(this.direction) != " ")
+            this.direction = view.find(" ") || "s";
+        return {type: "move", direction: this.direction};
+    };
+    
+    // Predator
+    // ------------
+    
+    // Predator "!"
+    function Predator() { 
+        this.energy = 70;
+    }
+
+    Predator.prototype.act = function(view) {
+        var space = view.find(" ");
+        if (this.energy > 100 && space)
+            return {type: "reproduce", direction: space};
+        var prey = view.find("S");
+        if (prey)
+            return {type: "eat", direction: prey};
+        if (space)
+            return {type: "move", direction: space};
+        // Otherwise, eat in a random direction.
+        return {type: "eat", direction: util.randomElement(area2d.directionNames)};
+    };
     
     //
     //
@@ -425,13 +641,16 @@ var life = function() {
         _charFromElement: charFromElement,
         Wall: Wall,
         animateWorld: animateWorld,
+        stop: stop,
+        clear: clear,
+        finalWorld: finalWorld,
         //View: View,
         WallFollower: WallFollower,
-        LifelikeWorld: {},
-        Plant: {},
-        PlantEater: {},
-        SmartPlantEater: {},
-        Predator: {},
+        LifelikeWorld: LifelikeWorld,
+        Plant: Plant,
+        PlantEater: PlantEater,
+        SmartPlantEater: SmartPlantEater,
+        Predator: Predator,
     };
 }();
 
@@ -499,7 +718,7 @@ console.log("BouncingCritter:");
 })();
 
 // . World
-var ex1 = function() {
+var valley_exm1 = function() {
     
     var plan = 
      ["############################",
@@ -562,6 +781,132 @@ var ex1 = function() {
     expect(_charAt(world_ex1, 5, 3), "x");
     console.log(world_ex1.toString());
 
+    /*
+    Example 2. If a WallFollower is following a wall and hits open space
+    it will move southeast to continue following.
+    */
+
+    var plan_ex2 = 
+     ["        ",
+      "  ##### ",
+      " x#   # ",
+      "  ##### ",
+      "        "];
+
+    var legend_ex2 = {
+        "#": life.Wall,
+        "o": life.BouncingCritter,
+        "x": life.WallFollower,
+    };
+
+    var world_ex2 = new life.World(plan_ex2, legend_ex2);
+    // 22.
+    expect(_charAt(world_ex2, 1, 2), "x"); world_ex2.turn();
+    expect(_charAt(world_ex2, 1, 3), "x"); world_ex2.turn();
+    expect(_charAt(world_ex2, 2, 4), "x"); world_ex2.turn();
+    expect(_charAt(world_ex2, 3, 4), "x");
+    console.log(world_ex2.toString());
+
+    
+    
 })();
+
+// . LifelikeWorld
+var valley_exm2 = function() {
+    
+    var valley = new life.LifelikeWorld([
+       "############################",
+       "#####                 ######",
+       "##   ***                **##",
+       "#   *##**         **  O  *##",
+       "#    ***          ##**    *#",
+       "#       O    O    ##***    #",
+       "#                 ##**     #",
+       "#   O       #*             #",
+       "#*          #**       O    #",
+       "#***        ##**    O    **#",
+       "##****     ###***       *###",
+       "############################",
+    ], {"#": life.Wall,
+        "O": life.PlantEater,
+        "*": life.Plant}
+    );
+
+    console.log(valley.toString());
+
+    return {
+        world: valley,
+    }
+}();
+
+// . SmartPlantEater
+var valley_exr1 = function() {
+    
+    var world = new life.LifelikeWorld([
+       "############################",
+       "#####                 ######",
+       "##   ***                **##",
+       "#   *##**         **  S  *##",
+       "#    ***          ##**    *#",
+       "#       S    S    ##***    #",
+       "#                 ##**     #",
+       "#   S       #*             #",
+       "#*          #**       S    #",
+       "#***        ##**    S    **#",
+       "##****     ###***       *###",
+       "############################",
+    ], {"#": life.Wall,
+        "S": life.SmartPlantEater,
+        "*": life.Plant}
+    );
+
+    console.log(world.toString());
+
+    return {
+        world: world,
+    }
+}();
+
+// . Predator
+var valley_exr2 = function() {
+    
+    var world = new life.LifelikeWorld([
+       "##############################################################################",
+       "#####                                    *#    ! !            !         ######",
+       "##   **                S **    #*      ####            **        ! !      **##",
+       "#   *##* !  !      *  S S*   *##*           *  S  *   *##*           *  S  *##",
+       "#    **   !       ##**     ** #*        ##**     **           ##**      SS  *#",
+       "#       S         ##***   S    #*   ##***   SSS       ##***   SS        ##*  #",
+       "#       S         ##**       ###*     ##**              ####**  S            #",
+       "#   SS      #*         #*         #*         #*         ##                   #",
+       "#*         *#**       S      *#**       S      *#**              *#**   S  SS#",
+       "#***        ##**    SS   **   ##**    S    **   ##**    SSS  **   ##**    S  #",
+       "##****     ###***       *######**       *#####*         *#####***       *##  #",
+       "#####                                       *            #              ######",
+       "##   **                 **                  **        **        **        **##",
+       "#   *##*           *  SS *#   *    S  *#     *  S  *#     *  S  *#     *  S  #",
+       "#    **           ##** S  *  ##** S    *##**    *  ##**    *  ##**    * ###**#",
+       "#      SS         ##**  S      ##*       *  ##**         ##***        ##***  #",
+       "#                 ##**   S                  *#             ! ###  ##         #",
+       "#    S      #*     ###*           !         ##                ##  ##     !   #",
+       "#   S       #*       ##         !   !      ###          !  !  ##**##   ! !   #",
+       "#   S       #*       ##*    #             #* #      #*   !     ####          #",
+       "#   S       #*        #########                                     S        #",
+       "#*     !!  *#**           *##**       S    *#**       S    *#**   S   S      #",
+       "#***        ##**    SS   **##**    S     *##**    S    * ##**    S    *     *#",
+       "##**       ###***    S  *###     *##      *##      *##      *##      *##     #",
+       "##############################################################################",
+    ], {"#": life.Wall,
+        "S": life.SmartPlantEater,
+        "!": life.Predator,
+        "*": life.Plant}
+    );
+
+    console.log(world.toString());
+
+    return {
+        world: world,
+    }
+}();
 
 console.log("TODO");

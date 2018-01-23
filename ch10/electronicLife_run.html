@@ -7,13 +7,16 @@
         <!-- <script src="Vector.js"></script> -->
         <script src="webConsole.js"></script>
     <script>testutil.silent = false;</script>
-    <!--
-    <script src="ch7_notes.js"></script>
-    -->
     <script src="electronicLife.js"></script>
 </head>
-<body onload="life.animateWorld(ex1.world);">
-    <p>Please activate your JavaScript console.</p>
+<body onload="">
+    <h2>Many Worlds</h2>
+    <button onclick="life.animateWorld(valley_exm1.world);">Example 1</button>
+    <button onclick="life.animateWorld(valley_exm2.world);">Example 2</button>
+    <button onclick="life.animateWorld(valley_exr1.world);">Exercise 1</button>
+    <button onclick="life.animateWorld(valley_exr2.world);">Exercise 2</button>
+    <button onclick="life.stop();">Stop</button>
+    <button onclick="life.clear();">Clear</button>
     <p id="counter">Time: </p>
     <textarea style="width: 52em; height: 32em;" id="webConsole">
     </textarea>
