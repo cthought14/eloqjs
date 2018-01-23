@@ -354,6 +354,7 @@ var life = function() {
     }
     
     function clear() {
+        stop();
         showOnConsole("");
     }
     
