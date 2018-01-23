@@ -12,6 +12,17 @@ var g_interval = {};
 // dirPlus
 
 var area2d = function() {
+
+    // Vector
+    // ----------------------
+    // x : int
+    // y : int
+    // plus(other : Vector)
+    //      : Vector
+    // minus(other : Vector)
+    //      : Vector
+    // length : double
+
     function Vector(x, y) {
         this.x = x;
         this.y = y;
@@ -76,9 +87,8 @@ var area2d = function() {
         }
     };
     
-    //
     // directions
-    //
+    // ---------------
     // 
     //  nw    n    ne
     //   w   0,0    e
@@ -117,8 +127,9 @@ var area2d = function() {
     };
 }();
 
-// 1. Vector      
+// Vector      
 var v1 = new area2d.Vector(1,1);
+// 1.
 expect(v1.x, 1);
 expect(v1.y, 1);
 expect(v1.length, Math.sqrt(2));
@@ -132,17 +143,20 @@ expect(v4.x, -1);
 expect(v4.y, -1);
 expect(v4.length, v1.length);
 
-// 10. Grid
+// Grid
 var grid_ex1 = new area2d.Grid(5, 5);
+// 10.
 expect(grid_ex1.get(new area2d.Vector(1,1)), undefined);
 grid_ex1.set(new area2d.Vector(1,1), "X");
 expect(grid_ex1.get(new area2d.Vector(1,1)), "X");
 
-// 12. directions
+// directions
+// 12.
 expect(area2d.directions["n"].y, -1);
 expect(area2d.directionNames[0], "n");
 
-// 14. dirPlus
+// dirPlus
+// 14.
 expect(area2d.dirPlus("n", 1), "ne");
 
 // util
@@ -160,7 +174,7 @@ var util = function() {
     };
 }();
 
-// . randomElement
+// randomElement
 console.log("randomElement: ", util.randomElement([1,2,3]));
 
 
@@ -181,9 +195,6 @@ console.log("randomElement: ", util.randomElement([1,2,3]));
 
 var life = function() {
 
-    //
-    //
-    
     // Critter interface
     // -----------------
     // act(view : View) : Action
@@ -309,18 +320,8 @@ var life = function() {
     
     function Wall() {}
     
-    //
-    // Animate the world on the web console.
-    //
-    showOnConsole // From webConsole.js
-
-    function showText(id, text) {
-        var counter = document.getElementById("counter");
-        if (!counter) return;
-        counter.textContent = text;
-    }
-
     // animateWorld()
+    // Animate the world on the web console.
     function animateWorld(world) {
         stop();
         var worldView = {
@@ -340,6 +341,14 @@ var life = function() {
         }, 100);
     }
     
+    showOnConsole // From webConsole.js
+
+    function showText(id, text) {
+        var counter = document.getElementById("counter");
+        if (!counter) return;
+        counter.textContent = text;
+    }
+
     function stop() {
         clearInterval(g_interval);
     }
@@ -632,8 +641,7 @@ var life = function() {
         return {type: "eat", direction: util.randomElement(area2d.directionNames)};
     };
     
-    //
-    //
+    ////////////////////////////////////////////////////
     return {
         BouncingCritter: BouncingCritter,
         World: World,
@@ -655,10 +663,13 @@ var life = function() {
 }();
 
 (function(){
-//
+    //...
+    return {
+        /* ... */
+    };
 })();
 
-// . BouncingCritter
+// BouncingCritter
 console.log("BouncingCritter:");
 (function(){
     // An example view that simulates the following situation and has the
@@ -717,7 +728,7 @@ console.log("BouncingCritter:");
     expect(c1.act(view_ex1).direction, "s");
 })();
 
-// . World
+// World
 var valley_exm1 = function() {
     
     var plan = 
@@ -811,7 +822,7 @@ var valley_exm1 = function() {
     
 })();
 
-// . LifelikeWorld
+// LifelikeWorld
 var valley_exm2 = function() {
     
     var valley = new life.LifelikeWorld([
@@ -839,7 +850,7 @@ var valley_exm2 = function() {
     }
 }();
 
-// . SmartPlantEater
+// SmartPlantEater
 var valley_exr1 = function() {
     
     var world = new life.LifelikeWorld([
@@ -867,7 +878,7 @@ var valley_exr1 = function() {
     }
 }();
 
-// . Predator
+// Predator
 var valley_exr2 = function() {
     
     var world = new life.LifelikeWorld([
@@ -909,4 +920,3 @@ var valley_exr2 = function() {
     }
 }();
 
-console.log("TODO");
