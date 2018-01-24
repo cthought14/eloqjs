@@ -47,4 +47,9 @@
 ### Ch10 Modules
 - [x] monthName.
 - [x] electronicLife.
-- [ ] require.
+- [ ] (TODO) require.
+
+### Ch11 Project: A Programming Language
+- [ ] arrays.
+- [ ] parse.
+- [ ] set.
