@@ -4,7 +4,7 @@
 //
 // 217
 //
-console.log("### Parsing");
+tprint("### Parsing");
 
 function parseExpression(program) {
     program = skipSpace(program);
@@ -25,9 +25,11 @@ function parseExpression(program) {
 function skipSpace(string) {
     var first = string.search(/\S/);
     if (first == -1) return "";
+    string = string.replace(/#.*/, "");
     return string.slice(first);
 }
 
+// 1:
 expect(skipSpace("    Hello"), "Hello");
 expect(skipSpace("Goodbye"), "Goodbye");
 
@@ -69,7 +71,7 @@ console.log(parse("+(a, 10)"));
 //
 // 222
 //
-console.log("### The evaluator");
+tprint("### The evaluator");
 
 function evaluate(expr, env) {
     switch(expr.type) {
@@ -87,6 +89,7 @@ function evaluate(expr, env) {
             var op = evaluate(expr.operator, env);
             if (typeof op != "function")
                 throw new TypeError("Applying a non-function.");
+            //console.log(">>> op.apply");
             return op.apply(null, expr.args.map(function(arg) {
                 return evaluate(arg, env);
             }));
@@ -96,7 +99,7 @@ function evaluate(expr, env) {
 //
 // 223
 //
-console.log("### Special forms"); // AKA keywords.
+tprint("### Special forms"); // AKA keywords.
 var specialForms = Object.create(null);
 
 // "if"(args, env)
@@ -147,11 +150,12 @@ specialForms["define"] = function(args, env) {
 //
 // 225
 //
-console.log("### The environment");
+tprint("### The environment");
 var topEnv = Object.create(null);
 topEnv["true"] = true;
 topEnv["false"] = false;
 var prog1 = parse("if(true, false, true)");
+// 3:
 expect(evaluate(prog1, topEnv), false);
 var prog2 = parse("if(true, true, false)");
 expect(evaluate(prog2, topEnv), true);
@@ -171,6 +175,30 @@ topEnv["print"] = function(value) {
     // done in "define"?
     return value;
 };
+
+/////////////////
+// array(ELEM1, ELEM2, ...)
+topEnv["array"] = function() {
+    //return 999;
+    return Array.prototype.slice.call(arguments, 0);  //Array(arguments);
+}
+
+// element(ARR, N)
+topEnv["element"] = function(a, n) {
+    if (n < 0 || n >= a.length) {
+        // Using RangeError so that the JS console prints the message.
+        throw new RangeError("Cannot access element " + n + " of array");
+    }
+    return a[n];
+}
+
+// length(ARR)
+topEnv["length"] = function(a) {
+    return a.length;
+}
+
+////////////////////
+
 
 // run(LINE1, LINE2, ...)
 function run() {
@@ -204,12 +232,13 @@ ret = run("\
         print(total) \
     ) \
 ");
+// 5:
 expect(ret, "55");
 
 //
 // 227
 //
-console.log("### Functions");
+tprint("### Functions");
 
 // "fun"(args, env)
 specialForms["fun"] = function(args, env) {
@@ -231,6 +260,7 @@ specialForms["fun"] = function(args, env) {
         // environment as well as new variables created from the 
         // fun arguments.
         var localEnv = Object.create(env);
+        //console.log(">>> localEnv: ", localEnv);
         for (var i = 0; i < arguments.length; i++)
             localEnv[argNames[i]] = arguments[i];
         return evaluate(body, localEnv);
@@ -251,6 +281,7 @@ ret = run(" \
         print(plusOne(10)) \
     ) \
 ");
+// 6:
 expect(ret, "11");
 
 /*
@@ -272,12 +303,13 @@ ret = run(" \
         print(pow(2, 10)) \
     ) \
 ");
+// 7:
 expect(ret, "1024");
 
 //
 // 228
 //
-console.log("### Compilation");
+tprint("### Compilation");
 // (EggJs) Suggested exercise: build a version of the Egg evaluator that translates
 // an Egg program into a JavaScript program using new Function, and then 
 // run the resulting program using JavaScript. It should execute very fast.
@@ -285,9 +317,9 @@ console.log("### Compilation");
 //
 // 229
 //
-console.log("### Cheating");
+tprint("### Cheating");
 
 //
 // 230
 //
-console.log("### End of Chapter");
+tprint("### End of Chapter");

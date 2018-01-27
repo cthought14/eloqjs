@@ -72,3 +72,9 @@ function expect(observed, expected) {
     else
         console.warn(out);
 }
+
+function tprint(message) {
+    var silent = ("silent" in testutil && !!testutil.silent);    
+    if (!silent)
+        console.log(message);
+}
