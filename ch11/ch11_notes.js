@@ -25,6 +25,7 @@ function parseExpression(program) {
 function skipSpace(string) {
     var first = string.search(/\S/);
     if (first == -1) return "";
+    // Exercise 3 (comments):
     string = string.replace(/#.*/, "");
     return string.slice(first);
 }
@@ -175,30 +176,6 @@ topEnv["print"] = function(value) {
     // done in "define"?
     return value;
 };
-
-/////////////////
-// array(ELEM1, ELEM2, ...)
-topEnv["array"] = function() {
-    //return 999;
-    return Array.prototype.slice.call(arguments, 0);  //Array(arguments);
-}
-
-// element(ARR, N)
-topEnv["element"] = function(a, n) {
-    if (n < 0 || n >= a.length) {
-        // Using RangeError so that the JS console prints the message.
-        throw new RangeError("Cannot access element " + n + " of array");
-    }
-    return a[n];
-}
-
-// length(ARR)
-topEnv["length"] = function(a) {
-    return a.length;
-}
-
-////////////////////
-
 
 // run(LINE1, LINE2, ...)
 function run() {
