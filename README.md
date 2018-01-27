@@ -50,7 +50,8 @@
 - [ ] (TODO) require.
 
 ### Ch11 Project: A Programming Language
-- [ ] arrays.
-- [ ] parse.
+- [x] arrays.
+- [x] closure.
+- [x] comments.
 - [ ] set.
 - [ ] (TODO) eggJs.
