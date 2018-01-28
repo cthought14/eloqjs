@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8">
+<script src="testutil.js"></script>
+<script src="jquery-3.3.1.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#boomMessage").hide();
+    });
+</script>
+<script src="m2.js"></script>
+<title>jQuery demo</title>
+
+<h1>jQuery demo</h1>
+
+<p>This is a paragraph.
+<p>This is another paragraph.
+    And this is a 
+        <a href="https://www.google.com" target="_blank">
+            link<img src="external_link.gif" alt="New Window" style="margin-left:0.2em;"></img></a>.
+<p>
+<button id="boomButton">DO NOT PRESS</button>
+<div id="boomMessage" style="background-color:yellow; width:100px;">
+    <p><em>Boom!</em></p>
+</div>
