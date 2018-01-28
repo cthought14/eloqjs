@@ -53,5 +53,12 @@
 - [x] arrays.
 - [x] closure.
 - [x] comments.
-- [ ] set.
+- [x] set.
 - [ ] (TODO) eggJs.
+
+### Ch12 JavaScript and the Browser
+
+### Ch13 The Document Object Model
+- [ ] buildTable.
+- [ ] my_getElementsByTagName.
+- [ ] catAndHat.
