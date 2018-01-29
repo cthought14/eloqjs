@@ -18,3 +18,13 @@ ret = run(" \
         print(602214)  # Avogadro's number, 6.02214e+23 1/mol \n\
     ) \
 ");
+
+// TODO - The following does not work properly, but it probably should:
+/* 
+ret = run(' \
+    do( \
+        print("Hello, world."), \
+        print("Hello, # is not a comment.") \
+    ) \
+');
+*/
