@@ -37,5 +37,83 @@
         just enough to find it immature the moment we turn away 
         from it.
     </blockquote>
+    <!-- 250 Using custom attributes. -->
+    <p data-classified="secret">The launch code is 00000000.</p>
+    <p data-classified="unclassified">I have two feet.</p>
+    <p> <button id="concealButton">Conceal Secrets</button></p>
+    <!-- 251 Highlighting code in a <pre> node. -->
+    <p>Example button event handler in JavaScript and jQuery:</p>
+    <pre data-language="javascript">
+function forEach(collection, fn) {
+    for (var i = 0; i < collection.length; i++) {
+        fn(collection[i]);
+    }
+}
+
+$(document).ready(function() {
+
+    var img_arrayish = document.body.getElementsByTagName("img");
+    var img_real = Array.prototype.slice.call(img_arrayish, 0);
+
+    $("#logButton").click(function(ev) {
+        ev.preventDefault();
+        forEach(img_real, function(elt) { 
+            console.log(elt);
+        });
+    });
+});
+</pre>
+    <p>Example program in C:</p>
+    <pre data-language="c">
+#include &lt;stdio.h>
+#include &lt;string.h>
+
+void reverse_name(char *name);
+
+int main(void)
+{
+    char name[] = "Marijn Haverbeke";
+    reverse_name(name);
+    printf("%s\n", name);
+}
+
+void reverse_name(char *name)
+{
+    char *p = name;
+    // Find first non-space.
+    while (*p && isspace(*p))
+        p++;
+    if (!*p) return;
+    // Found the initial.
+    char initial = *p;
+    // Find end of word.
+    while (*p && !isspace(*p))
+        p++;
+    // Find beginning of word.
+    while (*p && isspace(*p))
+        p++;
+    if (!*p) return;
+    char *last_beg = p; // Beginning of last name.
+    // Find end of word.
+    while (*p && !isspace(*p))
+        p++;
+    char *last_end = p; // End of last name.
+    // Move last name (last_end - last_beg) to beginning (name).
+    memmove(name, last_beg, last_end - last_beg);
+    p = name;
+    // Move to end of last name.
+    p += last_end - last_beg;
+    // Add ", ".
+    *p++ = ',';
+    *p++ = ' ';
+    // Add initial and ".".
+    *p++ = initial;
+    *p++ = '.';
+    // Done.
+    *p = '\0';
+}
+</pre>
+    <p> <button id="highlightButton">Highlight Syntax</button> </p>
+    
 </body>
 </html>
