@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="testutil.js"></script>
+    <script src="jquery-3.3.1.js"></script>
+    <script src="decodeEntities.js"></script>
+    <script src="highlightAllCode.js"></script>
+    <title>Highlight Code Example from Ch. 13</title>
+</head>
+<body>
+    <h1>Highlight Demo</h1>
+    <p> <button id="highlightButton">Highlight Syntax</button> </p>
+    <!-- 251 Highlighting code in <pre> nodes marked with special attributes. -->
+    <h2>Example button event handler in JavaScript and jQuery</h2>
+    <pre data-language="javascript">
+var languages = {
+    javascript: /\b(function|return|var|for|console|document|Array)\b/g,
+    c: /(\b(void|char|while|if|return|int|isspace|memmove|printf)\b|#include\b)/g,
+};
+
+function highlightAllCode() {
+    var pres = document.body.getElementsByTagName("pre");
+    forEach(pres, function(pre) {
+        var lang = pre.getAttribute("data-language");
+        if (languages.hasOwnProperty(lang)) // (lang in languages)
+            highlightCode(pre, languages[lang]);
+    });
+}
+    
+$("#highlightButton").click(function(ev) {
+    ev.preventDefault();
+    highlightAllCode();
+});
+</pre>
+    <h2>Example program in C</h2>
+    <pre data-language="c">
+#include &lt;ctype.h>
+#include &lt;stdio.h>
+#include &lt;string.h>
+
+void reverse_name(char *name);
+
+int main(void)
+{
+    char name[] = "Marijn Haverbeke";
+    reverse_name(name);
+    printf("%s\n", name);
+}
+
+void reverse_name(char *name)
+{
+    char *p = name;
+    // Find first non-space.
+    while (*p && isspace(*p))
+        p++;
+    if (!*p) return;
+    // Found the initial.
+    char initial = *p;
+    // Find end of word.
+    while (*p && !isspace(*p))
+        p++;
+    // Find beginning of word.
+    while (*p && isspace(*p))
+        p++;
+    if (!*p) return;
+    char *last_beg = p; // Beginning of last name.
+    // Find end of word.
+    while (*p && !isspace(*p))
+        p++;
+    char *last_end = p; // End of last name.
+    // Move last name (last_end - last_beg) to beginning (name).
+    memmove(name, last_beg, last_end - last_beg);
+    p = name;
+    // Move to end of last name.
+    p += last_end - last_beg;
+    // Add ", ".
+    *p++ = ',';
+    *p++ = ' ';
+    // Add initial and ".".
+    *p++ = initial;
+    *p++ = '.';
+    // Done.
+    *p = '\0';
+}
+</pre>
+    <p>That's all, folks.</p>
+</body>
+</html>
