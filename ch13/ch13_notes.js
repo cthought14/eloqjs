@@ -214,6 +214,88 @@ $("#highlightButton").click(function(ev) {
 //    
 tprint("### Layout");
 
+var para1 = document.body.getElementsByTagName("p");
+forEach(para1, function(para) {
+    if (para.id == "boxedIn") {
+        console.log("clientHeight:", para.clientHeight);
+        console.log("offsetHeight:", para.offsetHeight);
+    }
+});
+
+////
+////
+
+function time(name, action) {
+    var start = Date.now();
+    action();
+    console.log(name, "took", Date.now() - start, "ms");
+}
+
+$("#naiveButton").click(function(ev) {
+    ev.preventDefault();
+    var target = document.getElementById("one");
+    target.targetContent = "";
+    time("naive", function() {
+        // This method is slow because it constantly reads the NODE.offsetWidth
+        // property, forcing the browser to continuously re-compute the layout.
+        // On my system this draws 175 X's.
+        while (target.offsetWidth < 2000)
+            target.appendChild(document.createTextNode("X"));
+    });
+});
+
+$("#cleverButton").click(function(ev) {
+    ev.preventDefault();
+    var target = document.getElementById("two");
+    target.textContent = "";
+    time("clever", function() {
+        // --Note: This method tries to pre-compute the number of 
+        // X's that fit in a width of 2000 pixels. 
+        // However, it does not appear to be totally accurate. I needed
+        // to increase the number of initial X's to 20 in order for it to render
+        // the same as the naive method.
+        // On my system this draws 175 X's.
+        target.appendChild(document.createTextNode("XXXXXXXXXXXXXXXXXXXX"));
+        var total = Math.ceil(2000 / (target.offsetWidth / 20));
+        for (var i = 20; i < total; i++)
+            target.appendChild(document.createTextNode("X"));
+    });
+});
+    
+//
+// 254
+//
+tprint("### Styling");
+
+$("#displayButton").click(function(ev) {
+    ev.preventDefault();
+    var strong = document.getElementById("hiddenText");    
+    if (strong.style.display != "inline") {
+        strong.style.display = "inline";
+        this.textContent = "Hide Displayed Element";
+    }
+    else {
+        strong.style.display = "none";
+        this.textContent = "Display Hidden Element";
+    }
+});
+    
+$("#changeButton").click(function(ev) {
+    ev.preventDefault();
+    var para2 = document.getElementById("para2");
+    console.log("para2 color before:", para2.style.color);
+    if (para2.style.color != "magenta")
+        para2.style.color = "magenta";
+    else
+        para2.style.color = "purple";
+    console.log("para2 color after:", para2.style.color);
+});
+
+//
+// 256
+//
+tprint("### Cascading styles");
+
 ///////////////////////////
 
 

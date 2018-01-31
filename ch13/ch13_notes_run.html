@@ -7,6 +7,12 @@
     <script src="decodeEntities.js"></script>
     <script src="ch13_notes.js"></script>
     <title>My home page</title>
+    <style>
+        .class1 strong {
+            font-style: italic;
+            color: gray;
+        }
+    </style>
 </head>
 <body>
     <p>Please activate your JavaScript console.</p>
@@ -115,6 +121,41 @@ void reverse_name(char *name)
 }
 </pre>
     <p> <button id="highlightButton">Highlight Syntax</button> </p>
-    
+    <!-- 252 Layout. -->
+    <p id="boxedIn" style="border: 3px solid red;">
+        I'm boxed in.
+    </p>
+    <h2>Optimizing DOM updates</h2>
+    <p><button id="naiveButton">Naive</button>
+    <p><span id="one"></span></p>
+    <p><button id="cleverButton">Clever</button>
+    <p><span id="two"></span></p>
+    <!-- 254 Styling. -->
+    <h2>Styling example</h2>
+    <!-- -Note: The href "." supposedly takes you back to the current page, but there is
+        a subtlety. If you are currently on a page called www.example.com/dir1/page1/, 
+        the href "." will take you to the same page, www.example.com/dir1/page1/
+        But if you are currently on a page called www.example.com/dir1/page1.html, 
+        the href "." will take you to www.example.com/dir1/
+        The href "#" takes you to the same page in both cases.
+    -->
+    <p><a href="#">Normal link</a></p>
+    <p><a href="#" style="color: green;">Green link</a></p>
+    <p>
+        This text is displayed <strong style="border: 1px dotted red;">inline</strong>,
+        <strong style="display: block; border: 1px dotted red;">as a block</strong>, and
+        <strong style="display: none; border: 1px dotted red;" 
+                id="hiddenText">not at all</strong>.
+    </p>
+    <p><button id="displayButton">Display Hidden Element</button>
+    <p id="para2" style="color: purple;">
+        Pretty text
+    </p>
+    <p><button id="changeButton">Change Text Color</button>
+    <!-- 256 Cascading styles. -->
+    <h2>Style sheet example</h2>
+    <div class="class1">
+        <p>Now <strong>strong text</strong> is italic and gray.</p>
+    </div>
 </body>
 </html>
