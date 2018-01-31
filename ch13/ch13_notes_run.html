@@ -88,21 +88,21 @@ void reverse_name(char *name)
 {
     char *p = name;
     // Find first non-space.
-    while (*p && isspace(*p))
+    while (*p &amp;&amp; isspace(*p))
         p++;
     if (!*p) return;
     // Found the initial.
     char initial = *p;
     // Find end of word.
-    while (*p && !isspace(*p))
+    while (*p &amp;&amp; !isspace(*p))
         p++;
     // Find beginning of word.
-    while (*p && isspace(*p))
+    while (*p &amp;&amp; isspace(*p))
         p++;
     if (!*p) return;
     char *last_beg = p; // Beginning of last name.
     // Find end of word.
-    while (*p && !isspace(*p))
+    while (*p &amp;&amp; !isspace(*p))
         p++;
     char *last_end = p; // End of last name.
     // Move last name (last_end - last_beg) to beginning (name).
