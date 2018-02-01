@@ -8,9 +8,32 @@
     <script src="ch13_notes.js"></script>
     <title>My home page</title>
     <style>
+        /* 256 Style rules */
         .class1 strong {
             font-style: italic;
             color: gray;
+        }
+        .subtle {
+            color: gray;
+            font-size: 80%;
+        }
+        #header {
+            background: cyan;
+            color white;
+        }
+        /* p elements, with classes a and b, and id main. */
+        /* DOES NOT WORK. */
+        /*
+        p.a.b#main {
+            margin-bottom: 20px;
+            border: 1px dotted magenta;
+        }
+        */
+        /* p element that has id main, that has class b, which 
+            descends from class a. */
+        .a .b p#main {
+            margin-bottom: 20px;
+            border: 1px dotted magenta;
         }
     </style>
 </head>
@@ -157,5 +180,35 @@ void reverse_name(char *name)
     <div class="class1">
         <p>Now <strong>strong text</strong> is italic and gray.</p>
     </div>
+    <p>This is <span class="subtle">subtle text</span>.</p>
+    <div id="header">
+    <p>This is a header.
+    </div>
+    <div class="a"><div class="b c">
+        <p>Not selected.</p>
+            <p id="main">Selected.</p>
+        
+        <p>Not selected.</p>
+    </div></div>
+    <!-- 256 Query selectors. -->
+    <h2>Query selectors using querySelectorAll() and querySelector()</h2>
+    <p>And if you go chasing
+        <span class="animal">rabbits</span>
+    </p>
+    <p>And you know you're going to fall</p>
+    <p>Tell 'em a <span class="character">hookah smoking
+            <span class="animal">caterpillar</span></span>
+    </p>
+    <p>Has given you the call</p>
+    <!-- 258 Positioning and animating. -->
+    <h2>Using the position style property</h2>
+    <p style="text-align: center;" class="cat">
+        <img src="img/cat.png" style="position: relative;">
+    </p>
+    <p>
+        <button id="animateButton">Animate cat</button>
+        <button id="stopButton">Stop animation</button>
+    </p>
+    
 </body>
 </html>

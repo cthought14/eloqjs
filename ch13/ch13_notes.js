@@ -296,7 +296,54 @@ $("#changeButton").click(function(ev) {
 //
 tprint("### Cascading styles");
 
-///////////////////////////
+//
+// 257
+//
+tprint("### Query selectors");
 
+function count(selector) {
+    return document.querySelectorAll(selector).length;
+}
+
+expect(count("h1"), 1);             // All <h1>.
+expect(count(".animal"), 2);        // Animal.
+expect(count("p .animal"), 2);      // Animal somewhere in <p>.
+expect(count("p > .animal"), 1);    // Animal directly in <p>.
+
+//
+// 258
+//
+tprint("### Positioning and animating");
+
+expect(document.querySelectorAll(".cat img").length, 1);
+
+var stopAnimationRequested = true;
+
+$("#animateButton").click(function(ev) {
+    ev.preventDefault();
+    stopAnimationRequested = false;
+    var cat = document.querySelector(".cat img");
+    var angle = 0, lastTime = null;
+    function animate(time) {
+        if (lastTime != null)
+            angle += (time - lastTime) * 0.001;
+        lastTime = time;
+        cat.style.top = (Math.sin(angle) * 20) + "px";
+        cat.style.left = (Math.cos(angle) * 200) + "px";
+        if (!stopAnimationRequested)
+            requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+});
+
+$("#stopButton").click(function(ev) {
+    ev.preventDefault();
+    stopAnimationRequested = true;
+});
+
+//
+// 261
+//
+tprint("### End of chapter");
 
 }); /* $(document).ready */
