@@ -59,6 +59,6 @@
 ### Ch12 JavaScript and the Browser
 
 ### Ch13 The Document Object Model
-- [ ] buildTable.
+- [x] buildTable.
 - [ ] my_getElementsByTagName.
 - [ ] catAndHat.
