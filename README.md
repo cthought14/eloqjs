@@ -60,5 +60,5 @@
 
 ### Ch13 The Document Object Model
 - [x] buildTable.
-- [ ] my_getElementsByTagName.
+- [x] my_getElementsByTagName.
 - [ ] catAndHat.
