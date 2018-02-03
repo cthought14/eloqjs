@@ -23,7 +23,7 @@ tprint("### The standard");
 
 function forEach(collection, fn) {
     for (var i = 0; i < collection.length; i++) {
-        fn(collection[i]);
+        fn(collection[i], i);
     }
 }
 
