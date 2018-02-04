@@ -61,4 +61,9 @@
 ### Ch13 The Document Object Model
 - [x] buildTable.
 - [x] my_getElementsByTagName.
-- [ ] catAndHat.
+- [x] catAndHat.
+
+### Ch14 Handling Events
+- [ ] censoredKeyboard.
+- [ ] mouseTrail.
+- [ ] tabbedInterface.
