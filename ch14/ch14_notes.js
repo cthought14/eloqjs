@@ -50,6 +50,62 @@ button3.addEventListener("mousedown", function(ev) {
 // 266
 //
 tprint("### Propagation");
+var para1 = document.getElementById("para1");
+var button4 = document.getElementById("button4");
+para1.addEventListener("mousedown", function() {
+    console.log("Handler for paragraph.");
+});
+button4.addEventListener("mousedown", function(ev) {
+    console.log("Handler for button.");
+    if (ev.which == 3) // => Right mouse button.
+        ev.stopPropagation();
+});
+
+document.getElementById("div1").addEventListener("click", function(ev) {
+    if (ev.target.nodeName == "BUTTON")
+        console.log("Clicked", ev.target.textContent);
+});
+
+//
+// 268
+//
+tprint("### Default actions");
+var link1 = document.getElementById("link1");
+link1.addEventListener("click", function(ev) {
+    console.log("Nope.");
+    ev.preventDefault();
+});
+
+//
+// 269
+//
+tprint("### Key events");
+var KEY_SPACE = 32; // ' '
+var KEY_V = 86; // 'V'
+
+var div2 = document.getElementById("div2");
+addEventListener("keydown", function(ev) {
+    if (ev.keyCode == KEY_V)
+        div2.style.background = "violet";
+});
+addEventListener("keyup", function(ev) {
+    if (ev.keyCode == KEY_V)
+        div2.style.background = "";
+});
+
+addEventListener("keydown", function(ev) {
+    if (ev.keyCode == KEY_SPACE && ev.ctrlKey) 
+        console.log("Continuing!");
+});
+
+addEventListener("keypress", function(ev) {
+    console.log(String.fromCharCode(ev.charCode));
+});
+
+//
+// 271
+//
+tprint("### Mouse clicks");
 
 
 }); /* $(document).ready */
