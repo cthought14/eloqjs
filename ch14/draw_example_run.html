@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="testutil.js"></script>
+    <script src="jquery-3.3.1.js"></script>
+    <script src="draw_example.js"></script>
+    <title>Drawing example</title>
+    <style>
+    .dot {
+        height: 8px; width: 8px;
+        border-radius: 4px;
+        background: blue;
+        position: absolute;
+    }
+    #drawCanvas {
+        height: 200px;
+        background: beige;
+    }
+    </style>
+</head>
+<body>
+    <h2>Chapter 14 Handling Events</h2>
+    <p>Click on the canvas to draw.</p>
+    <p>Ink remaining: <span id="inkLabel">000</span></p>
+    <div id="drawCanvas">
+    </div>
+</body>
+</html>
