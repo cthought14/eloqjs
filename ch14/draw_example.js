@@ -14,6 +14,12 @@ drawCanvas.addEventListener("mousemove", function(ev) {
     drawDot(this, ev.pageX - 4, ev.pageY - 4);
 });
 
+drawCanvas.addEventListener("touchstart", function(ev) {
+    if (!penDown)
+        return;
+    drawDot(this, ev.pageX - 4, ev.pageY - 4);
+});
+
 function drawDot(node, x, y) {
     if (ink == 0)
         return;
