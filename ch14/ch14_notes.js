@@ -107,5 +107,53 @@ addEventListener("keypress", function(ev) {
 //
 tprint("### Mouse clicks");
 
+// --Q: Are these var div3 = ... calls really necessary? Even without them
+// Firefox (or jQuery) seems to create such names anyway.
+var div3 = document.getElementById("div3");
+var penDown = false;
+div3.addEventListener("mousemove", function(ev) {
+    if (!penDown)
+        return;
+    drawDot(this, ev.pageX - 4, ev.pageY - 4);
+});
+
+function drawDot(node, x, y) {
+    var dot = document.createElement("div");
+    dot.className = "dot";
+    dot.style.left = x + "px";
+    dot.style.top = y + "px";
+    node.appendChild(dot);
+};
+
+div3.addEventListener("mousedown", function(ev) {
+    penDown = true;
+    drawDot(this, ev.pageX - 4, ev.pageY - 4);
+});
+
+addEventListener("mouseup", function(ev) {
+    penDown = false;
+});
+
+// --Q: Is this statement accurate?
+// "For example, if I press down the mouse button on one paragraph and then 
+// move the pointer to another paragraph and release the button, the 'click' 
+// event will happen on the element that contains both those paragraphs."
+//
+// I cannot get this to work. Clicking between the paragraphs says 
+// "This is not a paragraph.", but clicking in one paragraph and moving the
+// pointer to the other paragraph, then releasing does not trigger the event.
+
+var div4 = document.getElementById("div4");
+div4.addEventListener("click", function(ev) {
+    if (ev.target.nodeName != "P") {
+        alert("That is not a paragraph.");
+        return;
+    }
+    var p = ev.target;
+    if (p.style.background == "")
+        p.style.background = "yellow";
+    else
+        p.style.background = "";
+});
 
 }); /* $(document).ready */
