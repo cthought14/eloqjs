@@ -156,4 +156,109 @@ div4.addEventListener("click", function(ev) {
         p.style.background = "";
 });
 
+//
+// 272
+//
+tprint("### Mouse motion");
+var lastX;
+var rect1 = document.getElementById("rect1");
+var BUTTON_LEFT = 1;
+var BUTTON_MIDDLE = 2;
+var BUTTON_RIGHT = 3;
+
+rect1.addEventListener("mousedown", function(ev) {
+    if (ev.which == BUTTON_LEFT) {
+        lastX = ev.pageX;
+        addEventListener("mousemove", moved);
+        ev.preventDefault(); // Prevent selection (highlighting).
+    }
+});
+
+function buttonPressed(ev) {
+    if (ev.buttons == null)
+        return ev.which != 0;
+    else
+        return ev.buttons != 0;
+}
+
+function moved(ev) {
+    if (!buttonPressed(ev)) {
+        removeEventListener("mousemove", moved);
+    } else {
+        var dist = ev.pageX - lastX;
+        var newWidth = Math.max(10, rect1.offsetWidth + dist);
+        rect1.style.width = newWidth + "px";
+        lastX = ev.pageX;
+    }
+}
+
+////
+////
+
+var para2 = document.getElementById("para2");
+
+function isInside(node, target) {
+    for (; node != null; node = node.parentNode)
+        if (node == target) return true;
+}
+
+para2.addEventListener("mouseover", function(ev) {
+    //console.log("mouseover");
+    if (!isInside(ev.relatedTarget, para2)) {
+        console.log("Change the color to red.");
+        para2.style.color = "red";
+    }
+});
+
+para2.addEventListener("mouseout", function(ev) {
+    //console.log("mouseout");
+    if (!isInside(ev.relatedTarget, para2)) {
+        console.log("Change the color to default.");
+        para2.style.color = "";
+    }
+});
+
+//
+// 275
+//
+tprint("### Scroll events");
+var bar = document.querySelector(".progress div");
+onScroll();
+
+addEventListener("scroll", onScroll);
+
+function onScroll() {
+    //console.log("scrollHeight: ", document.body.scrollHeight);
+    //console.log("innerHeight: ", innerHeight);
+    //console.log("pageYOffset: ", pageYOffset);
+    var max = document.body.scrollHeight - innerHeight;
+    var percent = clamp((pageYOffset / max) * 100, 0, 100);
+    bar.style.width = percent + "%";
+    //console.log(percent + "%");
+}
+
+//
+// 276
+//
+tprint("### Focus events");
+var help = document.querySelector("#help");
+var fields = document.querySelectorAll("#form1 input");
+expect(fields.length, 2);
+forEach(fields, function(input) {
+    input.addEventListener("focus", function(ev) {
+        var text = ev.target.getAttribute("data-help");
+        help.textContent = text;
+    });
+    input.addEventListener("blur", function(ev) {
+        // Use &nbsp; to maintain the <p>'s height.
+        help.textContent = decodeEntities("&nbsp;");
+    });
+});
+
+//
+// 277
+//
+tprint("### Load event");
+
 }); /* $(document).ready */
+

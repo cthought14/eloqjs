@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script src="testutil.js"></script>
+    <script src="util.js"></script>
     <script src="jquery-3.3.1.js"></script>
     <script src="ch14_notes.js"></script>
     <title>Chapter 14 Notes</title>
@@ -17,6 +18,27 @@
         height: 200px;
         background: beige;
     }
+    /* 275 Mouse motion. */
+    #para3:hover {
+        color: red;
+    }
+    /* 275 Scroll events. */
+    .progress {
+        border: 1px solid blue;
+        width: 100px;
+        position: fixed;
+        top: 10px; right: 10px;
+    }
+    .progress > div {
+        height: 12px;
+        background: blue;
+        width: 0%;
+    }
+    /*
+    body {
+        height: 2000px;
+    }
+    */
     </style>
 </head>
 <body>
@@ -54,5 +76,26 @@
         <p>Paragraph 1</p>
         <p>Paragraph 2</p>
     </div>
+    <!-- 272 Mouse motion. -->
+    <h2>The mousemove event</h2>
+    <p>Drag the bar to change its width:</p>
+    <div id="rect1" style="background: orange; width: 60px; height: 20px;">
+    </div>
+    <h2>The mouseover and mouseout events</h2>
+    <p id="para2">Hover over this <strong>paragraph</strong>.</p>
+    <h2>The CSS :hover pseudoselector</h2>
+    <p id="para3">Hover over this <strong>paragraph</strong>.</p>
+    <!-- 275 Scroll events. -->
+    <div class="progress"><div></div></div>
+    <p>Scroll me...</p>
+    <!-- 276 Focus events. -->
+    <h2>Example form</h2>
+    <p>Click on a text field.</p>
+    <div id="form1">
+        <p>Name: <input type="text" data-help="Your full name"></p>
+        <p>Age: <input type="text" data-help="Age in years"></p>
+    </div>
+    <p id="help" style="minimum-height: 2em;">&nbsp;</p>
+    
 </body>
 </html>
