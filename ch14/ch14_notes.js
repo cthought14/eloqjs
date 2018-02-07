@@ -260,5 +260,94 @@ forEach(fields, function(input) {
 //
 tprint("### Load event");
 
+if(0) {
+window.addEventListener("beforeunload", function(ev) {
+    // --Q: Where does the confirmation message appear, or in which 
+    // browser?
+    var confirmationMessage = "Are you sure?";
+    ev.returnValue = confirmationMessage;
+    return confirmationMessage;
+});
+}
+
+//
+// 278
+//
+tprint("### Script execution timeline");
+var squareWorker = new Worker("code/squareworker.js");
+squareWorker.addEventListener("message", function(ev) {
+    console.log("The worker responded:", ev.data);
+});
+squareWorker.postMessage(10);
+squareWorker.postMessage(24);
+
+//
+// 279
+//
+tprint("### Setting timers");
+var div5 = document.getElementById("div5");
+div5.style.background = "blue";
+setTimeout(function() {
+    div5.style.background = "yellow";
+}, 2000);
+
+var bombTimer = setTimeout(function() {
+    console.log("BOOM!")
+}, 500);
+
+if (Math.random() < 0.5) {
+    console.log("Defused.");
+    clearTimeout(bombTimer);
+}
+
+var ticks = 0;
+var clock = setInterval(function() {
+    console.log("tick", ticks++);
+    if (ticks == 10) {
+        clearInterval(clock);
+        console.log("stop.");
+    }
+}, 200);
+
+//
+// 280
+//
+tprint("### Debouncing");
+var textarea1 = document.querySelector("#textarea1");
+var timeout;
+textarea1.addEventListener("keydown", function() {
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+        console.log("You stopped typing.");
+    }, 500);
+});
+
+var div6 = document.querySelector("#div6");
+function displayCoords(ev) {
+    div6.textContent = "Mouse at " + ev.pageX + ", " + ev.pageY;
+}
+
+function frameInterval(desired_fps) { return 1000 / desired_fps; }
+
+var scheduled = false;
+var lastEvent;
+var interval = frameInterval(24);
+
+addEventListener("mousemove", function(ev) {
+    lastEvent = ev;
+    if (!scheduled) {
+        scheduled = true;
+        setTimeout(function() {
+            scheduled = false;
+            displayCoords(lastEvent);
+        }, interval);
+    }
+});
+
+//
+// 282
+//
+tprint("### End of chapter");
+
 }); /* $(document).ready */
 
