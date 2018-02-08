@@ -64,6 +64,6 @@
 - [x] catAndHat.
 
 ### Ch14 Handling Events
-- [ ] censoredKeyboard.
-- [ ] mouseTrail.
+- [x] censoredKeyboard.
+- [x] mouseTrail.
 - [ ] tabbedInterface.
