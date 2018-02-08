@@ -11,7 +11,7 @@ var STEP_INTERVAL = 30; // Cycle frame after this many steps.
 var STEPS_WARNING = 400; // Cecil is getting tired.
 var STEPS_FINISHED = 500; // Cecil is too tired to continue.
 var cimg = null;
-var cdotIndex = 0;
+var cimgIndex = 0;
 
 function showStep() {
     var stepLabel = document.getElementById("stepLabel");
@@ -57,7 +57,7 @@ drawCanvas.addEventListener("mousemove", function(ev) {
     }
     
     if (step == 0) {
-        cimg = imgs[cdotIndex];
+        cimg = imgs[cimgIndex];
         cimg.style.display = "";
         
         cimg.style.left = x + "px";
@@ -73,10 +73,10 @@ drawCanvas.addEventListener("mousemove", function(ev) {
         cimg.style.top = y + "px";        
     }   
     else if (cimg !== img_finished && step % STEP_INTERVAL == 0) {
-        cdotIndex = (cdotIndex + 1) % imgs.length;
-        imgs[cdotIndex].style.display = ""; // Show next image.
+        cimgIndex = (cimgIndex + 1) % imgs.length;
+        imgs[cimgIndex].style.display = ""; // Show next image.
         cimg.style.display = "none"; // Hide current image.
-        cimg = imgs[cdotIndex]; // Set new current image.
+        cimg = imgs[cimgIndex]; // Set new current image.
 
         cimg.style.left = x + "px";
         cimg.style.top = y + "px";
