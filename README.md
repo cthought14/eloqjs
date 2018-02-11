@@ -66,4 +66,8 @@
 ### Ch14 Handling Events
 - [x] censoredKeyboard.
 - [x] mouseTrail.
-- [ ] tabbedInterface.
+- [x] tabbedInterface.
+
+### Ch15 Project: A Platform Game
+- [ ] runGame.
+- [ ] level.
