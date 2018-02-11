@@ -1,143 +1,85 @@
-// tabbedInterface. Chapter 14, Exercise 3. Tabs.
+// tabbedInterface. Chapter 14 (Handling Events), Exercise 3. Tabs.
 "use strict";
 
 $(document).ready(function() {
 
-var my_tab1 = document.querySelector("#my_tab1");
-var my_tab2 = document.querySelector("#my_tab2");
-var my_tab3 = document.querySelector("#my_tab3");
+asTabs(document.querySelector("#tabContent1"));
 
-//my_tab1.style.display='none';
-my_tab2.style.display='none';
-my_tab3.style.display='none';
+function asTabs(tabContent_node) {
 
-// How to insert an element before another one. 
-// my_tabContent1.insertBefore(document.createElement("p"), my_tab1);
+    // unhide(child)
+    var unhide = function(child) {
+        child.style.display = '';
+    };
+    // hide(child)
+    var hide = function(child) {
+        child.style.display = 'none';
+    }
+    // activate(button)
+    var activate = function(button) {
+        button.style="border-top: 3px solid orange;"    
+    };
+    // deactivate(button)
+    var deactivate = function(button) {
+        button.style="border-top: 3px solid #eee;"
+    };
 
-var tabList = new Array();
-
-function asTabs(node) {
-    /* Pseudocode.
+    var tabNames = new Array();
+    var tabList = new Array();
+    var buttonList = new Array();
     
-        Let tabList = []. //OK
+    forEach(tabContent_node.childNodes, function(child) {
+        if (child.nodeType != document.ELEMENT_NODE)
+            return;
+        var tabName;
+        if ((tabName = child.getAttribute("data-tabname")) !== null) {
+            tabNames.push(tabName);
+            tabList.push(child);
+        }
+    });
+    
+    var ul;
+    var li;
+    var div;
+    tabContent_node.prepend(div = elt("div"));
+    tabContent_node.prepend(ul = elt("ul"));
+    ul.className = "tabBar";
+    div.style = "clear:left;";
+            
+    tabNames.forEach(function(tabName) {
+        ul.appendChild(
+            li = elt("li", elt("button", tabName))
+        );
+        buttonList.push(li.childNodes[0]);
         
-        For each child in node:
-            If there is no data-tabname:
-                Skip child.
-            Create button based on data-tabname. //OK
-            Add child to tabList. //OK
-        End for each.
-        
-        Button handler:
-            For each child in tabList:
-                If child.id == this button's associated tab id: //OK
-                    Unhide child. //OK
-                Else:
-                    Hide child. //OK
-            End for each.
-        End handler.
-    */
-}
-
-////
-////
-
-var buttonHolder1 = document.querySelector("#buttonHolder1");
-var button2;
-buttonHolder1.appendChild(
-    button2 = elt("button", "Press me")
-);
-
-$(button2).click(function(ev) {
-    console.log("You clicked the button.");
-});
-
-// Creating the tab bar
-tprint("#### Create a tab bar");
-
-//        <li><button id="tab1Button" onclick="my_tab1.style.display=''; my_tab2.style.display='none'; my_tab3.style.display='none'; ">
-//            Tab 1</button></li>
-//var buttonHolder2 = document.querySelector("#buttonHolder2");
-var tabContent2 = document.querySelector("#tabContent2");
-
-var tabNames = new Array("My Tab 1", "My Tab 2", "My Tab 3");
-
-var tabList = new Array();
-// id="auto_tab1"
-tabList.push(document.querySelector("#auto_tab1"));
-tabList.push(document.querySelector("#auto_tab2"));
-tabList.push(document.querySelector("#auto_tab3"));
-
-unhide(tabList[0]);
-hide(tabList[1]);
-hide(tabList[2]);
-
-/*
-        Button handler:
-            For each child in tabList:
-                If child.id == this button's associated tab id:
-                    Unhide child.
-                Else:
-                    Hide child.
-            End for each.
-        End handler.
-
-        */
-
-var ul;
-var li;
-var div;
-tabContent2.prepend(div = elt("div"));
-tabContent2.prepend(ul = elt("ul"));
-ul.className = "tabBar";
-/*
-    <div style="clear:left;"></div>
-*/
-div.style = "clear:left;";
-        
-tabNames.forEach(function(tabName) {
-/*
-    buttonHolder2.appendChild(
-        li = elt("li", elt("button", tabName))
-    );
-*/
-/*
-    <ul class="tabBar" id="buttonHolder2">
-        <li><button id="tab1Button" onclick="my_tab1.style.display=''; my_tab2.style.display='none'; my_tab3.style.display='none'; ">
-            Tab 1</button></li>
-            ...
-    </ul>
-*/
-    ul.appendChild(
-        li = elt("li", elt("button", tabName))
-    );
-
-    /*
-"my_tab1.style.display=''; my_tab2.style.display='none'; my_tab3.style.display='none'; "
-    */
-    $(li.childNodes[0]).click(function(ev) {
-        tabList.forEach(function(child) {
-            if (child === null || child.nodeType != document.ELEMENT_NODE)
-                return;
-            else if (child.getAttribute("data-tabname") == tabName)
-                unhide(child);
-            else
-                hide(child);
+        $(li.childNodes[0]).click(function(ev) {
+            tabList.forEach(function(child) {
+                if (child.getAttribute("data-tabname") == tabName)
+                    unhide(child);
+                else
+                    hide(child);
+            });
+            var self = this;
+            forEach(buttonList, function(button) {
+                if (button == self)     
+                    activate(button);
+                else
+                    deactivate(button);
+            });
         });
     });
-});
-
-function unhide(child) {
-    //console.log("Unhide "+child.id);
-    child.style.display = '';
+    
+    // Begin with tab 0 selected.
+    
+    forEach(tabList, function(tab, i) {
+        if (i == 0)     unhide(tab);
+        else            hide(tab);
+    });
+    
+    forEach(buttonList, function(button, i) {
+        if (i == 0)     activate(button);
+        else            deactivate(button);
+    });    
 }
-
-function hide(child) {
-    //console.log("Hide "+child.id);
-    child.style.display = 'none';
-}
-
-////
-////
 
 }); /* $(document).ready */
