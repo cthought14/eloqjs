@@ -39,7 +39,7 @@ function Level(plan) {
     
     for (var y = 0; y < this.height; y++) {
         var line = plan[y];
-        var gridline = [];
+        var gridLine = [];
         for (var x = 0; x < this.width; x++) {
             var ch = line[x];
             var fieldType = null;
@@ -69,12 +69,103 @@ Level.prototype.isFinished = function() {
 
 tprint("### Actors");
 
+// Actor
+// --------------------------------
+// Actor(pos : Vector, ch : char)
 
+var actorChars = {
+    "@": Player,
+    "o": Coin,
+    "=": Lava, // Horizontal lava
+    "|": Lava, // Vertical lava
+    "v": Lava  // Dripping lava
+};
 
-// ...            
-var actorChars = ['...'];
-        
-        
+// Player : Actor
+// ------------------------------
+// Player(pos : Vector)
+// pos : Vector
+// size : Vector
+// speed : Vector
+
+function Player(pos) {    
+    this.pos = pos.plus(new Vector(0, -0.5));
+    this.size = new Vector(0.8, 1.5);   // Player is 1.5 squares high.
+    this.speed = new Vector(0, 0);
+}
+
+Player.prototype.type = "player";
+
+// Lava : Actor
+// ----------------------------
+// Lava(pos : Vector, ch)
+// pos
+// size
+// speed
+// repeatPos : Vector
+
+function Lava(pos, ch) {
+    this.pos = pos;
+    this.size = new Vector(1, 1);
+    if (ch == "=") {
+        this.speed = new Vector(2, 0);
+    } else if (ch == "|") {
+        this.speed = new Vector(0, 2);
+    } else if (ch == "v") {
+        this.speed = new Vector(0, 3);
+        this.repeatPos = pos;
+    }
+}
+
+Lava.prototype.type = "lava";
+
+// Coin : Actor
+// ------------------------
+// Coin(pos)
+// basePos : Vector
+// pos
+// size
+// wobble : double
+
+function Coin(pos) {
+    this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+    this.size = new Vector(0.6, 0.6);
+    this.wobble = Math.random() * Math.PI * 2;
+}
+
+Coin.prototype.type = "coin";
+
+var simpleLevel = new Level(simpleLevelPlan);
+expect(simpleLevel.width, 22);
+expect(simpleLevel.height, 9);
+
+tprint("### Encapsulation as a burden");
+tprint("### Drawing");
+
+// ...
+
+tprint("### Motion and collision");
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }); /* $(document).ready */
 

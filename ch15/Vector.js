@@ -27,6 +27,11 @@ Vector.prototype.minus = function(otherVector) {
                       this.y - otherVector.y);  
 }
 
+Vector.prototype.times = function(factor) {
+    return new Vector(this.x * factor,
+                      this.y * factor);
+}
+
 Object.defineProperty(Vector.prototype, "length", {
     get: function() { 
         var x_2 = this.x * this.x;
