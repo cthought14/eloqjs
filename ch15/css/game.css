@@ -4,10 +4,10 @@
 .background { 
     background: rgb(52, 166, 251);
     table-layout: fixed;
-    borer-spacing: 0;
+    border-spacing: 0;
 }
 .background td {
-    padding: 0;
+    padding: 5px;
 }
 .lava {
     background: rgb(255, 100, 100);

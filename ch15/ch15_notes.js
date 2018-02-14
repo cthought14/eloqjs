@@ -49,7 +49,7 @@ function Level(plan) {
             else if (ch == "x")
                 fieldType = "wall";
             else if (ch == "!")
-                fieldType = "laval";
+                fieldType = "lava";
             gridLine.push(fieldType);
         }
         this.grid.push(gridLine);
@@ -250,6 +250,9 @@ DOMDisplay.prototype.clear = function() {
 
 $("#displaySimpleLevel").click(function(ev) {
     var simpleLevel = new Level(simpleLevelPlan);
+    // --Q: Why doe sthe fixed lava (!) not display?
+    // --A: I had misspelled the string "lava" in this line:
+    //              fieldType = "lava";
     var display = new DOMDisplay(document.body, simpleLevel);
 });
 
