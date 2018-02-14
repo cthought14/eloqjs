@@ -142,7 +142,116 @@ expect(simpleLevel.height, 9);
 tprint("### Encapsulation as a burden");
 tprint("### Drawing");
 
-// ...
+// DOMDisplay
+// --------------------------
+// DOMDisplay(parent, level)
+// wrap : Node
+// level : Level
+// drawBackground() : Node
+// actorLayer : Node
+// drawFrame()
+// drawActors() : Node
+// scrollPlayerIntoView()
+// clear()
+
+function DOMDisplay(parent, level) {
+    /* 
+    <div class="game STATUS">
+        <table class="background"> ... </table>
+        <div> <!-- Actors --> ... </div>
+    </div>
+    */
+    this.wrap = parent.appendChild(elt("div", "game"));
+    this.level = level;
+    
+    this.wrap.appendChild(this.drawBackground());
+    this.actorLayer = null;
+    this.drawFrame();
+}
+
+var scale = 20;
+
+// drawBackground() : Node
+DOMDisplay.prototype.drawBackground = function() {
+    var table = elt("table", "background");
+    table.style.width = this.level.width * scale + "px";
+    this.level.grid.forEach(function(row) {
+        var rowElt = table.appendChild(elt("tr"));
+        rowElt.style.height = scale + "px";
+        row.forEach(function(type) {
+            rowElt.appendChild(elt("td", type));
+        });
+    });
+    return table;
+}
+
+// drawActors() : Node
+DOMDisplay.prototype.drawActors = function() {
+    /* 
+    <div> <!-- Actors -->
+        <div class="actor TYPE"> ... </div>
+        <div ...> ... </div>
+        ...
+    </div>
+    */
+    var wrap = elt("div");
+    this.level.actors.forEach(function(actor) {
+        var rect = wrap.appendChild(elt("div", 
+                    "actor " + actor.type));
+        rect.style.width = actor.size.x * scale + "px";
+        rect.style.height = actor.size.y * scale + "px";
+        rect.style.left = actor.pos.x * scale + "px";
+        rect.style.top = actor.pos.y * scale + "px";
+    });
+    return wrap;
+}
+
+// drawFrame()
+DOMDisplay.prototype.drawFrame = function() {
+    if (this.actorLayer)
+        this.wrap.removeChild(this.actorLayer);
+    this.actorLayer = this.wrap.appendChild(this.drawActors());
+    this.wrap.className = "game " + (this.level.status || "");
+    this.scrollPlayerIntoView();
+};
+
+// scrollPlayerIntoView()
+DOMDisplay.prototype.scrollPlayerIntoView = function() {
+    var width = this.wrap.clientWidth;
+    var height = this.wrap.clientHeight;
+    var margin = width / 3;
+    
+    // The viewport.
+    var left = this.wrap.scrollLeft;
+    var right = left + width;
+    var top = this.wrap.scrollTop;
+    var bottom = top + height;
+    
+    var player = this.level.player;
+    var center = player.pos.plus(player.size.times(0.5)).times(scale);
+                    // = (player.pos + (player.size * 0.5)) * scale
+                    // To find the actor's center, we add its position and half its size.
+                    // Then multiply to convert to pixel coordinates.
+                    
+    if (center.x < left + margin)
+        this.wrap.scrollLeft = center.x - margin;
+    else if (center.x > right - margin)
+        this.wrap.scrollLeft = center.x + margin - width;
+    if (center.y < top + margin)
+        this.wrap.scrollTop = center.y - margin;
+    else if (center.y > bottom - margin)
+        this.wrap.scrollTop = center.y + margin - height;
+};
+
+// clear()
+DOMDisplay.prototype.clear = function() {
+    this.wrap.parentNode.removeChild(this.wrap);
+};
+
+$("#displaySimpleLevel").click(function(ev) {
+    var simpleLevel = new Level(simpleLevelPlan);
+    var display = new DOMDisplay(document.body, simpleLevel);
+});
 
 tprint("### Motion and collision");
 
