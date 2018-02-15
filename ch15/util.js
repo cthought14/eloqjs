@@ -54,6 +54,22 @@ function elt(name, className) {
     return elt;
 }
 
+// deepEqual(a : object, b : object) -- True if a and b have the same contents.
+function deepEqual(a, b) {
+    if (a !== null && typeof a == 'object' && 
+        b !== null && typeof b == 'object')
+        // => Need deep comparison.
+    {
+        for (var prop in a) {
+            if (!(prop in b))
+                return false;
+            if (!deepEqual(a[prop], b[prop]))
+                return false;
+        }
+        return true;
+    }
+    return a == b;
+}
 
 ////
 ////

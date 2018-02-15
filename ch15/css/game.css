@@ -7,7 +7,7 @@
     border-spacing: 0;
 }
 .background td {
-    padding: 5px;
+    padding: 0;
 }
 .lava {
     background: rgb(255, 100, 100);

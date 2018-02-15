@@ -256,9 +256,123 @@ $("#displaySimpleLevel").click(function(ev) {
     var display = new DOMDisplay(document.body, simpleLevel);
 });
 
-tprint("### Motion and collision");
+tprint("### 297 Motion and collision");
 
+// Level::obstacleAt(pos : Vector, size : Vector) : str
+Level.prototype.obstacleAt = function(pos, size) {
+    var xStart = Math.floor(pos.x);
+    var xEnd = Math.ceil(pos.x + size.x);
+    var yStart = Math.floor(pos.y);
+    var yEnd = Math.ceil(pos.y + size.y);
     
+    if (xStart < 0 || xEnd > this.width || yStart < 0)
+        // Everything to the left, right and above the level
+        // is a wall.
+        return "wall";
+    if (yEnd > this.height)
+        // Everything below the level is lava.
+        return "lava";
+    for (var y = yStart; y < yEnd; y++) {
+        for (var x = xStart; x < xEnd; x++) {
+            var fieldType = this.grid[y][x];
+            if (fieldType) return fieldType;
+        }
+    }
+};
+
+// Level::actorAt(actor : Actor) : Actor
+// -- Find the Actor that overlaps actor.
+Level.prototype.actorAt = function(actor) {
+    for (var i = 0; i < this.actors.length; i++) {
+        var other = this.actors[i];
+        if (other != actor &&
+            actor.pos.x + actor.size.x > other.pos.x &&
+            actor.pos.x < other.pos.x + other.size.x &&
+            actor.pos.y + actor.size.y > other.pos.y &&
+            actor.pos.y < other.pos.y + other.size.y)
+        {
+            return other;
+        }
+    }
+};
+
+
+/*
+function hasTextCellInterface(obj) {
+    return typeof obj.constructor == "function" 
+        && typeof obj.minHeight == "function" 
+        && typeof obj.minWidth == "function" 
+        && typeof obj.draw == "function";
+};
+*/
+
+function _isActor(obj) {
+    if (obj === null) 
+        return false;
+    if (typeof obj == "undefined")
+        return false;
+    //return typeof obj.constructor == "function" 
+    //    && typeof obj.pos != "undefined";
+    return typeof obj.pos != "undefined";
+}
+
+Level.prototype._actor = function(pos) {
+    var sz = 0.1;
+    for (var ai = 0; ai < this.actors.length; ai++) {
+        var a = this.actors[ai];
+        //console.log(a);
+        //console.log(pos);
+        if (
+            pos.x + sz > a.pos.x &&
+            pos.x < a.pos.x + a.size.x &&
+            pos.y + sz > a.pos.y &&
+            pos.y < a.pos.y + a.size.y)
+        {
+            return a;
+        }
+    }
+}
+
+Level.prototype._someActor = function() {
+    for (var y = 0; y < this.height; y++) {
+        for (var x = 0; x < this.width; x++) {
+            var a = this._actor(new Vector(x,y));
+            if (_isActor(a))
+                return a;
+        }
+    }
+}
+        
+var a1 = simpleLevel._actor(new Vector(4,4));
+console.log(a1); // The player.
+var a2 = simpleLevel._someActor();
+console.log(a2); // Lava @ Vector(17,2) @ grid[2][17].
+var a3 = simpleLevel._actor(new Vector(17,2));
+console.log(a3); // Lava @ Vector(17,2) @ grid[2][17].
+
+
+
+tprint("### 300 Actors and actions");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     
