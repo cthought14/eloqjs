@@ -72,6 +72,7 @@ tprint("### Actors");
 // Actor
 // --------------------------------
 // Actor(pos : Vector, ch : char)
+// act(step, level : Level, keys)
 
 var actorChars = {
     "@": Player,
@@ -343,17 +344,154 @@ Level.prototype._someActor = function() {
     }
 }
         
-var a1 = simpleLevel._actor(new Vector(4,4));
-console.log(a1); // The player.
-var a2 = simpleLevel._someActor();
-console.log(a2); // Lava @ Vector(17,2) @ grid[2][17].
-var a3 = simpleLevel._actor(new Vector(17,2));
-console.log(a3); // Lava @ Vector(17,2) @ grid[2][17].
-
-
+var a1 = simpleLevel._actor(new Vector(4,4)); // The player.
+expect(a1.pos.x, 4);
+expect(a1.pos.y, 3.5);
+var a2 = simpleLevel._someActor(); // Lava @ Vector(17,2) @ grid[2][17].
+expect(a2.pos.x, 17);
+expect(a2.pos.y, 2);
+var a3 = simpleLevel._actor(new Vector(17,2)); // Lava @ Vector(17,2) @ grid[2][17].
+expect(a3.pos.x, 17);
+expect(a3.pos.y, 2);
 
 tprint("### 300 Actors and actions");
 
+//
+// 300 Lava
+// 
+
+var maxStep = 0.05;
+
+// Level::animate(step : double, keys)
+Level.prototype.animate = function(step, keys) {
+    if (this.status != null)
+        // => The game is over (won or lost).
+        this.finishDelay -= step;
+    
+    while (step > 0) {
+        var thisStep = clamp(step, 0, maxStep);
+        this.actors.forEach(function(actor) {
+            actor.act(thisStep, this, keys);
+        }, this);
+        step -= thisStep;
+    }
+};
+
+// Lava::act(step, level)
+Lava.prototype.act = function(step, level) {
+    var newPos = this.pos.plus(this.speed.times(step)); 
+                    // = pos + speed * step
+    if (!level.obstacleAt(newPos, this.size))
+        this.pos = newPos;
+    else if (this.repeatPos)
+        this.pos = this.repeatPos;
+    else
+        // Bounce back.
+        this.speed = this.speed.times(-1);
+                    // = speed * -1
+}
+
+//
+// 301 Coin
+//
+
+var wobbleSpeed = 8;
+var wobbleDist = 0.07;
+
+// Coin::act(step)
+Coin.prototype.act = function(step) {
+    this.wobble += step * wobbleSpeed;
+    var wobblePos = Math.sin(this.wobble) * wobbleDist;
+    this.pos = this.basePos.plus(new Vector(0, wobblePos));
+            // = basePos + <0, wobblePos>
+};
+
+//
+// 301 Player
+//
+
+var playerXSpeed = 7;
+
+// Player::moveX(step, level, keys)
+Player.prototype.moveX = function(step, level, keys) {
+    this.speed.x = 0;
+    if (keys.left) this.speed.x -= playerXSpeed;
+    if (keys.right) this.speed.x += playerXSpeed;
+    var motion = new Vector(this.speed.x * step, 0); 
+    var newPos = this.pos.plus(motion);
+                // = pos + motion
+    var obstacle = level.obstacleAt(newPos, this.size);
+    if (obstacle)
+        level.playerTouched(obstacle);
+    else
+        this.pos = newPos;
+}
+
+var gravity = 30;
+var jumpSpeed = 17;
+
+// Player::moveY(step, level, keys) 
+Player.prototype.moveY = function(step, level, keys) {
+    this.speed.y += step * gravity;
+    var motion = new Vector(0, this.speed.y * step);
+    var newPos = this.pos.plus(motion);
+    var obstacle = level.obstacleAt(newPos, this.size);
+    if (obstacle) {
+        level.playerTouched(obstacle);
+        if (keys.up && this.speed.y > 0)
+            // => Player is moving down and hit an obstacle.
+            this.speed.y = -jumpSpeed; // Jump back up.
+        else
+            this.speed.y = 0;
+    } 
+    else {
+        this.pos = newPos;
+    }
+}
+
+// Player::act(step, level, keys)
+Player.prototype.act = function(step, level, keys) {
+    this.moveX(step, level, keys);
+    this.moveY(step, level, keys);
+    
+    var otherActor = level.actorAt(this);
+    if (otherActor)
+        // => otherActor collided with player.
+        level.playerTouched(otherActor.type, otherActor);
+        
+    if (level.status == "lost") {
+        // Losing animation.
+        this.pos.y += step;
+        this.size.y -= step;
+    }
+};
+
+//
+// 303 Level
+//
+
+// Level::playerTouched(type, actor) 
+Level.prototype.playerTouched = function(type, actor) {
+    if (type == "lava" && this.status == null) {
+        this.status = "lost";
+        this.finishDelay = 1;
+    }
+    else if (type == "coin") {
+        // Remove actor (the coin) from level.actors.
+        this.actors = this.actors.filter(function(a) {
+            return a != actor;
+        });
+        // If there are no more coins, you win.
+        if (!this.actors.some(function(a) {
+            return a.type == "coin";
+        })) {
+            this.status = "won";
+            this.finishDelay = 1;
+        }
+    }
+};
+
+tprint("### 304 Tracking keys");
 
 
 
