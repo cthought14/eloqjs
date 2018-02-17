@@ -74,3 +74,7 @@ function deepEqual(a, b) {
 ////
 ////
 
+// in_(prop, obj) -- Similar to (prop in obj).
+function in_(prop, obj) {
+    return obj.hasOwnProperty(prop);
+}

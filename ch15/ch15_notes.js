@@ -72,7 +72,7 @@ tprint("### Actors");
 // Actor
 // --------------------------------
 // Actor(pos : Vector, ch : char)
-// act(step, level : Level, keys)
+// act(step, level : Level, keys : KEYS)
 
 var actorChars = {
     "@": Player,
@@ -143,7 +143,12 @@ expect(simpleLevel.height, 9);
 tprint("### Encapsulation as a burden");
 tprint("### Drawing");
 
-// DOMDisplay
+// Display (interface)
+// --------------------------
+// Display(parent : Node, 
+//          level : Level)
+
+// DOMDisplay : Display
 // --------------------------
 // DOMDisplay(parent, level)
 // wrap : Node
@@ -362,7 +367,7 @@ tprint("### 300 Actors and actions");
 
 var maxStep = 0.05;
 
-// Level::animate(step : double, keys)
+// Level::animate(step : double, keys : KEYS)
 Level.prototype.animate = function(step, keys) {
     if (this.status != null)
         // => The game is over (won or lost).
@@ -412,7 +417,13 @@ Coin.prototype.act = function(step) {
 
 var playerXSpeed = 7;
 
-// Player::moveX(step, level, keys)
+// KEYS
+// -------------
+// left : bool
+// up : bool
+// right : bool
+
+// Player::moveX(step, level, keys : KEYS)
 Player.prototype.moveX = function(step, level, keys) {
     this.speed.x = 0;
     if (keys.left) this.speed.x -= playerXSpeed;
@@ -430,7 +441,7 @@ Player.prototype.moveX = function(step, level, keys) {
 var gravity = 30;
 var jumpSpeed = 17;
 
-// Player::moveY(step, level, keys) 
+// Player::moveY(step, level, keys : KEYS) 
 Player.prototype.moveY = function(step, level, keys) {
     this.speed.y += step * gravity;
     var motion = new Vector(0, this.speed.y * step);
@@ -449,7 +460,7 @@ Player.prototype.moveY = function(step, level, keys) {
     }
 }
 
-// Player::act(step, level, keys)
+// Player::act(step, level, keys : KEYS)
 Player.prototype.act = function(step, level, keys) {
     this.moveX(step, level, keys);
     this.moveY(step, level, keys);
@@ -493,7 +504,81 @@ Level.prototype.playerTouched = function(type, actor) {
 
 tprint("### 304 Tracking keys");
 
+// CODES: Mapping of key code => key name.
 
+var arrowCodes /* : CODES */ = {
+    37: "left",         // Key code: key name
+    38: "up", 
+    39: "right"
+};
+
+var _trackKeys__testing = false;
+
+// KEYS: Mapping of key name => bool. 
+//      -- true means that key is pressed.
+
+// trackKeys(codes : CODES) : KEYS
+function trackKeys(codes /* = arrowCodes */) {
+    var pressed = Object.create(null); /* pressed : KEYS */
+    // Initialize for convenience.
+    var keyCode;
+    for (keyCode in codes) {
+        pressed[codes[keyCode]] = false;
+    }
+    function handler(ev) {
+        if (in_(ev.keyCode, codes)) { // (ev.keyCode in codes)
+            var down = ev.type == "keydown";
+            pressed[codes[ev.keyCode]] = down;
+            // Prevent keys from scrolling the page.
+            ev.preventDefault(); 
+            if (_trackKeys__testing) {
+                if (typeof trackKeys.counter == 'undefined' ) 
+                    trackKeys.counter = 0;
+                console.log(++trackKeys.counter, pressed);
+            }
+        }
+    }
+    addEventListener("keydown", handler);
+    addEventListener("keyup", handler);
+    return pressed;
+}
+
+if(1) {
+    _trackKeys__testing = true;
+    trackKeys(arrowCodes);
+    console.log("Interactive testing of trackKeys ...");
+}
+
+tprint("### Running the game");
+
+// FRAMEFUNC: frameFunc(timeStep : double) : bool 
+//      -- Should return false (not undefined) to signal stop of animation.
+
+function runAnimation(frameFunc) {
+    var lastTime = null;
+    // FRAME: frame(time : long)
+    function frame(time) {
+        var stop = false;
+        if (lastTime != null) {
+            var timeStep = clamp(time - lastTime, 0, 100) / 1000;
+            stop = frameFunc(timeStep) === false;
+        }
+        lastTime = time;
+        if (!stop) {
+            requestAnimationFrame(frame);
+        }
+    }
+    requestAnimationFrame(frame);
+}
+
+// var arrows = trackKeys(arrowCodes);
+
+// THENFN: andThen(status : str)
+
+// function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
+    // var display = new Display(document.body, level);
+    // runAnimation(function(step) {
+        
 
 
 
