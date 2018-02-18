@@ -69,5 +69,6 @@
 - [x] tabbedInterface.
 
 ### Ch15 Project: A Platform Game
-- [ ] runGame.
-- [ ] level.
+- [x] runGame.
+- [ ] gameOver.
+- [ ] pause.
