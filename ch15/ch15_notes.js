@@ -543,13 +543,13 @@ function trackKeys(codes /* = arrowCodes */) {
     return pressed;
 }
 
-if(1) {
+if(0) {
     _trackKeys__testing = true;
     trackKeys(arrowCodes);
     console.log("Interactive testing of trackKeys ...");
 }
 
-tprint("### Running the game");
+tprint("### 305 Running the game");
 
 // FRAMEFUNC: frameFunc(timeStep : double) : bool 
 //      -- Should return false (not undefined) to signal stop of animation.
@@ -571,50 +571,79 @@ function runAnimation(frameFunc) {
     requestAnimationFrame(frame);
 }
 
-// var arrows = trackKeys(arrowCodes);
+var arrows = trackKeys(arrowCodes);
 
 // THENFN: andThen(status : str)
 
-// function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
-    // var display = new Display(document.body, level);
-    // runAnimation(function(step) {
-        
+function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
+    var display = new Display(document.body, level);
+    runAnimation(function(step) {
+        level.animate(step, arrows);
+        display.drawFrame(step);
+        if (level.isFinished()) {
+            display.clear();
+            if (andThen)
+                andThen(level.status);
+            return false;
+        }
+    });
+}
 
+function runGame(plans /* : str[] */, Display) {
+    function startLevel(n) {
+        runLevel(new Level(plans[n]), Display, function(status) {
+            if (status == "lost")
+                startLevel(n);
+            else if (n < plans.length - 1)
+                startLevel(n + 1);
+            else
+                console.log("You win!");
+        });
+    }
+    startLevel(0);
+}
 
+if(0) {
+    var _simpleLevels = [
+        [
+            "                      ",
+            "                      ",
+            "  x              = x  ",
+            "  x         o o    x  ",
+            "  x @      xxxxx   x  ",
+            "  xxxxx            x  ",
+            "      x!!!!!!!!!!!!x  ",
+            "      xxxxxxxxxxxxxx  ",
+            "                      ",
+        ],
+        [
+            "                      ",
+            "                      ",
+            "  xxxx           = x  ",
+            "  x         o o    x  ",
+            "  x @      xxxxx   x  ",
+            "  xxxxx            x  ",
+            "      x!!!!!!!!!!!!x  ",
+            "      xxxxxxxxxxxxxx  ",
+            "                      ",
+        ],
+        [
+            "                      ",
+            "                      ",
+            "            xx        ",
+            "  xxxx   x x     = x  ",
+            "  x        xo o    x  ",
+            "  x @      xxxxx   x  ",
+            "  xxxxx            x  ",
+            "      x!!!!!!!!!!!!x  ",
+            "      xxxxxxxxxxxxxx  ",
+        ],
+    ];    
+    runGame(_simpleLevels, DOMDisplay);
+    return;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+runGame(GAME_LEVELS, DOMDisplay);
 
 }); /* $(document).ready */
 
