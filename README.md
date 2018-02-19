@@ -70,5 +70,5 @@
 
 ### Ch15 Project: A Platform Game
 - [x] runGame.
-- [ ] gameOver.
+- [x] gameOver.
 - [ ] pause.

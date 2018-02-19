@@ -30,6 +30,23 @@ var simpleLevelPlan = [
 
 tprint("### Reading a level");
 
+// Level
+// ------------------------
+// Level(plan : str[])
+// animate(steps, keys)
+// isFinished() : bool
+// obstacleAt(pos, size) : str // fieldType
+// playerTouched(obstacleType, actor)
+//
+// width : int (E.g. 22)
+// height : int (E.g. 9)
+// actors : Actor[]
+// player : Actor
+// finishDelay : int
+// grid: str[][] // E.g. [0][0] = "wall"
+// status : str // E.g. "lost"
+
+
 // Level::Level(plan)
 function Level(plan) {
     this.width = plan[0].length;
@@ -573,10 +590,64 @@ function runAnimation(frameFunc) {
 
 var arrows = trackKeys(arrowCodes);
 
+
+////
+var _trackKeys2__testing = false;
+function trackKeys2(codes /* = arrowCodes */) {
+    var pressed = Object.create(null); /* pressed : KEYS */
+    // Initialize for convenience.
+    var keyCode;
+    for (keyCode in codes) {
+        pressed[codes[keyCode]] = false;
+    }
+    var prevPressedCode = null;
+    function handler(ev) {
+        if (typeof trackKeys2.counter == 'undefined' ) 
+            trackKeys2.counter = 0;
+        if (in_(ev.keyCode, codes)) { // (ev.keyCode in codes)
+            var up = ev.type == "keyup";
+            if (up && !pressed[codes[ev.keyCode]]) {
+                if (_trackKeys2__testing) console.log(++trackKeys2.counter, "up");
+                prevPressedCode = null;
+                if (_trackKeys2__testing) console.log(++trackKeys2.counter, "prevPressedCode = null;");
+            }
+            var down = ev.type == "keydown";
+            var activated = down && (prevPressedCode != ev.keyCode);
+            if (!prevPressedCode) {
+                if (_trackKeys2__testing) console.log(++trackKeys2.counter, "activated", activated, "down", down);
+            }
+            //console.log(++trackKeys2.counter, activated);
+            if (down)
+                prevPressedCode = ev.keyCode;
+            if (!pressed[codes[ev.keyCode]])
+                pressed[codes[ev.keyCode]] = activated;
+            // Prevent keys from scrolling the page.
+            ev.preventDefault(); 
+            if (_trackKeys2__testing) {
+                if (typeof trackKeys2.counter == 'undefined' ) 
+                    trackKeys2.counter = 0;
+                //console.log(++trackKeys2.counter, pressed);
+            }
+        }
+        else {
+            prevPressedCode = null;
+            if (_trackKeys2__testing) console.log(++trackKeys2.counter, "prevPressedCode = null;");
+        }
+    }
+    addEventListener("keydown", handler);
+    addEventListener("keyup", handler);
+    return pressed;
+}
+////
+
+
 // THENFN: andThen(status : str)
 
 function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
+    var myCounter = 0;
     var display = new Display(document.body, level);
+    _trackKeys2__testing = false;
+    var otherKeys = trackKeys2({27: "esc"});
     runAnimation(function(step) {
         level.animate(step, arrows);
         display.drawFrame(step);
@@ -586,14 +657,26 @@ function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
                 andThen(level.status);
             return false;
         }
+        if (otherKeys.esc) {
+            otherKeys.esc = false;
+            console.log(++myCounter, "Esc pressed.");
+        }
     });
 }
 
 function runGame(plans /* : str[] */, Display) {
+    var lives = 3;
     function startLevel(n) {
-        runLevel(new Level(plans[n]), Display, function(status) {
-            if (status == "lost")
-                startLevel(n);
+        var level = new Level(plans[n]);
+        runLevel(level, Display, function(status) {
+            if (status == "lost") {
+                if (--lives == 0)
+                    console.log("Game over.");
+                else {
+                    console.log("Lives:", lives);
+                    startLevel(n);
+                }
+            }
             else if (n < plans.length - 1)
                 startLevel(n + 1);
             else
@@ -604,6 +687,36 @@ function runGame(plans /* : str[] */, Display) {
 }
 
 if(0) {
+    (function() {
+        var myCounter = 0;
+        var pressed = Object.create(null); /* pressed : KEYS */
+        // Initialize for convenience.
+        //var keyCode;
+        //for (keyCode in codes) {
+        //    pressed[codes[keyCode]] = false;
+        //}
+        function handler(ev) {
+            //if (in_(ev.keyCode, codes)) { // (ev.keyCode in codes)
+                var down = ev.type == "keydown";
+                pressed[ev.keyCode] = down;
+                // Prevent keys from scrolling the page.
+                ev.preventDefault(); 
+                if (1) {
+                    //if (typeof trackKeys.counter == 'undefined' ) 
+                    //    trackKeys.counter = 0;
+                    console.log(++myCounter, pressed);
+                }
+            //}
+        }
+        addEventListener("keydown", handler);
+        addEventListener("keyup", handler);
+        return pressed;
+    })();
+    
+    return;
+}
+
+if(1) {
     var _simpleLevels = [
         [
             "                      ",
