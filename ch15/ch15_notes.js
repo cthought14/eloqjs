@@ -663,7 +663,7 @@ function runGame(plans /* : str[] */, Display) {
     startLevel(0);
 }
 
-if(1) {
+if(0) {
     var _simpleLevels = [
         [
             "                      ",
