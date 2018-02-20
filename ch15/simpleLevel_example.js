@@ -273,7 +273,7 @@ DOMDisplay.prototype.clear = function() {
 
 $("#displaySimpleLevel").click(function(ev) {
     var simpleLevel = new Level(simpleLevelPlan);
-    // --Q: Why doe sthe fixed lava (!) not display?
+    // --Q: Why does the fixed lava (!) not display?
     // --A: I had misspelled the string "lava" in this line:
     //              fieldType = "lava";
     var display = new DOMDisplay(document.body, simpleLevel);
