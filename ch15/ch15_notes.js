@@ -271,14 +271,6 @@ DOMDisplay.prototype.clear = function() {
     this.wrap.parentNode.removeChild(this.wrap);
 };
 
-$("#displaySimpleLevel").click(function(ev) {
-    var simpleLevel = new Level(simpleLevelPlan);
-    // --Q: Why doe sthe fixed lava (!) not display?
-    // --A: I had misspelled the string "lava" in this line:
-    //              fieldType = "lava";
-    var display = new DOMDisplay(document.body, simpleLevel);
-});
-
 tprint("### 297 Motion and collision");
 
 // Level::obstacleAt(pos : Vector, size : Vector) : str
@@ -318,16 +310,6 @@ Level.prototype.actorAt = function(actor) {
         }
     }
 };
-
-
-/*
-function hasTextCellInterface(obj) {
-    return typeof obj.constructor == "function" 
-        && typeof obj.minHeight == "function" 
-        && typeof obj.minWidth == "function" 
-        && typeof obj.draw == "function";
-};
-*/
 
 function _isActor(obj) {
     if (obj === null) 
@@ -529,6 +511,10 @@ var arrowCodes /* : CODES */ = {
     39: "right"
 };
 
+var otherCodes = {
+    27: "esc"
+};
+
 var _trackKeys__testing = false;
 
 // KEYS: Mapping of key name => bool. 
@@ -560,12 +546,6 @@ function trackKeys(codes /* = arrowCodes */) {
     return pressed;
 }
 
-if(0) {
-    _trackKeys__testing = true;
-    trackKeys(arrowCodes);
-    console.log("Interactive testing of trackKeys ...");
-}
-
 tprint("### 305 Running the game");
 
 // FRAMEFUNC: frameFunc(timeStep : double) : bool 
@@ -590,8 +570,9 @@ function runAnimation(frameFunc) {
 
 var arrows = trackKeys(arrowCodes);
 
-
 ////
+////
+
 var _trackKeys2__testing = false;
 function trackKeys2(codes /* = arrowCodes */) {
     var pressed = Object.create(null); /* pressed : KEYS */
@@ -607,16 +588,13 @@ function trackKeys2(codes /* = arrowCodes */) {
         if (in_(ev.keyCode, codes)) { // (ev.keyCode in codes)
             var up = ev.type == "keyup";
             if (up && !pressed[codes[ev.keyCode]]) {
-                if (_trackKeys2__testing) console.log(++trackKeys2.counter, "up");
                 prevPressedCode = null;
-                if (_trackKeys2__testing) console.log(++trackKeys2.counter, "prevPressedCode = null;");
             }
             var down = ev.type == "keydown";
             var activated = down && (prevPressedCode != ev.keyCode);
             if (!prevPressedCode) {
                 if (_trackKeys2__testing) console.log(++trackKeys2.counter, "activated", activated, "down", down);
             }
-            //console.log(++trackKeys2.counter, activated);
             if (down)
                 prevPressedCode = ev.keyCode;
             if (!pressed[codes[ev.keyCode]])
@@ -626,20 +604,19 @@ function trackKeys2(codes /* = arrowCodes */) {
             if (_trackKeys2__testing) {
                 if (typeof trackKeys2.counter == 'undefined' ) 
                     trackKeys2.counter = 0;
-                //console.log(++trackKeys2.counter, pressed);
             }
         }
         else {
             prevPressedCode = null;
-            if (_trackKeys2__testing) console.log(++trackKeys2.counter, "prevPressedCode = null;");
         }
     }
     addEventListener("keydown", handler);
     addEventListener("keyup", handler);
     return pressed;
 }
-////
 
+////
+////
 
 // THENFN: andThen(status : str)
 
@@ -647,7 +624,7 @@ function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
     var myCounter = 0;
     var display = new Display(document.body, level);
     _trackKeys2__testing = false;
-    var otherKeys = trackKeys2({27: "esc"});
+    var otherKeys = trackKeys2(otherCodes);
     runAnimation(function(step) {
         level.animate(step, arrows);
         display.drawFrame(step);
@@ -684,36 +661,6 @@ function runGame(plans /* : str[] */, Display) {
         });
     }
     startLevel(0);
-}
-
-if(0) {
-    (function() {
-        var myCounter = 0;
-        var pressed = Object.create(null); /* pressed : KEYS */
-        // Initialize for convenience.
-        //var keyCode;
-        //for (keyCode in codes) {
-        //    pressed[codes[keyCode]] = false;
-        //}
-        function handler(ev) {
-            //if (in_(ev.keyCode, codes)) { // (ev.keyCode in codes)
-                var down = ev.type == "keydown";
-                pressed[ev.keyCode] = down;
-                // Prevent keys from scrolling the page.
-                ev.preventDefault(); 
-                if (1) {
-                    //if (typeof trackKeys.counter == 'undefined' ) 
-                    //    trackKeys.counter = 0;
-                    console.log(++myCounter, pressed);
-                }
-            //}
-        }
-        addEventListener("keydown", handler);
-        addEventListener("keyup", handler);
-        return pressed;
-    })();
-    
-    return;
 }
 
 if(1) {
