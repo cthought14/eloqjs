@@ -47,10 +47,16 @@ function elt(type) {
 }
 */
 
-// elt(type, className)
+// elt(type, className, ...)
 function elt(name, className) {
     var elt = document.createElement(name);
     if (className) elt.className = className;
+    for (var i = 2; i < arguments.length; i++) {
+        var child = arguments[i];
+        if (typeof child == "string")
+            child = document.createTextNode(child);
+        elt.appendChild(child);
+    }
     return elt;
 }
 

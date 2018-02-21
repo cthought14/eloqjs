@@ -176,6 +176,7 @@ tprint("### Drawing");
 // drawActors() : Node
 // scrollPlayerIntoView()
 // clear()
+// showLives()
 
 function DOMDisplay(parent, level) {
     /* 
@@ -184,7 +185,11 @@ function DOMDisplay(parent, level) {
         <div> <!-- Actors --> ... </div>
     </div>
     */
-    this.wrap = parent.appendChild(elt("div", "game"));
+    this.wrap0 = parent.appendChild(elt("div", "game0"));
+    this.wrap = this.wrap0.appendChild(elt("div", "game"));
+    this.scoreboard = this.wrap0.appendChild(elt("p", "scoreboard", "Hello"));
+    this.scoreboard.textContent = "??";
+    
     this.level = level;
     
     this.wrap.appendChild(this.drawBackground());
@@ -270,6 +275,11 @@ DOMDisplay.prototype.scrollPlayerIntoView = function() {
 DOMDisplay.prototype.clear = function() {
     this.wrap.parentNode.removeChild(this.wrap);
 };
+
+// showLives(lives : int)
+DOMDisplay.prototype.showLives = function(lives) {
+    this.scoreboard.textContent = "Lives: " + lives;
+}
 
 tprint("### 297 Motion and collision");
 
@@ -620,14 +630,18 @@ function trackKeys2(codes /* = arrowCodes */) {
 
 // THENFN: andThen(status : str)
 
-function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
+function runLevel(level, Display /* : Display */, andThen /* : THENFN */, lives) {
     var myCounter = 0;
     var display = new Display(document.body, level);
+    display.showLives(lives);
     _trackKeys2__testing = false;
     var otherKeys = trackKeys2(otherCodes);
+    var paused = false;
     runAnimation(function(step) {
-        level.animate(step, arrows);
-        display.drawFrame(step);
+        if (!paused) {
+            level.animate(step, arrows);
+            display.drawFrame(step);
+        }
         if (level.isFinished()) {
             display.clear();
             if (andThen)
@@ -637,12 +651,14 @@ function runLevel(level, Display /* : Display */, andThen /* : THENFN */) {
         if (otherKeys.esc) {
             otherKeys.esc = false;
             console.log(++myCounter, "Esc pressed.");
+            paused = !paused;
         }
     });
 }
 
 function runGame(plans /* : str[] */, Display) {
     var lives = 3;
+    //var keys2 = trackKeys2(otherCodes);
     function startLevel(n) {
         var level = new Level(plans[n]);
         runLevel(level, Display, function(status) {
@@ -658,7 +674,7 @@ function runGame(plans /* : str[] */, Display) {
                 startLevel(n + 1);
             else
                 console.log("You win!");
-        });
+        }, lives);
     }
     startLevel(0);
 }
@@ -698,11 +714,11 @@ if(0) {
             "      x!!!!!!!!!!!!x  ",
             "      xxxxxxxxxxxxxx  ",
         ],
-    ];    
+    ];
     runGame(_simpleLevels, DOMDisplay);
     return;
 }
-
+    
 runGame(GAME_LEVELS, DOMDisplay);
 
 }); /* $(document).ready */
