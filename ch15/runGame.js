@@ -185,6 +185,8 @@ function DOMDisplay(parent, level) {
         <div> <!-- Actors --> ... </div>
     </div>
     */
+    if (parent !== document.body)
+        clearNode(parent);
     this.wrap0 = parent.appendChild(elt("div", "game0"));
     this.wrap = this.wrap0.appendChild(elt("div", "game"));
     this.scoreboard = this.wrap0.appendChild(elt("p", "scoreboard", "Hello"));
@@ -634,7 +636,7 @@ function trackKeys2(codes /* = arrowCodes */) {
 
 function runLevel(level, Display /* : Display */, andThen /* : THENFN */, lives) {
     var myCounter = 0;
-    var display = new Display(document.body, level);
+    var display = new Display(document.getElementById("theGame"), level);
     display.showLives(lives);
     _trackKeys2__testing = false;
     var otherKeys = trackKeys2(otherCodes);
@@ -664,8 +666,11 @@ function runGame(plans /* : str[] */, Display) {
         var level = new Level(plans[n]);
         runLevel(level, Display, function(status) {
             if (status == "lost") {
-                if (--lives == 0)
+                if (--lives == 0) {
+                    clearNode(document.getElementById("theGame"));
                     console.log("Game over.");
+                    alert("Game over.");
+                }
                 else {
                     console.log("Lives:", lives);
                     startLevel(n);

@@ -84,3 +84,10 @@ function deepEqual(a, b) {
 function in_(prop, obj) {
     return obj.hasOwnProperty(prop);
 }
+
+// clearNode(node : Node)
+function clearNode(node) {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
+    }
+}
