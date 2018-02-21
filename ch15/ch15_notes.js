@@ -435,8 +435,8 @@ var playerXSpeed = 7;
 // Player::moveX(step, level, keys : KEYS)
 Player.prototype.moveX = function(step, level, keys) {
     this.speed.x = 0;
-    if (keys.left) this.speed.x -= playerXSpeed;
-    if (keys.right) this.speed.x += playerXSpeed;
+    if (keys.left && level.status != "lost") this.speed.x -= playerXSpeed;
+    if (keys.right && level.status != "lost") this.speed.x += playerXSpeed;
     var motion = new Vector(this.speed.x * step, 0); 
     var newPos = this.pos.plus(motion);
                 // = pos + motion
@@ -458,7 +458,9 @@ Player.prototype.moveY = function(step, level, keys) {
     var obstacle = level.obstacleAt(newPos, this.size);
     if (obstacle) {
         level.playerTouched(obstacle);
-        if (keys.up && this.speed.y > 0)
+        if (level.status == "lost")
+            this.speed.y = 0;
+        else if (keys.up && this.speed.y > 0)
             // => Player is moving down and hit an obstacle.
             this.speed.y = -jumpSpeed; // Jump back up.
         else
