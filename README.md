@@ -71,4 +71,10 @@
 ### Ch15 Project: A Platform Game
 - [x] runGame.
 - [x] gameOver.
-- [ ] pause.
+- [x] pause.
+
+### Ch16 Drawing on Canvas
+- [ ] shapes.
+- [ ] pieChart.
+- [ ] bouncingBall.
+- [ ] precomputeMirror.
