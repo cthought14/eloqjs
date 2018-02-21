@@ -660,7 +660,6 @@ function runLevel(level, Display /* : Display */, andThen /* : THENFN */, lives)
 
 function runGame(plans /* : str[] */, Display) {
     var lives = 3;
-    //var keys2 = trackKeys2(otherCodes);
     function startLevel(n) {
         var level = new Level(plans[n]);
         runLevel(level, Display, function(status) {
