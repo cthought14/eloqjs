@@ -30,9 +30,7 @@ function showBorder(canvas) {
     var w = canvas.width;
     var h = canvas.height;
     var context = canvas.getContext("2d");
-    context.strokeStyle = "black";
-    context.rect(0, 0, w, h);
-    context.stroke();
+    context.strokeRect(0, 0, w, h);
 }
 
 //
