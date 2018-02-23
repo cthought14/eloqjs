@@ -74,6 +74,64 @@ cx4.fill();
 // 314
 //
 tprint("### 314 Curves");
+var canvas5 = document.getElementById("canvas5");
+showBorder(canvas5);
+var cx5 = canvas5.getContext("2d");
+cx5.beginPath();
+cx5.moveTo(10, 90);
+// control = (60, 10), goal = (90, 90)
+cx5.quadraticCurveTo(60, 10, 90, 90);
+cx5.lineTo(60, 10);
+cx5.closePath();
+cx5.stroke();
+
+var canvas6 = document.getElementById("canvas6");
+showBorder(canvas6);
+var cx6 = canvas6.getContext("2d");
+cx6.beginPath();
+cx6.moveTo(10, 90);
+// control1 = (10, 10), control2 = (90, 10), goal = (50, 90)
+cx6.bezierCurveTo(10, 10, 90, 10, 50, 90);
+cx6.lineTo(90, 10);
+cx6.lineTo(10, 10);
+cx6.closePath();
+cx6.stroke();
+
+var canvas7 = document.getElementById("canvas7");
+showBorder(canvas7);
+var cx7 = canvas7.getContext("2d");
+cx7.beginPath();
+cx7.moveTo(10, 10);
+// control = (90, 10), goal = (90, 90), radius = 20
+cx7.arcTo(90, 10, 90, 90, 20);
+// Complete the line to the goal point if needed.
+cx7.lineTo(90, 90); 
+cx7.moveTo(10, 10);
+// control = (90, 10), goal = (90, 90), radius = 80
+cx7.arcTo(90, 10, 90, 90, 80);
+// Complete the line to the goal point if needed.
+cx7.lineTo(90, 90);
+cx7.stroke();
+
+var CIRCLE_ANGLE = 7 // More than 2 * Math.PI.
+
+var canvas8 = document.getElementById("canvas8");
+showBorder(canvas8);
+var cx8 = canvas8.getContext("2d");
+cx8.beginPath();
+// center = (50, 50), radius = 40, angle = 0 to CIRCLE_ANGLE
+cx8.arc(50, 50, 40, 0, CIRCLE_ANGLE);
+// center = (150, 50), radius = 40, angle = 0 to PI*(1/2)
+cx8.arc(150, 50, 40, 0, 0.5 * Math.PI);
+cx8.stroke();
+
+//
+// 318
+//
+tprint("### 318 Drawing a pie chart");
+
+
+
 
 }); /* $(document).ready */
 
