@@ -129,7 +129,41 @@ cx8.stroke();
 // 318
 //
 tprint("### 318 Drawing a pie chart");
+var results1 = [
+    {name: "Satisfied", count: 1043, color: "lightblue"},
+    {name: "Neutral", count: 563, color: "lightgreen"},
+    {name: "Unsatisfied", count: 510, color: "pink"},
+    {name: "No comment", count: 175, color: "silver"}
+];
 
+var canvas9 = document.getElementById("canvas9");
+//showBorder(canvas9);
+var cx9 = canvas9.getContext("2d");
+
+(function(cx, results) {
+    var total1 = results.reduce(function(sum, choice) {
+        return sum + choice.count;
+    }, 0);
+
+    var currentAngle = -0.5 * Math.PI;
+
+    results.forEach(function(result) {
+        var sliceAngle = (result.count / total1) * 2 * Math.PI;
+        console.log(sliceAngle);
+        cx.beginPath();
+        // center = (100, 100), radius = 100
+        cx.arc(100, 100, 100, currentAngle, currentAngle + sliceAngle);
+        currentAngle += sliceAngle;
+        cx.lineTo(100, 100);
+        cx.fillStyle = result.color;
+        cx.fill();
+    });
+})(cx9, results1);
+
+//
+// 319
+//
+tprint("### 319 Text");
 
 
 
