@@ -164,6 +164,94 @@ var cx9 = canvas9.getContext("2d");
 // 319
 //
 tprint("### 319 Text");
+var canvas10 = document.getElementById("canvas10");
+showBorder(canvas10);
+var cx10 = canvas10.getContext("2d");
+cx10.font = "28px Georgia";
+cx10.fillStyle = "fuchsia";
+cx10.fillText("I can draw text, too!", 10, 50);
+
+//
+// 320
+//
+tprint("### Images");
+var canvas11 = document.getElementById("canvas11");
+showBorder(canvas11);
+var cx11 = canvas11.getContext("2d");
+var img1 = document.createElement("img");
+img1.src = "img/hat_100px.png";
+// --Q: How do I detect image loading errors?
+img1.addEventListener("load", function() {
+    expect("load1", "load1");
+    for (var x = 10; x < 100; x += 15)
+        cx11.drawImage(img1, x, 10);
+});
+
+var canvas12 = document.getElementById("canvas12");
+// This border will be hidden by the animation.
+showBorder(canvas12);
+var cx12 = canvas12.getContext("2d");
+var img2 = document.createElement("img");
+img2.src = "img/player.png";
+var spriteW = 24;
+var spriteH = 30;
+img2.addEventListener("load", function() {
+    expect("load2", "load2");
+    var cycle = 0;
+    setInterval(function() {
+        cx12.clearRect(0, 0, spriteW, spriteH);
+        cx12.drawImage(img2, 
+                // Source rectangle.
+                cycle * spriteW, 0, spriteW, spriteH,
+                // Destination rectangle.
+                0, 0, spriteW, spriteH);
+        cycle = (cycle + 1) % 8;
+    }, 120);
+});
+
+//
+// 322
+//
+tprint("### 322 Transformation");
+var canvas13 = document.getElementById("canvas13");
+showBorder(canvas13);
+var cx13 = canvas13.getContext("2d");
+cx13.scale(3, .5);
+cx13.beginPath();
+cx13.arc(50, 50, 40, 0, 7);
+cx13.lineWidth = 3;
+cx13.stroke();
+
+
+function flipHorizontally(context, around /* e.g. = 100 + spriteW / 2 */) {
+    context.translate(around, 0);
+    context.scale(-1, 1);
+    context.translate(-around, 0);
+}
+
+var canvas14 = document.getElementById("canvas14");
+showBorder(canvas14);
+var cx14 = canvas14.getContext("2d");
+var img3 = document.createElement("img");
+img3.src = "img/player.png";
+//var spriteW = 24;
+//var spriteH = 30;
+img3.addEventListener("load", function() {
+    expect("load3", "load3");
+    var x = 100, y = 0;
+    flipHorizontally(cx14, x + spriteW / 2);
+    cx14.drawImage(img3, 
+            0, 0, spriteW, spriteH, 
+            x, y, spriteW, spriteH);
+});
+
+//
+// 325
+//
+tprint("### 325 Storing and clearing transformations");
+
+
+
 
 
 
