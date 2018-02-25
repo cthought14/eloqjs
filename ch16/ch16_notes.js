@@ -249,8 +249,299 @@ img3.addEventListener("load", function() {
 // 325
 //
 tprint("### 325 Storing and clearing transformations");
+var canvas15 = document.getElementById("canvas15");
+showBorder(canvas15);
+var cx15 = canvas15.getContext("2d");
+function branch(length, angle, scale) {
+    // Draw a "vertical" line.
+    cx15.fillRect(0, 0, 1, length);
+    if (length < 8)
+        return;
+    cx15.save();
+    cx15.translate(0, length);
+    cx15.rotate(-angle);
+    branch(length * scale, angle, scale);
+    cx15.rotate(2 * angle);
+    branch(length * scale, angle, scale);
+    cx15.restore();
+}
+cx15.translate(300, 0);
+branch(60, 0.5, 0.8);
+
+//
+// 326
+//
+tprint("### Back to the game");
+
+// Display
+// -------------------------------------
+// Display(parent : Node, level : Level)
+// drawFrame(step)
+// clear()
 
 
+// CanvasDisplay : Display
+// -------------------------------------
+// CanvasDisplay(parent, level)
+// canvas : Node
+// cx : Context2D
+// level : Level
+// animationTime
+// flipPlayer : bool
+// viewport: {left : float, 
+//              top, width, height}
+// 
+// updateViewport()
+// clearDisplay()
+// drawBackground()
+// drawActors()
+// drawPlayer(x, y, width, height)
+
+
+// CanvasDisplay::CanvasDisplay(parent, level)
+function CanvasDisplay(parent, level) {
+    this.canvas = document.createElement("canvas");
+    this.canvas.width = clamp(level.width * scale, 0, 600);
+    this.canvas.height = clamp(level.height * scale, 0, 450);
+    parent.appendChild(this.canvas);
+    showBorder(this.canvas);
+    this.cx = this.canvas.getContext("2d");
+    
+    this.level = level;
+    this.animationTime = 0;
+    this.flipPlayer = false;
+    this.viewport = {
+        left: 0,
+        top: 0,
+        width: this.canvas.width / scale,
+        height: this.canvas.width
+    };
+    this.drawFrame(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// CanvasDisplay::drawFrame(step)
+CanvasDisplay.prototype.drawFrame = function(step) {
+    this.animationTime += step;
+    this.updateViewport();
+    this.clearDisplay();
+    this.drawBackground();
+    this.drawActors();
+};
+
+// CanvasDisplay::updateViewport()
+CanvasDisplay.prototype.updateViewport = function() {
+    var view = this.viewport;
+    var margin = view.width / 3;
+    var player = this.level.player;
+    var center = player.pos.plus(player.size.times(0.5));
+            // = player.pos + (player.size * 0.5)
+    
+    if (center.x < view.left + margin)
+        view.left = Math.max(center.x - margin, 0);
+    else if (center.x > view.left + view.width - margin)
+        view.left = Math.min(center.x + margin - view.width,
+                    this.level.width - view.width);
+    if (center.y < view.top + margin)
+        view.top = Math.max(center.y - margin, 0);
+    else if (center.y > view.top + view.height - margin)
+        view.top = Math.min(center.y + margin - view.height,
+                    this.level.height - view.height);
+};
+
+
+// CanvasDisplay::clearDisplay()
+CanvasDisplay.prototype.clearDisplay = function() {
+    if (this.level.status == "won")
+        this.cx.fillStyle = "rgb(68, 191, 255)";
+    else if (this.level.status == "lost")
+        this.cx.fillSTyle = "rgb(44, 136, 214)";
+    else
+        this.cx.fillStyle = "rgb(52, 166, 251)";
+    this.cx.fillRect(0, 0, 
+                this.canvas.width, this.canvas.height);
+};
+
+
+
+
+
+
+var otherSprites = document.createElement("img");
+otherSprites.src = "img/sprites.png";
+
+// CanvasDisplay::drawBackground()
+/*CanvasDisplay.prototype.drawBackground = function() {
+    var view = this.viewport;
+    var xStart = Math.floor(view.left);
+    var xEnd = Math.ceil(view.left + view.width);
+    var yStart = Math.floor(view.top);
+    var yEnd = Math.ceil(view.top + view.height);
+    
+    for (var y = yStart; y < yEnd; y++) {
+        for (var x = xStart; x < xEnd; x++) {
+            var tile = this.level.grid[y][x];
+            if (tile == null)
+                continue;
+            var screenX = (x - view.left) * scale;
+            var screenY = (y - view.top) * scale;
+            var tileX = tile == "lava" ? scale : 0;
+*/            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
