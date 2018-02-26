@@ -74,6 +74,7 @@
 - [x] pause.
 
 ### Ch16 Drawing on Canvas
+- [ ] runGame_canvas.
 - [ ] shapes.
 - [ ] pieChart.
 - [ ] bouncingBall.

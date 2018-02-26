@@ -319,20 +319,6 @@ function CanvasDisplay(parent, level) {
     this.drawFrame(0);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // CanvasDisplay::drawFrame(step)
 CanvasDisplay.prototype.drawFrame = function(step) {
     this.animationTime += step;
@@ -375,16 +361,11 @@ CanvasDisplay.prototype.clearDisplay = function() {
                 this.canvas.width, this.canvas.height);
 };
 
-
-
-
-
-
 var otherSprites = document.createElement("img");
 otherSprites.src = "img/sprites.png";
 
 // CanvasDisplay::drawBackground()
-/*CanvasDisplay.prototype.drawBackground = function() {
+CanvasDisplay.prototype.drawBackground = function() {
     var view = this.viewport;
     var xStart = Math.floor(view.left);
     var xEnd = Math.ceil(view.left + view.width);
@@ -398,151 +379,64 @@ otherSprites.src = "img/sprites.png";
                 continue;
             var screenX = (x - view.left) * scale;
             var screenY = (y - view.top) * scale;
+            // Offset in sprite map for lava is 20 px.
+            // Offset in sprite map for wall is 0 px.
             var tileX = tile == "lava" ? scale : 0;
-*/            
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+            this.cx.drawImage(otherSprites,
+                        tileX, 0, scale, scale,
+                        screenX, screenY, scale, scale);
+        }
+    }
+};
 
+var playerSprites = document.createElement("img");
+playerSprites.src = "img/player.png";
+var playerXOverlap = 4;
 
+// CanvasDisplay::drawPlayer(x, y, width, height)
+CanvasDisplay.prototype.drawPlayer = function(x, y, width, height) {
+    var sprite = 8;
+    var player = this.level.player;
+    width += playerXOverlap * 2;
+    x -= playerXOverlap;
+    if (player.speed.x != 0)
+        this.flipPlayer = player.speed.x < 0;
+        
+    if (player.speed.y != 0)
+        sprite = 9;
+    else if (player.speed.x != 0)
+        sprite = Math.floor(this.animationTime * 12) % 8;
+        
+    this.cx.save();
+    if (this.flipPlayer)
+        flipHorizontally(this.cx, x + width / 2);
+        
+    this.cx.drawImage(playerSprites, 
+                sprite * width, 0, width, height,
+                x, y, width, height);
+    this.cx.restore();
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
+// CanvasDisplay::drawActors() 
+CanvasDisplay.prototype.drawActors = function() {
+    this.level.actors.forEach(function(actor) {
+        var width = actor.size.x * scale;
+        var height = actor.size.y * scale;
+        var x = (actor.pos.x - this.viewport.left) * scale;
+        var y = (actor.pos.y - this.viewport.top) * scale;
+        if (actor.type == "player") {
+            this.drawPlayer(x, y, width, height);
+        } 
+        else {        
+            // Sprite offset 2 is coin.
+            // Sprite offset 1 is lava.
+            var tileX = (actor.type == "coin" ? 2 : 1) * scale;
+            this.cx.drawImage(otherSprites,
+                        tileX, 0, width, ehgith,
+                        x, y, width, height);
+        }
+    }, this);
+};
 
 
 
