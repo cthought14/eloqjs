@@ -438,6 +438,56 @@ CanvasDisplay.prototype.drawActors = function() {
     }, this);
 };
 
+//
+// Exercise 1 - 1. Trapezoid.
+//
+var canvas21 = document.getElementById("canvas21");
+showBorder(canvas21);
+var cx21 = canvas21.getContext("2d");
+
+function draw_trapezoid(cx, x, y, s) {
+    cx.save();
+    cx.translate(x, y);
+    cx.scale(s, s);
+    cx.beginPath();
+    cx.moveTo(10,10);
+    cx.lineTo(0,25);
+    cx.lineTo(35,25);
+    cx.lineTo(25,10);
+    cx.closePath();
+    cx.stroke();
+    cx.restore();
+}
+
+draw_trapezoid(cx21, 50, 50, 5);
+draw_trapezoid(cx21, 0, 0, 1);
+draw_trapezoid(cx21, 100, 20, 1.5);
+
+//
+// Exercise 1 - 2. Red Diamond.
+// 
+var canvas22 = document.getElementById("canvas22");
+showBorder(canvas22);
+var cx22 = canvas22.getContext("2d");
+
+function draw_red_diamond(cx, x, y, s) {
+    cx.save();
+    cx.translate(x, y);
+    cx.scale(s, s);
+    cx.translate(72, 1);
+ 
+    cx.rotate(Math.PI / 4);
+    cx.fillStyle = "red";
+    cx.fillRect(0, 0, 100, 100);    
+    cx.restore();
+}
+
+draw_red_diamond(cx22, 10, 10, .25);
+
+//
+// Exercise 1 - 3. Zigzagging line.
+//
+
 
 
 }); /* $(document).ready */
