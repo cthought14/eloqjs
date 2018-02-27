@@ -487,6 +487,45 @@ draw_red_diamond(cx22, 10, 10, .25);
 //
 // Exercise 1 - 3. Zigzagging line.
 //
+var canvas23 = document.getElementById("canvas23");
+showBorder(canvas23);
+var cx23 = canvas23.getContext("2d");
+
+function draw_zigzag(cx, x, y, s, nZigzags) {
+    cx.save();
+    cx.translate(x, y);
+    cx.scale(s, s);
+    
+    cx.beginPath();
+    cx.moveTo(0, 0);
+    for (var n = 0; n < nZigzags; n++) {
+        cx.lineTo(20, 2.5);
+        cx.lineTo(2.5, 5);
+        cx.translate(0, 5);
+    }
+    cx.lineTo(0, .3);
+    cx.stroke();
+    cx.restore();
+}
+
+draw_zigzag(cx23, 20, 20, 2.3, 6);
+
+//
+// Exercise 1 - 4. Spiral.
+//
+var canvas24 = document.getElementById("canvas24");
+showBorder(canvas24);
+var cx24 = canvas24.getContext("2d");
+
+function draw_spiral(cx, x, y, s) {
+    cx.save();
+    cx.translate(x, y);
+    cx.scale(s, s);
+    
+    cx.restore();
+}
+
+draw_spiral(cx24, 10, 10, 1);
 
 
 
