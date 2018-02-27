@@ -521,12 +521,39 @@ function draw_spiral(cx, x, y, s) {
     cx.save();
     cx.translate(x, y);
     cx.scale(s, s);
+
+    cx.beginPath();
+    cx.moveTo(r * Math.cos(0), r * Math.sin(0));
+
+    // For the moment the decay, radius and
+    // number of swirls need to be adjusted 
+    // together. I would like to be able to just
+    // calculate the optimal decay for a given
+    // radius and number of swirls.
+    var swirls = 3;
+    var r = 40;
+    var decay = 0.20;
     
+    var x, y;
+    for (var angle = 0; 
+        angle < 2 * Math.PI * swirls;
+        angle += 0.1, r -= decay) {
+        x = r * Math.cos(angle);
+        y = r * Math.sin(angle);
+        cx.lineTo(x, y);
+    }
+    cx.stroke();    
     cx.restore();
 }
 
-draw_spiral(cx24, 10, 10, 1);
+draw_spiral(cx24, 100, 100, 1.2);
 
+//
+// Exercise 1 - 5. Yellow star.
+//
+var canvas25 = document.getElementById("canvas25");
+showBorder(canvas25);
+var cx25 = canvas25.getContext("2d");
 
 
 }); /* $(document).ready */
