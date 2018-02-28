@@ -174,7 +174,7 @@ cx10.fillText("I can draw text, too!", 10, 50);
 //
 // 320
 //
-tprint("### Images");
+tprint("### 320 Images");
 var canvas11 = document.getElementById("canvas11");
 showBorder(canvas11);
 var cx11 = canvas11.getContext("2d");
@@ -271,7 +271,7 @@ branch(60, 0.5, 0.8);
 //
 // 326
 //
-tprint("### Back to the game");
+tprint("### 326 Back to the game");
 
 // Display
 // -------------------------------------
