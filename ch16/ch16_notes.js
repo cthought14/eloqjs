@@ -592,30 +592,30 @@ function draw_pie_chart(cx, x, y, s, results) {
         cx.arc(100, 100, 100, currentAngle, currentAngle + sliceAngle);
 
         var textAngle = currentAngle + 0.5 * sliceAngle;
-        
         currentAngle += sliceAngle;
         cx.lineTo(100, 100);
         cx.fillStyle = result.color;
         cx.fill();
         
-        var mx = 100, my = 100, r = 150;
+        var mx = 100, my = 100, r = 120;
         var x = mx + r * Math.cos(textAngle);
         var y = my + r * Math.sin(textAngle);
-        //cx.fillText(result.name, x, y)
-        cx.fillRect(x, y, 10, 10);
-        console.log("Result:",result.name);
-        
+        if (textAngle > Math.PI * 3 / 2 || textAngle < Math.PI / 2)
+            cx.fillText(result.name, x, y)
+        else {
+            // Assume each character is about 4 pixels wide on average.
+            // It would be better to calculate using font metrics.
+            var d = result.name.length * 4;
+            cx.fillText(result.name, x - d, y)
+        }
+        //cx.fillRect(x, y, 10, 10);
+        console.log("Text:",result.name,"textAngle:",textAngle);
+        console.log("Result:",result.name);        
     });
     cx.restore();
 }
 
-/*
-cx10.font = "28px Georgia";
-cx10.fillStyle = "fuchsia";
-cx10.fillText("I can draw text, too!", 10, 50);
-*/
-
-draw_pie_chart(cx31, 250, 250, .5, results2);
+draw_pie_chart(cx31, 100, 100, 1, results2);
 
 
 }); /* $(document).ready */
