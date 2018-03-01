@@ -76,6 +76,6 @@
 ### Ch16 Drawing on Canvas
 - [ ] runGame_canvas.
 - [ ] shapes.
-- [ ] pieChart.
+- [x] pieChart.
 - [ ] bouncingBall.
 - [ ] precomputeMirror.
