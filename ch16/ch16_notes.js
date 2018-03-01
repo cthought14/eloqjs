@@ -617,6 +617,51 @@ function draw_pie_chart(cx, x, y, s, results) {
 
 draw_pie_chart(cx31, 100, 100, 1, results2);
 
+//
+// Exercise 3 - Bouncing ball.
+//
+var canvas33 = document.getElementById("canvas33");
+showBorder(canvas33);
+var cx33 = canvas33.getContext("2d");
+
+function draw_ball(cx, x, y, s, Cx, Cy) {
+    //cx.save();
+    //cx.translate(x, y);
+    //cx.scale(s, s);
+    
+    // center = (50, 50), radius = 40, angle = 0 to CIRCLE_ANGLE
+    cx.arc(Cx, Cy, 40, 0, CIRCLE_ANGLE);
+    cx.fillStyle = "brown";
+    cx.fill();
+    
+    //cx.restore();
+}
+
+draw_ball(cx33, 10, 10, 1, 50, 50);
+
+function clear_canvas(canvas, cx) {
+    //var cx = canvas.getContext("2d");
+    //cx.fillStyle = "white";
+    //cx.fillRect(0, 0, 
+    //            canvas.width, canvas.height);
+    cx.clearRect(0, 0, 
+                 canvas.width, canvas.height);
+}
+/*
+(function(canvas, cx) {
+    $('#move_ball').click(function(ev) {
+        clear_canvas(canvas);
+        showBorder(canvas);
+        draw_ball(cx, 10, 10, 1, 70, 70);
+    });
+})(canvas33, cx33);
+*/
+$('#move_ball').click(function(ev) {
+    clear_canvas(canvas33, cx33);
+    showBorder(canvas33);
+    draw_ball(cx33, 10, 10, 1, 70, 70);
+});
+
 
 }); /* $(document).ready */
 
