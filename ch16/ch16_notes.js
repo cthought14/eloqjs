@@ -630,6 +630,7 @@ function draw_ball(cx, x, y, s, Cx, Cy) {
     //cx.scale(s, s);
     
     // center = (50, 50), radius = 40, angle = 0 to CIRCLE_ANGLE
+    console.log("cx.arc",Cx,Cy);
     cx.arc(Cx, Cy, 40, 0, CIRCLE_ANGLE);
     cx.fillStyle = "brown";
     cx.fill();
@@ -637,7 +638,7 @@ function draw_ball(cx, x, y, s, Cx, Cy) {
     //cx.restore();
 }
 
-draw_ball(cx33, 10, 10, 1, 50, 50);
+//draw_ball(cx33, 10, 10, 1, 50, 50);
 
 function clear_canvas(canvas, cx) {
     //var cx = canvas.getContext("2d");
@@ -656,12 +657,45 @@ function clear_canvas(canvas, cx) {
     });
 })(canvas33, cx33);
 */
-$('#move_ball').click(function(ev) {
-    clear_canvas(canvas33, cx33);
-    showBorder(canvas33);
-    draw_ball(cx33, 10, 10, 1, 70, 70);
+
+var img33 = document.createElement("img");
+img33.src = "img/ball_80px.png";
+var img33_w = 80;
+var img33_h = 80;
+img33.addEventListener("load", function() {
+    expect("load33", "load33");
+    draw_img(cx33, 0, 0, 1, img33, 20, 20, img33_w, img33_h);
 });
 
+function draw_img(cx, x, y, s, img, Ix, Iy, Iw, Ih) {
+    cx.save();
+    cx.translate(x, y);
+    cx.scale(s, s);
+    
+    cx.clearRect(Ix, Iy, Iw, Ih);
+    cx.drawImage(img, 
+            // Source rectangle.
+            0, 0, Iw, Ih,
+            // Destination rectangle.
+            Ix, Iy, Iw, Ih);
+    cx.restore();
+}
+
+$('#move_ball').click(function(ev) {
+    //clear_canvas(canvas33, cx33);
+    //showBorder(canvas33);
+    //draw_ball(cx33, 10, 10, 1, 70, 70);
+    cx33.clearRect(0, 0, 
+        canvas33.width, canvas33.height);
+    showBorder(canvas33);
+    /*
+    cx33.font = "10px Georgia";
+    cx33.fillStyle = "black";
+    cx33.fillText("Hi", 40, 40);
+    */
+    draw_img(cx33, 0, 0, 1, img33, 40, 40, img33_w, img33_h);
+    
+});
 
 }); /* $(document).ready */
 
