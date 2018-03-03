@@ -441,6 +441,7 @@ CanvasDisplay.prototype.drawActors = function() {
 //
 // Exercise 1 - 1. Trapezoid.
 //
+tprint("### Exercise 1");
 var canvas21 = document.getElementById("canvas21");
 showBorder(canvas21);
 var cx21 = canvas21.getContext("2d");
@@ -560,6 +561,7 @@ var cx25 = canvas25.getContext("2d");
 //
 // Exercise 2 - The pie chart.
 //
+tprint("### Exercise 2");
 var canvas31 = document.getElementById("canvas31");
 showBorder(canvas31);
 var cx31 = canvas31.getContext("2d");
@@ -620,6 +622,7 @@ draw_pie_chart(cx31, 100, 100, 1, results2);
 //
 // Exercise 3 - Bouncing ball.
 //
+tprint("### Exercise 3");
 var canvas33 = document.getElementById("canvas33");
 showBorder(canvas33);
 var cx33 = canvas33.getContext("2d");
@@ -684,6 +687,27 @@ function draw_img(cx, x, y, s, img, Ix, Iy, Iw, Ih) {
 // From runAnimation.js
 runAnimation
 
+
+var totalTime = 0;
+var nTimeSamples = 3000;
+var curTimeSample = 0;
+var DoFlip = true;
+
+function time(name, action) {
+    if (curTimeSample++ < nTimeSamples) {
+        var start = Date.now();
+        action();
+        totalTime += Date.now() - start;
+        if (curTimeSample == nTimeSamples) {
+            console.log(name, "took", totalTime, "ms total", 
+                        "("+nTimeSamples.toString()+" samples)");
+        }
+    }
+    else {
+        action();
+    }
+}
+
 $('#move_ball').click(function(ev) {
     // Initial ball position.
     var ballX = 20;
@@ -694,13 +718,18 @@ $('#move_ball').click(function(ev) {
     // Assumed margin around top, right, bottom, and left.
     var margin = 2; 
 
-
     runAnimation(function(step) {
         cx33.clearRect(0, 0, 
             canvas33.width, canvas33.height);
         showBorder(canvas33);
 
-        draw_img(cx33, 0, 0, 1, img33, ballX, ballY, img33_w, img33_h);
+        time("draw_img", function() {
+            cx33.save();
+            if (DoFlip) 
+                flipHorizontally(cx33, ballX + img33_w / 2);
+            draw_img(cx33, 0, 0, 1, img33, ballX, ballY, img33_w, img33_h);
+            cx33.restore();
+        });
         
         // hitPole => Would hit north or south of map.
         var hitPole = ballY < margin || ballY > canvas33.height - img33_h - margin;
@@ -719,6 +748,7 @@ $('#move_ball').click(function(ev) {
 //
 // Exercise 4 - Precomputed mirroring.
 //
+tprint("### Exercise 4");
 
 
 
