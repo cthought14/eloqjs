@@ -681,21 +681,46 @@ function draw_img(cx, x, y, s, img, Ix, Iy, Iw, Ih) {
     cx.restore();
 }
 
+// From runAnimation.js
+runAnimation
+
 $('#move_ball').click(function(ev) {
-    //clear_canvas(canvas33, cx33);
-    //showBorder(canvas33);
-    //draw_ball(cx33, 10, 10, 1, 70, 70);
-    cx33.clearRect(0, 0, 
-        canvas33.width, canvas33.height);
-    showBorder(canvas33);
-    /*
-    cx33.font = "10px Georgia";
-    cx33.fillStyle = "black";
-    cx33.fillText("Hi", 40, 40);
-    */
-    draw_img(cx33, 0, 0, 1, img33, 40, 40, img33_w, img33_h);
+    // Initial ball position.
+    var ballX = 20;
+    var ballY = 20;
+    // Initially move down-right.
+    var ballDX = 1;
+    var ballDY = 1;
+    // Assumed margin around top, right, bottom, and left.
+    var margin = 2; 
+
+
+    runAnimation(function(step) {
+        cx33.clearRect(0, 0, 
+            canvas33.width, canvas33.height);
+        showBorder(canvas33);
+
+        draw_img(cx33, 0, 0, 1, img33, ballX, ballY, img33_w, img33_h);
+        
+        // hitPole => Would hit north or south of map.
+        var hitPole = ballY < margin || ballY > canvas33.height - img33_h - margin;
+        // hitMeridian => Would hit east or west of map.
+        var hitMeridian = ballX < margin || ballX > canvas33.width - img33_w - margin;
+        if (hitPole)
+            ballDY *= -1;
+        if (hitMeridian)
+            ballDX *= -1;
+        ballX += ballDX;
+        ballY += ballDY;
+    });
     
 });
+
+//
+// Exercise 4 - Precomputed mirroring.
+//
+
+
 
 }); /* $(document).ready */
 

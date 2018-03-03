@@ -77,5 +77,5 @@
 - [ ] runGame_canvas.
 - [ ] shapes.
 - [x] pieChart.
-- [ ] bouncingBall.
+- [x] bouncingBall.
 - [ ] precomputeMirror.
