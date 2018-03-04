@@ -749,7 +749,44 @@ $('#move_ball').click(function(ev) {
 // Exercise 4 - Precomputed mirroring.
 //
 tprint("### Exercise 4");
+var canvas34 = document.getElementById("canvas34");
+showBorder(canvas34);
+var cx34 = canvas34.getContext("2d");
+var canvas34_img;
 
+
+var img4 = document.createElement("img");
+img4.src = "img/player.png";
+//var spriteW = 24;
+//var spriteH = 30;
+img4.addEventListener("load", function() {
+    expect("load4", "load4");
+
+    // HOW TO DRAW SOMETHING ON CANVAS AND THEN MAKE IT INTO AN IMG ELEMENT.    
+    // Create temporary canvas. It will hold the flipped image.
+    
+    var canvas = document.createElement("canvas");
+    canvas.setAttribute("width", img4.width);
+    canvas.setAttribute("height", img4.height);
+    var cx = canvas.getContext("2d");
+    
+    flipHorizontally(cx, img4.width / 2);
+    cx.drawImage(img4, 
+            0, 0, img4.width, img4.height);
+    
+    var div1 = document.getElementById("div1");
+    //div1.appendChild(elt("p", "", "Flipped canvas:"));
+    //div1.appendChild(canvas);
+    
+    // Save the temporary canvas as an img.
+    
+    canvas34_img = document.createElement("img");
+    canvas34_img.src = canvas.toDataURL();
+    
+    // Draw the flipped img onto the exercise canvas.
+    
+    cx34.drawImage(canvas34_img, 0, 0, canvas34.width, canvas34.height);
+});
 
 
 }); /* $(document).ready */
