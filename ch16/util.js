@@ -91,3 +91,13 @@ function clearNode(node) {
         node.removeChild(node.firstChild);
     }
 }
+
+////
+////
+
+function showBorder(canvas) {
+    var w = canvas.width;
+    var h = canvas.height;
+    var context = canvas.getContext("2d");
+    context.strokeRect(0, 0, w, h);
+}
