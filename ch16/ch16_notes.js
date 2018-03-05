@@ -784,8 +784,14 @@ img4.addEventListener("load", function() {
     canvas34_img.src = canvas.toDataURL();
     
     // Draw the flipped img onto the exercise canvas.
+    // --Q: Do I need another load event listener for this img tag? Without it, 
+    // I seem to remember at least one time that the image did not seem to completely
+    // load, but now I cannot reproduce the problem.
     
-    cx34.drawImage(canvas34_img, 0, 0, canvas34.width, canvas34.height);
+    canvas34_img.addEventListener("load", function() {
+        expect("load canvas34_img", "load canvas34_img");
+        cx34.drawImage(canvas34_img, 0, 0, canvas34.width, canvas34.height);
+    });
 });
 
 
