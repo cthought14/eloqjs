@@ -74,8 +74,13 @@
 - [x] pause.
 
 ### Ch16 Drawing on Canvas
-- [ ] runGame_canvas.
-- [ ] shapes.
+- [ ] (TODO) runGame_canvas.
+- [ ] (TODO) shapes.
 - [x] pieChart.
 - [x] bouncingBall.
-- [ ] precomputeMirror.
+- [x] precomputeMirror.
+
+### Ch17 HTTP
+- [ ] accept.
+- [ ] all.
+
