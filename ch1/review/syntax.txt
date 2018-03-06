@@ -1,0 +1,23 @@
+Use PDF page numbers.
+
+18
+	:: console.log()
+	:: sum(...)
+	:: range(a, b)
+26
+	:: \t
+	:: \n
+28
+	:: typeof
+	:: true
+	:: false
+30
+	:: NaN
+	:: &&
+	:: ||
+	:: ?:
+	:: undefined
+32
+	:: ===
+	:: !==
+	:: null
