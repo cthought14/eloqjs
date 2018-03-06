@@ -1,0 +1,41 @@
+Use PDF page numbers.
+
+35
+	:: ;
+38
+	:: break case catch class const continue debugger
+	:: default delete do else enum export extends false
+	:: finally for function if implements import in
+	:: instanceof interface let new null package private
+	:: protected public return static super switch this
+	:: throw true try typeof var void while with yield
+	:: alert
+40
+	:: Math.min
+	:: confirm
+	:: prompt
+42
+	:: Number
+	:: String
+	:: Boolean
+	:: if
+	:: !
+	:: else
+	:: else if
+44
+	:: while
+46
+	:: do ... while
+	:: for
+48
+	:: break
+	:: %
+	:: infinite loop
+	:: += 
+	:: -=
+	:: ++
+	:: --
+	:: switch ... case ... default
+50
+	:: //
+	:: /* ... */
