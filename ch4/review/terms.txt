@@ -1,0 +1,17 @@
+Use PDF page numbers.
+
+74
+	array
+	index
+	property
+76
+	method
+	object
+80
+	immutable
+82
+	correlation
+	phi coefficient (ϕ)
+92
+	namespace
+	pollute the namespace

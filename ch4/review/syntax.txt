@@ -1,0 +1,35 @@
+Use PDF page numbers.
+
+74
+	:: [1, 2, 3]
+	:: a[n]
+	:: value.x
+	:: value[x]
+76
+	:: typeof
+	:: "".toUpperCase()
+	:: "".toLowerCase()
+	:: [].push()
+	:: var o = { p1: ..., p2: ..., ... };
+80
+	:: ==
+84
+	:: [].indexOf(y)
+86
+	:: for (p in o)
+88
+	:: [].unshift()
+	:: [].shift()
+	:: [].lastIndexOf(y)
+	:: [].slice(a, b)
+	:: [].slice(a)
+90
+	:: "".trim()
+	:: arguments
+92
+	:: Math
+	:: Math.PI
+94
+	:: Math.ceil()
+	:: Math.round()
+	:: sum(...)
