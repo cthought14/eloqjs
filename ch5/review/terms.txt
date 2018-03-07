@@ -1,0 +1,18 @@
+Use PDF page numbers.
+
+98
+	bug
+	abstraction
+102
+	higher-order function
+104
+	JSON (JavaScript Object Notation)
+106
+	pure function
+	reduce | fold
+112
+	DNA
+	genetic material
+	base pair
+114
+	partially apply

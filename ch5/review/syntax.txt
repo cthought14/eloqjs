@@ -1,0 +1,21 @@
+Use PDF page numbers.
+
+100
+	:: forEach
+104
+	:: f.apply(e, args)
+	:: JSON.stringify(o)
+	:: JSON.parse(s)
+106
+	:: [].filter()
+	:: map
+	:: reduce
+114
+	:: f.bind(e, arg)
+	> flatten.js
+	:: typeof o != "object"
+	> ageDifference.js
+	:: if (p in o)
+116
+	> everyAndSome.js
+	:: "".search(s)
