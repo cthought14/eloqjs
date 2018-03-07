@@ -1,0 +1,25 @@
+Use PDF page numbers.
+
+54
+	function
+	parameters
+	body
+	caller
+	callee
+56
+	local
+	global
+	scope
+58
+	lexical scoping
+	block (E.g. "local to the enclosing block")
+60
+	call stack
+	blow the stack
+62
+	optional argument
+	closure | a closure
+64
+	recursive | recursion
+70
+	pure function

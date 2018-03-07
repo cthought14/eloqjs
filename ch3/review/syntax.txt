@@ -1,0 +1,7 @@
+Use PDF page numbers.
+
+70
+	:: function
+72
+	:: "".length
+	:: "".charAt(N)
