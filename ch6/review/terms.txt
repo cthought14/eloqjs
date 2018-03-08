@@ -1,0 +1,29 @@
+Use PDF page numbers.
+
+117
+	object
+	interface
+118
+	object-oriented programming revolution
+	encapsulation
+	method
+120
+	prototype
+	proto
+	constructor
+	instance
+124
+	enumerable property
+	nonenumerable property
+126
+	interface
+	polymorphism
+134
+	inheritance
+	override
+136
+	prototype
+	Object.prototype
+	constructor
+	encapsulated
+	polymorphism

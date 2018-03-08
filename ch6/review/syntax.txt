@@ -1,0 +1,35 @@
+Use PDF page numbers.
+
+118
+	:: this
+	:: f.call(self, arg)
+120
+	:: o.toString
+	:: Object.prototype
+	:: Object.getPrototypeOf(o)
+	:: Function.prototype
+	:: Object.create
+	:: new
+	:: C.prototype.f
+124
+	:: Object.defineProperty(p, name, dict)
+	:: o.hasOwnProperty(name)
+126
+	:: if (map.hasOwnProperty(name)) ...
+	:: String()
+	:: o.toString()
+130
+	:: "".split(sep)
+132
+	:: get
+	:: set
+134
+	:: if (typeof x == "number") ...
+136
+	:: instanceof
+138
+	> Vector.js
+	:: Object.defineProperty(p, name, def)
+	> StretchCell.js
+	> Seq.js
+	:: undefined
