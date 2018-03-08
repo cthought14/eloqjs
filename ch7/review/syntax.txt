@@ -1,0 +1,9 @@
+Use PDF page numbers.
+
+144
+	:: a = f() || "default";
+146
+	:: f.bind(self)
+148
+	:: f.call(context, args...)
+	:: o.hasOwnProperty(p)
