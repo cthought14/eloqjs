@@ -1,0 +1,25 @@
+Use PDF page numbers.
+
+162
+	:: "use strict";
+	:: TypeError
+166
+	:: debugger;
+	:: prompt()
+	:: isNaN(x)
+168
+	:: Error
+	:: throw
+	:: e.stack
+170
+	:: finally
+172
+	:: for(;;)
+	:: e.name
+174
+	> retryMultiply.js
+	:: e.stack
+	:: instanceof
+	> withBoxUnlocked.js
+	:: try ... catch
+	:: try ... finally
