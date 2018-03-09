@@ -1,0 +1,7 @@
+<data>
+	<id>123</id>
+	<text><![CDATA[This is the contents of data.txt.
+Hello.
+Goodbye.
+]]></text>
+</data>
