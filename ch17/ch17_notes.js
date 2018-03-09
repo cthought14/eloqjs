@@ -27,11 +27,23 @@ tprint("### 340 Sending a request");
 $('#get1').click(function(ev) {
     ev.preventDefault();
     var req = new XMLHttpRequest();
+    // If the server does not send a Content-Type, it is assumed to be "text/xml"
+    // and Firefox console will complain about XML parse errors if it is not
+    // valid.
     req.open("GET", "example/data.txt", false);
     req.send(null);
     console.log(req.responseText);
 });
 
+$('#get2').click(function(ev) {
+    ev.preventDefault();
+    var req = new XMLHttpRequest();
+    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/overrideMimeType
+    req.overrideMimeType("text/plain");
+    req.open("GET", "example/data_text.txt", false);
+    req.send(null);
+    console.log(req.responseText);
+});
    
 
 
