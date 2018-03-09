@@ -1,0 +1,61 @@
+Use PDF page numbers.
+
+176
+	:: RegExp
+	:: /re/
+	:: /re/.test("abc")
+	:: s.indexOf(t)
+178
+	:: re.test(s)
+	:: \d
+	:: \w
+	:: \s
+	:: \D
+	:: \W
+	:: \S
+	:: .
+	:: [\d.]
+	:: [^01]
+	:: \d+
+	:: /neighbou?r/
+180
+	:: /boo+(hoo+)+/i
+	:: /re/i
+	:: re.exec(s) # Returns: match
+	:: match.index
+182
+	:: Date
+	:: date.getTime()
+	:: Date(y, mFromZero, d)
+	:: Date(unixTime)
+	:: (\d{1,2})-(\d{1,2})-(\d{4})
+	:: /cat/.test("concatenate")
+	:: /\bcat\b/.test("concatenate")
+186
+	:: /([01]+)+b/
+188
+	:: s.replace(/re/)
+	:: s.replace(/re/g, t)
+	:: s.replace(/re/g, "$2 $1")
+	:: s.replace(/re/g, ":: $& ::")
+192
+	:: s.search(/re/)
+	:: re.source
+	:: re.lastIndex
+194
+	:: s.split(/re/)
+196
+	:: \s
+	:: \w
+	:: /x+/
+	:: /x+?/
+	:: /x*/
+	:: /x?/
+	:: /x{2,4}/
+	:: /a|b|c/
+	:: /^/
+	:: /$/
+	:: /[0-9]/
+198
+	:: /re/i
+	:: /re/g
