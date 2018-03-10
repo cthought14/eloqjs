@@ -2,8 +2,18 @@
 "use strict";
 
 function forEach(collection, fn) {
-    for (var i = 0; i < collection.length; i++) {
-        fn(collection[i], i);
+    if ("length" in collection) {
+        for (var i = 0; i < collection.length; i++) {
+            fn(collection[i], i);
+        }
+    }
+    else if (typeof collection === "object") {
+        for (var key in collection) {
+            fn(key, collection[key]);
+        }
+    }
+    else {
+        throw new SyntaxError("Expected: collection");
     }
 }
 
@@ -101,3 +111,28 @@ function showBorder(canvas) {
     var context = canvas.getContext("2d");
     context.strokeRect(0, 0, w, h);
 }
+
+////
+////
+
+
+function len(object) {
+    if(0)(function(){
+        console.log("type:",(typeof object));
+    })();
+    if (typeof object === "object") {
+        if ("length" in object) {
+            return object.length;
+        }
+        else {
+            var np = 0;
+            for (var p in object) 
+                np++;
+            return np;
+        }
+    }
+    else {
+        return -1;
+    }
+}
+
