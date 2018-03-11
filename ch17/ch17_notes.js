@@ -129,6 +129,76 @@ if(0)(function(){
 //    
 tprint("### 343 HTTP sandboxing");
     
+//
+// 344
+//
+tprint("### 344 Abstracting requests");
+
+// Version without error handling.
+
+function backgroundReadFile(url, callback) {
+    var req = new XMLHttpRequest();
+    req.open("GET", url, true);
+    req.overrideMimeType("text/plain");
+    req.addEventListener("load", function() {
+        if (req.status < 400)
+            callback(req.responseText);
+    });
+    req.send(null);
+}
+
+$("#get6").click(function(ev) {
+    ev.preventDefault();
+    backgroundReadFile("data/file1.txt", function(text) {
+        console.log("file1.txt:",text);
+    });
+});
+
+// Version with error handling.
+
+function getURL(url, callback) {
+    var req = new XMLHttpRequest();
+    req.open("GET", url, true);
+    req.overrideMimeType("text/plain");
+    req.addEventListener("load", function() {
+        if (req.status < 400)
+            callback(req.responseText);
+        else
+            callback(null, new Error("Request failed: " + req.statusText));
+    });
+    req.addEventListener("error", function() {
+        callback(null, new Error("Network error"));
+    });
+    req.send(null);
+}
+
+$("#get7").click(function(ev) {
+    ev.preventDefault();
+    getURL("data/nonsense.txt", function(content, error) {
+        if (error)
+            console.log("Failed to fetch nonsense.txt: " + error);
+        else
+            console.log("nonsense.txt: " + content);
+    });
+});
+
+
+$("#get8").click(function(ev) {
+    ev.preventDefault();
+    getURL("data/file2.txt", function(content, error) {
+        if (error)
+            console.log("Failed to fetch file2.txt: " + error);
+        else
+            console.log("file2.txt: " + content);
+    });
+});
+
+//
+// 347
+//
+tprint("### 347 Promises");
+
+
 
 
 }); /* $(document).ready */
