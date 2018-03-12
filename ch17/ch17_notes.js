@@ -198,6 +198,88 @@ $("#get8").click(function(ev) {
 //
 tprint("### 347 Promises");
 
+function get(url) {
+    return new Promise(function(succeed, fail) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, true);
+        req.overrideMimeType("text/plain");
+        req.addEventListener("load", function() {
+            if (req.status < 400)
+                succeed(req.responseText);
+            else
+                fail(new Error("Request failed: " + req.statusText));
+        });
+        req.addEventListener("error", function() {
+            fail(new Error("Network error"));
+        });
+        req.send(null);
+    });
+}
+
+$("#get9").click(function(ev) {
+    ev.preventDefault();
+    get("example/data.txt").then(function(text) {
+        console.log("data.txt: " + text);
+    },
+    function(error) {
+        console.log("Failed to fetch data.txt: " + error);
+    });
+});
+
+function getJSON(url) {
+    return get(url).then(JSON.parse);
+}
+
+$("#get10").click(function(ev) {
+    ev.preventDefault();
+    getJSON("example/fruit.json").then(function(fruits) {
+        var out = "";
+        out += "There are "+len(fruits).toString()+" fruits in the JSON document:\n";
+        forEach(fruits, function(name, color) {
+            out += ""+name.toString()+"\n";
+        });
+        console.log(out);
+    });
+});
+
+$("#get11").click(function(ev) {
+    ev.preventDefault();
+
+    var div1 = document.getElementById("div1");
+    function showMessage(msg) {
+        var elt = document.createElement("div");
+        elt.textContent = msg;
+        return div1.appendChild(elt);
+    }
+    
+    var loading = showMessage("Loading...");
+    getJSON("example/bert.json").then(function(bert) {
+        //console.log(":: Got bert.json");
+        //console.log(":: bert.spouse: " + bert.spouse);
+        return getJSON(bert.spouse);
+    }).then(function(spouse) {
+        //console.log(":: Got spouse");
+        //console.log(":: spouse.name: " + spouse.name);
+        return getJSON(spouse.mother);
+    }).then(function(mother) {
+        showMessage("The name is " + mother.name + ".");
+    }).catch(function(error) {
+        showMessage(String(error));
+    }).then(function() {
+        div1.removeChild(loading);
+    });
+});
+
+//
+// 350
+//
+tprint("### 350 Appreciating HTTP");
+
+//
+// 350
+//
+tprint("### 350 Security and HTTPS");
+
 
 
 
