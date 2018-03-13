@@ -81,6 +81,6 @@
 - [x] precomputeMirror.
 
 ### Ch17 HTTP
-- [ ] accept.
+- [x] accept.
 - [ ] all.
 
