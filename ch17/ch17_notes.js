@@ -283,6 +283,7 @@ tprint("### 350 Security and HTTPS");
 //
 // Exercise 1
 //
+tprint("### Exercise 1 ");
 
 function acceptMimeType(req, type) {
     req.overrideMimeType(type);
@@ -300,7 +301,7 @@ function retrieveContent(url, mimeType) {
 }
 
 
-if(1)(function(){
+if(0)(function(){
     function showContentFor(mimeType) {
         var content;
         console.log("--- " + mimeType.toString() + " ---");
@@ -316,8 +317,125 @@ if(1)(function(){
 })();
 
 //
+// Exercise 2 -- Waiting for multiple promises
 //
-//
+tprint("### Exercise 2");
 
+// Example for making a promise.
+
+function getPositive(x) {
+    return new Promise(function(succeed, fail) {
+        if (x <= 0)
+            fail(""+x.toString()+": Not positive");
+        else
+            succeed(x);
+    });
+}
+
+getPositive(0).then(function(x) {
+    console.log(""+x.toString()+".");
+},
+function(error) {
+    console.log("Error: "+error.toString());
+});
+
+// How to use Promise.all().
+
+if(1)(function(){
+
+    var promises = [];
+    for (var x = 1; x <= 10; x++) 
+        promises.push(getPositive(x));
+    promises.push(getPositive(-100));
+
+    Promise.all(promises).then(function(xs) {
+        forEach(xs, function(x) {
+            console.log(""+x.toString()+".");
+        });
+    }, 
+    function(error) {
+        console.log("Error: "+error.toString());
+    });
+
+})();
+
+// Now try to use my own all().
+
+function all(promises) {
+    console.log(">>> typeof promises: " + typeof promises);
+    return new Promise(function(succeed, fail) {
+        
+        var results = [];
+        var errors = [];
+        //console.log(">>> promises " + promises.toString());
+        
+        forEach(promises, function(promise) {
+            promise.then(function(x) {
+                //results.push(x);
+                succeed(x);
+            }, 
+            function(error) {
+                console.log(">>> error: " + error.toString() );
+                //errors.push(error);
+                fail(error);
+            });
+        });
+        /*
+        console.log(">>> results length: " + results.toString());
+        console.log(">>> errors length: " + errors.length.toString());
+        if (errors.length > 0) {
+            fail(errors[0]);
+        }
+        else {
+            succeed(results);
+        }
+        */
+    });
+}
+
+
+if(0)(function(){
+
+    var promises = [];
+    for (var x = 1; x <= 10; x++) 
+        promises.push(getPositive(x));
+    promises.push(getPositive(-100));
+
+    console.log(">>> typeof promises: " + typeof promises);
+    all(promises).then(function(xs) {
+        forEach(xs, function(x) {
+            console.log(""+x.toString()+".");
+        });
+    }, 
+    function(error) {
+        console.log("Error: "+error.toString());
+    });
+
+})();
+
+
+
+/*
+    return new Promise(function(succeed, fail) {
+        var req = new XMLHttpRequest();
+        req.open("GET", url, true);
+        req.overrideMimeType("text/plain");
+        req.addEventListener("load", function() {
+            if (req.status < 400)
+                succeed(req.responseText);
+            else
+                fail(new Error("Request failed: " + req.statusText));
+        });
+        req.addEventListener("error", function() {
+            fail(new Error("Network error"));
+        });
+        req.send(null);
+    });
+
+*/
+    
+
+
+    
 }); /* $(document).ready */
 
