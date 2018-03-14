@@ -281,42 +281,6 @@ tprint("### 350 Appreciating HTTP");
 tprint("### 350 Security and HTTPS");
 
 //
-// Exercise 1
-//
-tprint("### Exercise 1 ");
-
-function acceptMimeType(req, type) {
-    req.overrideMimeType(type);
-    req.setRequestHeader("Accept", type);
-}    
-
-function retrieveContent(url, mimeType) {
-    var req = new XMLHttpRequest();
-    req.open("GET", url, false);
-    acceptMimeType(req, mimeType);
-    req.send(null);
-    if (req.status >= 400)
-        return undefined;
-    return req.responseText;
-}
-
-
-if(0)(function(){
-    function showContentFor(mimeType) {
-        var content;
-        console.log("--- " + mimeType.toString() + " ---");
-        content = retrieveContent("http://eloquentjavascript.net/author", mimeType);
-        console.log(content);
-    }
-    
-    showContentFor("text/plain");
-    showContentFor("text/html");
-    showContentFor("application/json");
-    showContentFor("application/rainbows+unicorns");
-    showContentFor("application/x-rainbows+unicorns");
-})();
-
-//
 // Exercise 2 -- Waiting for multiple promises
 //
 tprint("### Exercise 2");
