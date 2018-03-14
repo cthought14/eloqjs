@@ -82,5 +82,10 @@
 
 ### Ch17 HTTP
 - [x] accept.
-- [ ] all.
+- [ ] (TODO) all.
+
+### Ch18 Forms and Form Fields
+- [ ] jsWorkbench.
+- [ ] autocomplete.
+- [ ] life.
 
