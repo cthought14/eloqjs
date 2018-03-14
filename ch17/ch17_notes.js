@@ -332,16 +332,18 @@ function getPositive(x) {
     });
 }
 
-getPositive(0).then(function(x) {
-    console.log(""+x.toString()+".");
-},
-function(error) {
-    console.log("Error: "+error.toString());
-});
+if(0)(function(){
+    getPositive(0).then(function(x) {
+        console.log(""+x.toString()+".");
+    },
+    function(error) {
+        console.log("Error: "+error.toString());
+    });
+})();
 
 // How to use Promise.all().
 
-if(1)(function(){
+if(0)(function(){
 
     var promises = [];
     for (var x = 1; x <= 10; x++) 
@@ -361,28 +363,51 @@ if(1)(function(){
 
 // Now try to use my own all().
 
-function all(promises) {
-    console.log(">>> typeof promises: " + typeof promises);
+function my_all(promises) {
+    console.log(">>> (1) typeof promises: " + typeof promises);
+    
+    var results = [];
+    function push_result(x) {
+        results.push(x);
+    }
+    
+    var errors = [];
+    function push_error(x) {
+        errors.push(x);
+    }
+    
     return new Promise(function(succeed, fail) {
         
-        var results = [];
-        var errors = [];
-        //console.log(">>> promises " + promises.toString());
+        //var results = [];
+        //var errors = [];
+        console.log(">>> (2) promises " + promises.toString());
         
         forEach(promises, function(promise) {
+            /*
             promise.then(function(x) {
                 //results.push(x);
+                push_result(x);
+                console.log(">>> (2.1) push (length: " + results.length + ")");
                 succeed(x);
             }, 
             function(error) {
-                console.log(">>> error: " + error.toString() );
+                console.log(">>> (3) error: " + error.toString() );
                 //errors.push(error);
+                push_error(error);
                 fail(error);
+            });
+            */
+            promise.catch(function(error) {
+                console.log(">>> (3.1) error: " + error.toString());
+                fail(error);
+            });
+            promise.then(function(x) {
+                console.log(">>> (3.2) succeed");
             });
         });
         /*
-        console.log(">>> results length: " + results.toString());
-        console.log(">>> errors length: " + errors.length.toString());
+        console.log(">>> (4) results length: " + results.length.toString());
+        console.log(">>> (5) errors length: " + errors.length.toString());
         if (errors.length > 0) {
             fail(errors[0]);
         }
@@ -401,19 +426,23 @@ if(0)(function(){
         promises.push(getPositive(x));
     promises.push(getPositive(-100));
 
-    console.log(">>> typeof promises: " + typeof promises);
-    all(promises).then(function(xs) {
+    console.log(">>> (0) typeof promises: " + typeof promises);
+    my_all(promises).then(function(xs) {
+        console.log("then");
+        /*
         forEach(xs, function(x) {
             console.log(""+x.toString()+".");
         });
+        */
     }, 
     function(error) {
+        console.log("error");
+        /*
         console.log("Error: "+error.toString());
+        */
     });
 
 })();
-
-
 
 /*
     return new Promise(function(succeed, fail) {
@@ -433,8 +462,6 @@ if(0)(function(){
     });
 
 */
-    
-
 
     
 }); /* $(document).ready */
