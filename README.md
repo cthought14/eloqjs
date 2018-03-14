@@ -3,6 +3,10 @@
 
 [Eloquent JavaScript - Official site](http://eloquentjavascript.net/).
 
+### Introduction
+
+### Ch1 Values, Types, and Operators
+
 ### Ch2 Program Structure
 
 - [x] triangle.
