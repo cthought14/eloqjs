@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="lib/testutil.js"></script>
+    <script src="lib/util.js"></script>
+    <script src="lib/jquery-3.3.1.js"></script>
+    <script src="lib/promise-7.0.4.min.js"></script>
+    <script src="ch18_notes.js"></script>
+    <title>Chapter 18 Notes</title>
+    <style>
+    </style>
+</head>
+<body>
+    <p>Please activate your JavaScript console.</p>
+    <h1>Chapter 18 Notes</h1>
+    
+    <!-- 355 Form field examples -->
+    <h2>Form field examples</h2>
+    <p><input type="text" value="abc" id="input1" autofocus> (text)</p>
+    <p><input type="password" value="abc"> (password)</p>
+    <p><input type="checkbox" checked> (checkbox)</p>
+    <p><input type="radio" value="A" name="choice">
+       <input type="radio" value="B" name="choice" checked>
+       <input type="radio" value="B" name="choice"> (radio)</p>
+    <p><input type="file"> (file)</p>
+    
+    <p>(textarea)<br>
+       <textarea>
+one
+two
+three
+</textarea>
+
+    <p>(select)
+    <select id="select1">
+        <option>Pancakes</option>
+        <option>Pudding</option>
+        <option>Ice cream</option>
+    </select>
+
+    <!-- 356 Focus -->
+    <h2>Focus</h2>
+    <p><button id="button1">Focus demo</button>
+    <p><input type="text" tabindex=1> <a href=".">(help)</a>
+    <button onclick="console.log('ok')" tabindex=2>OK</button>
+    
+    <!-- 357 Disabled fields -->
+    <h2>Disabled fields</h2>
+    <p><button>I'm all right</button>
+       <button disabled>I'm out</button>
+       
+    <!-- 358 Form example -->
+    <h2>The form as a whole</h2>
+    <h3>Form which will be submitted</h3>
+    <form action="example/submit1.html" id="form1">
+        Name: <input type="text" name="name"><br>
+        Password: <input type="password" name="password"><br>
+        <button type="submit">Log in</button>
+    </form>
+    
+    <h3>Form which will not be submitted</h3>
+    <form action="example/submit2.html" id="form2">
+        Value: <input type="text" name="value">
+        <button type="submit">Save</button>
+    </form>
+    
+    <!-- 359 Text fields -->
+    <h2>Text fields</h2>
+    <h3>Press F2 to insert the man's name</h3>
+    <textarea id="textarea1"></textarea>
+    
+        
+        
+    
+    
+</body>
+</html>
