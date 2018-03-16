@@ -77,6 +77,56 @@ function replaceSelection(field, word) {
         from + word.length;
 }
 
+(function(){
+    var text = document.querySelector("#input11");
+    var output = document.querySelector("#length1");
+    text.addEventListener("input", function() {
+        output.textContent = text.value.length;
+    });
+})();
+
+//
+// 360
+//
+tprint("### 360 Checkboxes and radio buttons");
+var checkbox1 = document.querySelector("#purple");
+checkbox1.addEventListener("change", function() {
+    document.body.style.background = 
+            checkbox1.checked ? "mediumpurple" : "";
+});
+
+var color1 = document.getElementsByName("color1");
+function setColor(ev) {
+    document.body.style.background = 
+            ev.target.value;
+}
+forEach(color1, function(button) {
+    button.addEventListener("change", setColor);
+});
+
+//
+// 361
+//
+tprint("### 361 Select fields");
+var select2 = document.querySelector("#select2");
+var outpu2 = document.querySelector("#output2");
+// --Q: According to https://developer.mozilla.org/en-US/docs/Web/Events/change
+// the change event is not necessary fired for each change, and maybe the 
+// input event should be used instead.
+select2.addEventListener("change", function() {
+    var number = 0;
+    forEach(select2.options, function(option) {
+        if (option.selected)
+            number += Number(option.value);
+    });
+    output2.textContent = number;
+});
+
+//
+// 363
+//
+tprint("### 363 File fields");
+
 
 
 
