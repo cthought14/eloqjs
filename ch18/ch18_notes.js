@@ -126,6 +126,65 @@ select2.addEventListener("change", function() {
 // 363
 //
 tprint("### 363 File fields");
+var input2 = document.querySelector("#input2");
+input2.addEventListener("change", function() {
+    if (input2.files.length > 0) {
+        var file = input2.files[0];
+        console.log("You chose", file.name);
+        if (file.type)
+            console.log("It has type", file.type);
+    }
+});
+
+var input3 = document.querySelector("#input3");
+input3.addEventListener("change", function() {
+    //console.log("change");
+    forEach(input3.files, function(file) {
+        //console.log("file",file.name);
+        var reader = new FileReader();
+        reader.addEventListener("load", function() {
+            console.log("File", file.name, "starts with",
+                        reader.result.slice(0, 20));
+        });
+        reader.readAsText(file);
+    });
+});
+
+// Wrap a FileReader in a Promise.
+
+function readFile(file) {
+    return new Promise(function(succeed, fail) {
+        var reader = new FileReader();
+        reader.addEventListener("load", function() {
+            succeed(reader.result);
+        });
+        reader.addEventListener("error", function() {
+            fail(reader.error);
+        });
+        reader.readAsText(file);
+    });
+}
+
+var input4 = document.querySelector("#input4");
+input4.addEventListener("change", function() {
+    console.log("input4 change");
+    forEach(input4.files, function(file) {
+        console.log("input4 file");
+        readFile(file).then(function(result) {
+            console.log("File", file.name, "has result",
+                        result.slice(0,14),"...");
+        });
+    });
+});
+
+//
+// 365
+//
+tprint("### 365 Storing data client-side");
+localStorage.setItem("username", "marijn");
+expect(localStorage.getItem("username"), "marijn");
+localStorage.removeItem("username");
+
 
 
 
