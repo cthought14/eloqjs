@@ -1,13 +1,12 @@
 // Chapter 18 (Forms and Form Fields).
 "use strict";
 
-var list;
-var notes;
-var current;
+var f2;
 
-var addNote;
-var addToList;
-var saveToStorage;
+function f3() {
+    console.log("Output from f3()");
+    return "Result from f3()";
+}
 
 $(document).ready(function() {
 
@@ -192,6 +191,38 @@ tprint("### 365 Storing data client-side");
 localStorage.setItem("username", "marijn");
 expect(localStorage.getItem("username"), "marijn");
 localStorage.removeItem("username");
+
+//
+// Exercise 1
+//
+tprint("### Exercise 1 - A JavaScript workbench");
+
+f2 = function() {
+    console.log(2*y);
+}
+
+var f1 = new Function("x", "console.log(2*x);");
+f1(6);
+//f2();
+
+//var f2_ = new Function("", "f2();");
+//f2_();
+
+
+//<button id="evaluate">Evaluate</button><br>
+var evaluate = document.querySelector("#evaluate");
+evaluate.addEventListener("click", function(ev) {
+    console.log("click");
+    ev.preventDefault();
+    var f = new Function("", "return f3();");
+    var result = f();
+    console.log("result", result);
+//    <p id="result1">
+//    </p>
+    var result1 = document.querySelector("#result1");
+    result1.textContent = result;
+});
+
 
 }); /* $(document).ready */
 
