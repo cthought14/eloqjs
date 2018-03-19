@@ -204,6 +204,53 @@ evaluate.addEventListener("click", function(ev) {
     result1.textContent = result;
 });
 
+//
+// Exercise 2 (autocomplete).
+//
+tprint("### Exercise 2 (autocomplete)");
+
+var completions = 
+"apple\n\
+apricot\n\
+banana\n\
+blackberry\n\
+cantaloupe\n\
+cherry\n\
+clementine\n\
+coconut\n\
+cranberry\n\
+date\n\
+durian\n\
+elderberry\n\
+fig\n\
+grapefruit\n\
+grape\n\
+guava\n\
+honeydew melon\n\
+huckleberry\n\
+jackfruit\n\
+jambolan\n\
+kiwifruit\n\
+lemon\n\
+lime\n\
+mango\n\
+mandarin orange\n\
+nectarine\n\
+orange\n\
+papaya\n\
+passion fruit\n\
+peach\n\
+pineapple\n\
+plum\n\
+quince\n\
+raisin\n\
+raspberry\n\
+strawberry\n\
+tangerine\n\
+watermelon".split("\n");
+
+
+
 
 }); /* $(document).ready */
 
