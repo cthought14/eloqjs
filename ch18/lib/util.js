@@ -43,9 +43,9 @@ var decodeEntities = (function() {
   return decodeHTMLEntities;
 })();
 
-// elt(type, child1, child2, ...)
-/*
-function elt(type) {
+// elt1(type, child1, child2, ...)
+
+function elt1(type) {
     var node = document.createElement(type);
     for (var i = 1; i < arguments.length; i++) {
         var child = arguments[i];
@@ -55,10 +55,10 @@ function elt(type) {
     }
     return node;
 }
-*/
 
-// elt(type, className, ...)
-function elt(name, className) {
+
+// elt2(type, className, ...)
+function elt2(name, className) {
     var elt = document.createElement(name);
     if (className) elt.className = className;
     for (var i = 2; i < arguments.length; i++) {
