@@ -249,65 +249,63 @@ strawberry\n\
 tangerine\n\
 watermelon".split("\n");
 
-//exercise2
 var exercise2 = document.querySelector("#exercise2");
 
-/*
-select1.addEventListener("change", function(ev) {
-    var value = ev.target.value;
-    console.log("change to " + value.toString());
-    //console.log(ev);
-});
-*/
-
 exercise2.addEventListener("input", function(ev) {
-    console.log("change");
     var value = ev.target.value;
-    //console.log("value is", value);
-    /*
-    forEach(completions, function(word) {
-        if (word.startsWith(value)) {
-            console.log("Candidate:", word);
-        }
-    });
-    */
     var candidates = completions.map(function(word) {
         if (word.startsWith(value))
             return word;
     }).filter(function(elem) {
         return typeof elem != "undefined";
     });
-    console.log("Candidates:", candidates);
-
-/*    
-    candidateList = document.querySelector("#candidateList");
+    //console.log("Candidates:", candidates);
     
-    forEach(candidates, function(word) {
-*/        
-        
+    candidateList = document.querySelector("#candidateList");
+    clearNode(candidateList);
+    if (candidates.length <= 5) {
+        var ul = document.createElement("ul");
+        var li;
+        var a;
+        forEach(candidates, function(candidate) {        
+            li = document.createElement("li");
+            
+            a = document.createElement("a");
+            a.href = "#";
+            a.appendChild(document.createTextNode(candidate));
+            a.addEventListener("click", clicked);
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+        candidateList.appendChild(ul);    
+    }
 });
 
-
-if(1)(function(){
-
-    candidateList = document.querySelector("#candidateList");
-    var candidates = ["one", "two", "three", "four"];
-    //forEach(candidates, function(word) {
-    //    candidateList.appendChild(elt("strong", "Karl Popper"));
-    //});
-    candidateList.appendChild(
-            elt1("ul", 
-                elt1("li", "one"),
-                elt1("li", "two"),
-                elt1("li", "three"),
-                elt1("li", "four")
-            ));
-            
-                
-        
+function clicked(ev) {
+    ev.preventDefault();
+    //console.log("clicked", ev.target);
+    var target = ev.target;
+    console.log(target.innerText);
     
-    
-})();
+    var text = target.innerText;
+    exercise2.textContent = text;
+    replaceAll(exercise2, text);
+}
+
+function replaceAll(field, text) {
+    field.value = text;
+    // Put cursor after the text.
+    field.selectionStart = 
+        field.selectionEnd =
+        text.length;
+}
+
+//
+// Exercise 3
+//
+tprint("### Exercise 3 (life)");
+
+
 
 }); /* $(document).ready */
 

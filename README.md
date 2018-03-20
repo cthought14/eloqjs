@@ -90,6 +90,6 @@
 
 ### Ch18 Forms and Form Fields
 - [x] jsWorkbench.
-- [ ] autocomplete.
+- [x] autocomplete.
 - [ ] life.
 
