@@ -91,5 +91,10 @@
 ### Ch18 Forms and Form Fields
 - [x] jsWorkbench.
 - [x] autocomplete.
-- [ ] life.
+- [x] life.
+
+### Ch19 Project: A Paint Program
+- [ ] tools.Rectangle
+- [ ] tools.ColorPicker
+- [ ] tools.FloodFill
 
