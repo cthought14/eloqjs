@@ -109,7 +109,35 @@ LifeGrid.prototype.logCells = function() {
     log += line + "|\n";
 
     console.log(log);
-}
+};
+
+// LifeGrid::checkCells()
+LifeGrid.prototype.checkCells = function() {
+    var boxes = document.querySelectorAll("#boxes input");
+    var self = this;
+    forEach(boxes, function(box) {
+        var coord = box.getAttribute("data-coord");    
+        var x = coord.split(",")[0];
+        var y = coord.split(",")[1];
+        //console.log("x",x,"y",y);
+        
+        box.checked = self.cells[x][y];
+    });
+};
+
+// LifeGrid::readCells()
+LifeGrid.prototype.readCells = function() {
+    var boxes = document.querySelectorAll("#boxes input");
+    var self = this;
+    forEach(boxes, function(box) {
+        var coord = box.getAttribute("data-coord");    
+        var x = coord.split(",")[0];
+        var y = coord.split(",")[1];
+        //console.log("x",x,"y",y);
+        
+        self.cells[x][y] = box.checked;
+    });
+};
 
 
 var g1 = new LifeGrid(
@@ -162,12 +190,19 @@ var g2 = new LifeGrid(
  "    ",
 ]);
 
+g2.checkCells();
 g2.logCells();
-g2.turn();
-g2.logCells();
-g2.turn();
-g2.logCells();
-    
+//g2.turn();
+//g2.logCells();
+//g2.turn();
+//g2.logCells();
+
+var advance = document.querySelector("#advance");
+advance.addEventListener("click", function(ev) {
+    g2.readCells();
+    g2.turn();
+    g2.checkCells();
+});
     
 }); /* $(document).ready */
 
