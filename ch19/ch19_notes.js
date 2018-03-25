@@ -65,6 +65,75 @@ controls.tool = function(cx) {
     return elt3("span", null, "Tool: ", select);
 };
 
+function relativePos(ev, element) {
+    var rect = element.getBoundingClientRect();
+    return {x: Math.floor(ev.clientX - rect.left),
+            y: Math.floor(ev.clientY - rect.top)};
+}
+
+function trackDrag(onMove, onEnd) {
+    function end(ev) {
+        removeEventListener("mousedown", onMove);
+        removeEventListener("mouseup", end);
+        if (onEnd)
+            onEnd(ev);
+    }
+    addEventListener("mousedown", onMove);
+    addEventListener("mouseup", end);
+}
+
+tools.Line = function(ev, cx, onEnd) {
+    cx.lineCap = "round";
+    
+    var pos = relativePos(ev, cx.canvas);
+    trackDrag(function(ev) {
+        cx.beginPath();
+        cx.moveTo(pos.x, pos.y);
+        pos = relativePos(ev, cx.canvas);
+        cx.lineTo(pos.x, pos.y);
+        cx.stroke();
+    }, onEnd);
+};
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
         
         
