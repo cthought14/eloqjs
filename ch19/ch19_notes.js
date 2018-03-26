@@ -29,6 +29,9 @@ function elt3(name, attributes) {
     return node;
 }
 
+//
+// 373
+//
 tprint("### 373 The foundation");
 
 var controls = Object.create(null);
@@ -44,6 +47,9 @@ function createPaint(parent) {
     parent.appendChild(elt3("div", null, panel, toolbar));
 }
 
+//
+// 374
+//
 tprint("### 374 Tool selection");
 
 var tools = Object.create(null);
@@ -95,7 +101,129 @@ tools.Line = function(ev, cx, onEnd) {
     }, onEnd);
 };
 
+tools.Erase = function(ev, cx) {
+    cx.globalCompositeOperation = "destination-out";
+    tools.Line(ev, cx, function() {
+        cx.globalCompositeOperation = "source-over";
+    });
+};
 
+//
+// 377
+//
+tprint("### 377 Color and brush size");
+
+controls.color = function(cx) {
+    var input = elt3("input", {type: "color"});
+    input.addEventListener("change", function() {
+        cx.fillStyle = input.value;
+        cx.strokeStyle = input.value;
+    });
+    return elt3("span", null, "Color: ", input);
+};
+
+controls.brushSize = function(cx) {
+    var select = elt3("select");
+    var sizes = [1, 2, 3, 5, 8, 12, 25, 35, 50, 75, 100];
+    sizes.forEach(function(size) {
+        select.appendChild(elt3("option", {value: size},
+                            size + " pixels"));
+    });
+    select.addEventListener("change", function() {
+        cx.lineWidth = select.value;
+    });
+    return elt("span", null, "Brush size: ", select);
+};
+
+//
+// 379
+//
+tprint("### 379 Saving");
+
+controls.save = function(cx) {
+    var link = elt3("a", {href: "/"}, "Save");
+    function update() {
+        try {
+            link.href = cx.canvas.toDataURL();
+        }
+        catch(e) {
+            if (e instanceof SecurityError)
+                link.href = "javascript:alert(" +
+                    JSON.stringify("Can't save: " + e.toString()) + ")";
+            else
+                throw e;
+        }
+    }
+    link.addEventListener("mouseover", update);
+    link.addEventListener("focus", update);
+    return link;
+};
+
+//
+// 380
+//
+tprint("### 380 Loading image files");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
