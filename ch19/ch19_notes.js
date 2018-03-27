@@ -47,6 +47,7 @@ function createPaint(parent) {
     parent.appendChild(elt3("div", null, panel, toolbar));
 }
 
+
 //
 // 374
 //
@@ -62,6 +63,7 @@ controls.tool = function(cx) {
         select.appendChild(elt3("option", null, name));
         
     cx.canvas.addEventListener("mousedown", function(ev) {
+        //console.log("mousedown");
         if (ev.which == MOUSE_LEFT_BUTTON) {
             tools[select.value](ev, cx);
             ev.preventDefault();
@@ -79,12 +81,13 @@ function relativePos(ev, element) {
 
 function trackDrag(onMove, onEnd) {
     function end(ev) {
-        removeEventListener("mousedown", onMove);
+        removeEventListener("mousemove", onMove);
         removeEventListener("mouseup", end);
-        if (onEnd)
+        //console.log("onEnd");
+        if (onEnd) 
             onEnd(ev);
     }
-    addEventListener("mousedown", onMove);
+    addEventListener("mousemove", onMove);
     addEventListener("mouseup", end);
 }
 
@@ -93,12 +96,16 @@ tools.Line = function(ev, cx, onEnd) {
     
     var pos = relativePos(ev, cx.canvas);
     trackDrag(function(ev) {
+        //console.log("trackDrag begin");
         cx.beginPath();
         cx.moveTo(pos.x, pos.y);
+    }, function(ev) {
+        //console.log("trackDrag onEnd");
+        
         pos = relativePos(ev, cx.canvas);
         cx.lineTo(pos.x, pos.y);
         cx.stroke();
-    }, onEnd);
+    });
 };
 
 tools.Erase = function(ev, cx) {
@@ -132,7 +139,7 @@ controls.brushSize = function(cx) {
     select.addEventListener("change", function() {
         cx.lineWidth = select.value;
     });
-    return elt("span", null, "Brush size: ", select);
+    return elt3("span", null, "Brush size: ", select);
 };
 
 //
@@ -197,7 +204,7 @@ controls.openURL = function(cx) {
     var input = elt3("input", {type: "text"});
     var form = elt3("form", null,
                     "Open URL: ", input, 
-                    elt("button", {type: "submit"}, "load"));
+                    elt3("button", {type: "submit"}, "load"));
     form.addEventListener("submit", function(ev) {
         ev.preventDefault();
         loadImageURL(cx, input.value);
@@ -233,6 +240,7 @@ tools.Spray = function(ev, cx) {
         }
     }, 25);
     trackDrag(function(ev) {
+        //console.log("Spray trackDrag begin");
         currentPos = relativePos(ev, cx.canvas);
     }, function() {
         clearInterval(spray);
@@ -249,6 +257,12 @@ function randomPointInRadius(radius) {
 }
 
 
+
+////
+////
+
+mainDiv = document.querySelector("#mainDiv");
+createPaint(mainDiv);
 
 
 
