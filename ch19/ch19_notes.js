@@ -1,6 +1,8 @@
 // Chapter 19 (Project: A Paint Program).
 "use strict";
 
+var mainDiv = null;
+
 $(document).ready(function() {
 
 //
@@ -265,7 +267,6 @@ function randomPointInRadius(radius) {
     }
 }
 
-
 //
 // Exercise 1 - Rectangles
 //
@@ -274,8 +275,43 @@ tools.Rectangle = function(ev, cx) {
     
     var pos1 = relativePos(ev, cx.canvas);
     
+    var boxPos1 = {x: ev.pageX, y: ev.pageY};
+    var box = elt3("div");
+    box.style.position = "absolute";
+    box.style.border = "1px solid " + cx.fillStyle;
+    box.style.left = boxPos1 + "px";
+    box.style.top = boxPos1 + "px";
+    box.style.width = "1px";
+    box.style.height = "1px";
+    mainDiv.appendChild(box);
+
     trackDrag(function(ev) {
         //console.log("Rectangle trackDrag begin", pos1.x, pos1.y);
+        
+        var boxPos2 = {x: ev.pageX, y: ev.pageY};
+        //console.log("boxPos1: " + JSON.stringify(boxPos1) + " boxPos2: " + JSON.stringify(boxPos2));
+        if (boxPos2.x >= boxPos1.x) {
+            var boxW = boxPos2.x - boxPos1.x;
+            box.style.left = boxPos1.x + "px";
+        }
+        else {
+            var boxW = boxPos1.x - boxPos2.x;
+            box.style.left = boxPos2.x + "px";
+        }
+        
+        if (boxPos2.y >= boxPos1.y) {
+            var boxH = boxPos2.y - boxPos1.y;
+            box.style.top = boxPos1.y + "px";
+        }
+        else {
+            var boxH = boxPos1.y - boxPos2.y;
+            box.style.top = boxPos2.y + "px";
+        }
+        
+        //cx.fillRect(pos1.x, pos1.y, w, h);
+        box.style.width = boxW + "px";
+        box.style.height = boxH + "px";        
+        
     }, function(ev) {
         var pos2 = relativePos(ev, cx.canvas);
         //console.log("Rectangle trackDrag end", pos2.x, pos2.y);
@@ -288,6 +324,7 @@ tools.Rectangle = function(ev, cx) {
         var h = pos2.y - pos1.y;
         cx.fillRect(pos1.x, pos1.y, w, h);
         //console.log(pos1.x, pos1.y, w, h);
+        mainDiv.removeChild(box);
     });
 };
 
@@ -297,9 +334,6 @@ tools.Rectangle = function(ev, cx) {
 
 mainDiv = document.querySelector("#mainDiv");
 createPaint(mainDiv);
-
-
-
 
 
 

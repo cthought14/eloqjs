@@ -94,7 +94,7 @@
 - [x] life.
 
 ### Ch19 Project: A Paint Program
-- [ ] tools.Rectangle
+- [x] tools.Rectangle
 - [ ] tools.ColorPicker
 - [ ] tools.FloodFill
 
