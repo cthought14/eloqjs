@@ -59,9 +59,18 @@ var MOUSE_LEFT_BUTTON = 1;
 
 controls.tool = function(cx) {
     var select = elt3("select");
-    for (var name in tools)
-        select.appendChild(elt3("option", null, name));
-        
+    if(0) {
+        for (var name in tools)
+            select.appendChild(elt3("option", null, name));
+    }
+    else {
+        select.appendChild(elt3("option", null, "Rectangle"));
+        select.appendChild(elt3("option", null, "Line"));
+        select.appendChild(elt3("option", null, "Erase"));
+        select.appendChild(elt3("option", null, "Text"));
+        select.appendChild(elt3("option", null, "Spray"));
+    }
+    
     cx.canvas.addEventListener("mousedown", function(ev) {
         //console.log("mousedown");
         if (ev.which == MOUSE_LEFT_BUTTON) {
@@ -256,6 +265,31 @@ function randomPointInRadius(radius) {
     }
 }
 
+
+//
+// Exercise 1 - Rectangles
+//
+
+tools.Rectangle = function(ev, cx) {
+    
+    var pos1 = relativePos(ev, cx.canvas);
+    
+    trackDrag(function(ev) {
+        //console.log("Rectangle trackDrag begin", pos1.x, pos1.y);
+    }, function(ev) {
+        var pos2 = relativePos(ev, cx.canvas);
+        //console.log("Rectangle trackDrag end", pos2.x, pos2.y);
+        if (pos2.x < pos1.x) {
+            var tmp = pos2;
+            pos2 = pos1;
+            pos1 = tmp;
+        }
+        var w = pos2.x - pos1.x;
+        var h = pos2.y - pos1.y;
+        cx.fillRect(pos1.x, pos1.y, w, h);
+        //console.log(pos1.x, pos1.y, w, h);
+    });
+};
 
 
 ////
