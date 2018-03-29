@@ -95,6 +95,6 @@
 
 ### Ch19 Project: A Paint Program
 - [x] tools.Rectangle
-- [ ] tools.ColorPicker
+- [x] tools.ColorPicker
 - [ ] tools.FloodFill
 

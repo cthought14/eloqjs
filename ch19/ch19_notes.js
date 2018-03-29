@@ -66,11 +66,18 @@ controls.tool = function(cx) {
             select.appendChild(elt3("option", null, name));
     }
     else {
+    
+        select.appendChild(elt3("option", null, "Pick"));
         select.appendChild(elt3("option", null, "Rectangle"));
         select.appendChild(elt3("option", null, "Line"));
         select.appendChild(elt3("option", null, "Erase"));
         select.appendChild(elt3("option", null, "Text"));
         select.appendChild(elt3("option", null, "Spray"));
+        var oldStyle = cx.fillStyle;
+        cx.fillRect(10, 10, 100, 40);
+        cx.fillStyle = "rgb(20, 200, 40)";
+        cx.fillRect(30, 30, 120, 60);
+        cx.fillStyle = oldStyle;
     }
     
     cx.canvas.addEventListener("mousedown", function(ev) {
@@ -131,13 +138,33 @@ tools.Erase = function(ev, cx) {
 //
 tprint("### 377 Color and brush size");
 
+var _colorInput = null;
+
+function changeColor(r, g, b) {
+    function hex(dec) {
+        var hexOut = dec.toString(16);
+        if (hexOut.length == 1)
+            return "0" + hexOut;
+        else
+            return hexOut;
+    }
+    var rHex = r.toString(16);
+    if (rHex.length == 1)
+        rHex = "0" + rHex;
+    
+
+    var colorCode = "#" + hex(r) + hex(g) + hex(b);
+    console.log("Color code is " + colorCode);
+    _colorInput.value = colorCode;
+}
+    
 controls.color = function(cx) {
-    var input = elt3("input", {type: "color"});
-    input.addEventListener("change", function() {
-        cx.fillStyle = input.value;
-        cx.strokeStyle = input.value;
+    /*var*/ /*input*/ _colorInput = elt3("input", {type: "color"});
+    _colorInput.addEventListener("change", function() {
+        cx.fillStyle = _colorInput.value;
+        cx.strokeStyle = _colorInput.value;
     });
-    return elt3("span", null, "Color: ", input);
+    return elt3("span", null, "Color: ", _colorInput);
 };
 
 controls.brushSize = function(cx) {
@@ -328,14 +355,47 @@ tools.Rectangle = function(ev, cx) {
     });
 };
 
+//
+// Exercise 2 - tools.ColorPicker
+//
+
+if(1)(function(){
+    function pixelAt(cx, x, y) {
+        var data = cx.getImageData(x, y, 1, 1);
+        console.log(data.data);
+    }
+
+    var canvas1 = document.createElement("canvas");
+    var cx1 = canvas1.getContext("2d");
+    pixelAt(cx1, 10, 10);
+
+    cx1.fillStyle = "red";
+    cx1.fillRect(10, 10, 1, 1);
+    pixelAt(cx1, 10, 10);
+})();
+        
+tools.Pick = function(ev, cx) {
+    function pixelAt(cx, x, y) {
+        var data = cx.getImageData(x, y, 1, 1);
+        return data.data;
+    }
+    
+    var pos1 = relativePos(ev, cx.canvas);
+    var pixel = pixelAt(cx, pos1.x, pos1.y);
+    var style = "rgb(" + pixel[0] + ", " + pixel[1] + ", " + pixel[2] + ")";
+    cx.strokeStyle = style;
+    cx.fillStyle = style;
+    console.log("Set style to " + style);
+    changeColor(pixel[0], pixel[1], pixel[2]);
+};
+
+
 
 ////
 ////
 
 mainDiv = document.querySelector("#mainDiv");
 createPaint(mainDiv);
-
-
 
 
 
