@@ -120,4 +120,51 @@ child_process.exec("node main.js JavaScript", function(error, stdout, stderr) {
 //
 tprint("### 393 Installing with NPM");
 
+var figlet = require("figlet");
+figlet.text("Hello, world!", function(error, data) {
+    if (error)
+        console.error(error);
+    else
+        console.log(data);
+});
+
+//
+// 394
+//
+tprint("### 394 The file system module");
+var fs = require("fs");
+fs.readFile("file.txt", "utf8", function(error, text) {
+    if (error)
+        throw error;
+    console.log("file.txt:", text);
+});
+
+fs.readFile("binary.dat", function(error, buffer) {
+    if (error)
+        throw error;
+    console.log("binary.dat,", buffer.length, "bytes:", buffer[0], "...");
+});
+
+fs.writeFile("graffiti.txt", "Node was here\n", function(err) {
+    if (err)
+        console.error("graffiti.txt: Failed to write file:", err);
+    else
+        console.log("graffiti.txt: File written.");
+});
+
+console.log("[readFileSync] file.txt:", fs.readFileSync("file.txt", "utf8"));
+
+//
+// 396
+//
+
+var http = require("http");
+var server = http.createServer(function(request, response) {
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.write("<h1>Hello!</h1><p>You asked for <code>" + 
+                    request.url + "</code></p>");
+    response.end();
+});
+server.listen(8000);
+
 

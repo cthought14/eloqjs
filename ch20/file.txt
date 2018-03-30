@@ -1,0 +1,3 @@
+--- Begin file.txt ---
+This is the contents of file.txt.
+--- End file.txt ---
