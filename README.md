@@ -94,7 +94,14 @@
 - [x] life.
 
 ### Ch19 Project: A Paint Program
-- [x] tools.Rectangle
-- [x] tools.ColorPicker
-- [ ] tools.FloodFill
+- [x] tools.Rectangle.
+- [x] tools.ColorPicker.
+- [ ] (TODO) tools.FloodFill.
+
+### Ch20 Node.js
+- [ ] nodeAccept
+- [ ] file_server: Fix parent directory traversal exploit.
+- [ ] file_server: Add support for MKCOL method.
+- [ ] webFileServer.
+
 
