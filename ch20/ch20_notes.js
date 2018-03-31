@@ -158,13 +158,99 @@ console.log("[readFileSync] file.txt:", fs.readFileSync("file.txt", "utf8"));
 // 396
 //
 
+// See: server.js
+
+var request;
 var http = require("http");
-var server = http.createServer(function(request, response) {
-    response.writeHead(200, {"Content-Type": "text/html"});
-    response.write("<h1>Hello!</h1><p>You asked for <code>" + 
-                    request.url + "</code></p>");
-    response.end();
+request = http.request({
+    hostname: "localhost",
+    port: 8000,
+    path: "/20_node.html",
+    method: "GET",
+    headers: {Accept: "text/html"}
+}, function(response) {
+    console.log("[localhost:8000] Server responded with status code",
+                response.statusCode);
 });
-server.listen(8000);
+request.end();
+
+var http = require("http");
+request = http.request({
+    hostname: "eloquentjavascript.net",
+    path: "/20_node.html",
+    method: "GET",
+    headers: {Accept: "text/html"}
+}, function(response) {
+    console.log("[eloquentjavascript.net] Server responded with status code",
+                response.statusCode);
+});
+request.end();
+
+//https://www.google.com/about/
+
+var https = require("https");
+request = https.request({
+    hostname: "www.google.com",
+    path: "/about/",
+    method: "GET",
+    headers: {Accept: "text/html"}
+}, function(response) {
+    console.log("[https://www.google.com] Server responded with status code",
+                response.statusCode);
+});
+request.end();
+
+//
+// 398
+//
+tprint("### 398 Streams");
+
+// See: uppercase_server.js
+
+request = http.request({
+    hostname: "localhost",
+    port: 8000,
+    method: "POST"
+}, function(response) {
+    var first = true;
+    response.on("data", function(chunk) {
+        if (first) {
+            first = false;
+            process.stdout.write("[From uppercase_server] ");
+        }
+        process.stdout.write(chunk.toString());
+    });
+});
+request.end("Hello server\n");
+
+//
+// 400
+//
+tprint("### 400 A simple file server");
+
+// See: file_server.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
