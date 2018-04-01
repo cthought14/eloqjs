@@ -31,8 +31,8 @@ var methods = Object.create(null);
 var url = require("url");
 
 var mime = require("mime");
-mime.lookup = function(path) { return this.getType(path); }
-mime.extension = function(type) { return this.getExtension(type); }
+mime.lookup = function(path) { return this.getType(path); };
+mime.extension = function(type) { return this.getExtension(type); };
 
 function createServer(port) {
     if (typeof port == "undefined") port = 8000;
