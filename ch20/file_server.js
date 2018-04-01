@@ -32,7 +32,7 @@ var url = require("url");
 
 var mime = require("mime");
 mime.lookup = function(path) { return this.getType(path); }
-mime.extension = function(path) { return this.getExtension(path); }
+mime.extension = function(type) { return this.getExtension(type); }
 
 function createServer(port) {
     if (typeof port == "undefined") port = 8000;
@@ -111,18 +111,12 @@ methods.PUT = function(path, respond, request) {
     request.pipe(outStream);
 }
 
-if (1) (function() {
-    var port = 8000;
-    console.log("Starting server on port " + port + " ...");
-    createServer(port);
-})();
-
 if (0) (function() {
     var x = urlToPath("http://www.blah.com/foo/bar/baz");
     console.log(x);
 })();
 
-if (0) (function() {
+if (1) (function() {
     var path = urlToPath("http://www.blah.com/foo/bar/baz.jpg");
     //console.log(path);
     
@@ -130,5 +124,14 @@ if (0) (function() {
     //console.log(mime);
     var y = mime.lookup(path);
     console.log(y);
+    var z = mime.extension("image/gif");
+    console.log(z);
 })();
+
+if (1) (function() {
+    var port = 8000;
+    console.log("Starting server on port " + port + " ...");
+    createServer(port);
+})();
+
 
