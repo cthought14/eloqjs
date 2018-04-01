@@ -99,7 +99,7 @@
 - [ ] (TODO) tools.FloodFill.
 
 ### Ch20 Node.js
-- [ ] nodeAccept
+- [ ] nodeAccept.
 - [ ] file_server: Fix parent directory traversal exploit.
 - [ ] file_server: Add support for MKCOL method.
 - [ ] webFileServer.
