@@ -11,4 +11,4 @@ console.log("url", typeof url);
 // npm install promise
 var Promise = require("promise");
 console.log("Promise", typeof Promise);
-
+console.log("Promise.denodeify", typeof Promise.denodeify);
