@@ -8,3 +8,7 @@ console.log("mime", typeof mime);
 var url = require("url");
 console.log("url", typeof url);
 
+// npm install promise
+var Promise = require("promise");
+console.log("Promise", typeof Promise);
+
