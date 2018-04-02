@@ -57,7 +57,7 @@ function createServer(port) {
 
 function respondTo(request) {
     if (request.method in methods)
-        return method[request.method](urlToPath(request.url), request);
+        return methods[request.method](urlToPath(request.url), request);
     else
         return Promise.resolve({code: 405,
                                 body: "Method " + request.method + " not allowed."});
@@ -84,68 +84,56 @@ function inspectPath(path) {
     });
 }
 
-// TODO
-
-
-
-methods.GET = function(path, respond) {
-    fs.stat(path, function(error, stats) {
-        if (error && error.code == "ENOENT")
-            respond(404, "File not found");
-        else if (error)
-            respond(500, error.toString());
+methods.GET = function(path) {
+    return inspectPath(path).then(function(stats) {
+        if (!stats)
+            return {code: 404, body: "File not found"};
         else if (stats.isDirectory())
-            fs.readdir(path, function(error, files) {
-                if (error)
-                    respond(500, error.toString());
-                else
-                    respond(200, files.join("\n"));
+            return fsp.readdir(path).then(function(files) {
+                return {code: 200, body: files.join("\n")};
             });
         else
-            respond(200, fs.createReadStream(path),
-                    mime.lookup(path));
+            return {code: 200,
+                    type: mime.lookup(path),
+                    body: fs.createReadStream(path)};
     });
 };
 
-methods.DELETE = function(path, respond) {
-    fs.stat(path, function(error, stats) {
-        if (error && error.code == "ENOENT")
-            respond(204); // 204: Request is already fulfilled.
-        else if (error)
-            respond(500, error.toString());
+var noContent = {code: 204}; // 204: Request is already fulfilled.
+function returnNoContent() { return noContent; }
+
+methods.DELETE = function(path) {
+    return inspectPath(path).then(function(stats) {
+        if (!stats)
+            return noContent;
         else if (stats.isDirectory())
-            fs.rmdir(path, respondErrorOrNothing(respond));
+            return fsp.rmdir(path).then(returnNoContent);
         else
-            fs.unlink(path, respondErrorOrNothing(respond));
+            return fsp.unlink(path).then(returnNoContent);
     });
 };
 
-function respondErrorOrNothing(respond) {
-    return function(error) {
-        if (error)  
-            respond(500, error.toString());
-        else
-            respond(204);
-    }
-}
+methods.PUT = function(path, request) {
+    return new Promise(function(success, failure) {
+        var outStream = fs.createWriteStream(path);
+        outStream.on("error", failure);
+        outStream.on("finish", success.bind(null, noContent));
+        request.pipe(outStream);
+    });
+};
 
-methods.PUT = function(path, respond, request) {
-    var outStream = fs.createWriteStream(path);
-    outStream.on("error", function(error) {
-        respond(500, error.toString());
-    });
-    outStream.on("finish", function() {
-        respond(204);
-    });
-    request.pipe(outStream);
+/*
+methods.MKCOL = function(path, request) {
+    // ...
 }
+*/
 
 if (0) (function() {
     var x = urlToPath("http://www.blah.com/foo/bar/baz");
     console.log(x);
 })();
 
-if (1) (function() {
+if (0) (function() {
     var path = urlToPath("http://www.blah.com/foo/bar/baz.jpg");
     //console.log(path);
     
