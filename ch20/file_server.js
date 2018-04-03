@@ -22,6 +22,19 @@ $ curl -s -S -X DELETE http://localhost:8000/file1.txt
 $ curl -s -S http://localhost:8000/file1.txt
 File not found
 
+$ curl -s -S http://localhost:8000/files/%2e%2e/%2e%2e/etc/passwd
+Forbidden
+
+$ curl -s -S http://localhost:8000/files/%2e%2e/files/a.txt
+Forbidden
+
+--Q: Why is this allowed by curl (does curl translate the /../ component?)
+
+$ curl -s -S http://localhost:8000/files/../files/a.txt
+---
+This is a.txt.
+---
+
 ***/
 
 var http = require("http"),
@@ -56,10 +69,20 @@ function createServer(port) {
 
 function urlToPath(theUrl) {
     var path = url.parse(theUrl).pathname;
-    return "." + decodeURIComponent(path);
+    var ret = "." + decodeURIComponent(path);
+    // Exercise 1: Disallow ".." components.
+    var dodgy = /(^|[\/\\])\.\.([\/\\]|$)/; 
+    if (dodgy.exec(ret))
+        return null;
+    //console.log("urlToPath: " + ret.toString());
+    return ret;
 }
 
 methods.GET = function(path, respond) {
+    if (!path) {
+        respond(403, "Forbidden");
+        return;
+    }
     fs.stat(path, function(error, stats) {
         if (error && error.code == "ENOENT")
             respond(404, "File not found");

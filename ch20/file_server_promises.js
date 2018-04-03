@@ -65,7 +65,13 @@ function respondTo(request) {
 
 function urlToPath(theUrl) {
     var path = url.parse(theUrl).pathname;
-    return "." + decodeURIComponent(path);
+    var ret = "." + decodeURIComponent(path);
+    // Exercise 1: Disallow ".." components.
+    var dodgy = /(^|[\/\\])\.\.([\/\\]|$)/; 
+    if (dodgy.exec(ret))
+        return null;
+    //console.log("urlToPath: " + ret.toString());
+    return ret;
 }
 
 var fsp = {};
