@@ -70,7 +70,7 @@ function createServer(port) {
 function urlToPath(theUrl) {
     var path = url.parse(theUrl).pathname;
     var ret = "." + decodeURIComponent(path);
-    // Exercise 1: Disallow ".." components.
+    // Exercise 2: Disallow ".." components.
     var dodgy = /(^|[\/\\])\.\.([\/\\]|$)/; 
     if (dodgy.exec(ret))
         return null;
