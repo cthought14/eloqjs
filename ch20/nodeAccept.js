@@ -3,49 +3,34 @@
 
 var http = require("http");
 
-/*
-var https = require("https");
-request = https.request({
-    hostname: "www.google.com",
-    path: "/about/",
-    method: "GET",
-    headers: {Accept: "text/html"}
-}, function(response) {
-    console.log("[https://www.google.com] Server responded with status code",
-                response.statusCode);
-});
-request.end();
-*/
-
-/*
-...
-    response.on("data", function(chunk) {
-        if (first) {
-            first = false;
-            process.stdout.write("[From uppercase_server] ");
-        }
-        process.stdout.write(chunk.toString());
-    });
-...
-*/
-
-var request;
-
-function makeRequest(url, type) {
-    // ...
+function splitUrl(theUrl) {
+    var a = theUrl.indexOf("//");
+    var s2 = theUrl.substr(a+2);
+    var b = s2.indexOf("/");
+    return {
+        hostname: s2.substr(0,b),
+        path: s2.substr(b)
+    }
 }
 
-// http://eloquentjavascript.net/author
-request = http.request({
-    hostname: "eloquentjavascript.net",
-    path: "/author",
-    method: "GET",
-    headers: {Accept: "text/plain"}
-}, function(response) {
-    console.log("[http://eloquentjavascript.net/author text/plain] ", response.statusCode);
-    response.on("data", function(chunk) {
-        process.stdout.write(chunk.toString());
+function makeRequest(theUrl, type) {
+    var surl = splitUrl(theUrl);
+    var request = http.request({
+        hostname: surl.hostname,
+        path: surl.path,
+        method: "GET",
+        headers: {Accept: type}
+    }, function(response) {
+        console.log("["+theUrl.toString()+" "+type.toString()+"] ", response.statusCode);
+        response.on("data", function(chunk) {
+            process.stdout.write(chunk.toString());
+        });
     });
-});
-request.end();
+    request.end();
+}
 
+// --Q: How do I force the output of these calls comes out in a 
+// certain order?
+makeRequest("http://eloquentjavascript.net/author", "text/plain");
+makeRequest("http://eloquentjavascript.net/author", "text/html");
+makeRequest("http://eloquentjavascript.net/author", "application/json");
