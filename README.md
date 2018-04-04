@@ -101,7 +101,7 @@
 ### Ch20 Node.js
 - [x] nodeAccept.
 - [x] file_server: Fix parent directory traversal exploit.
-- [ ] file_server: Add support for MKCOL method.
+- [x] file_server: Add support for MKCOL method.
 - [ ] webFileServer.
 
 
