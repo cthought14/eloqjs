@@ -128,11 +128,24 @@ methods.PUT = function(path, request) {
     });
 };
 
-/*
-methods.MKCOL = function(path, request) {
-    // ...
-}
-*/
+// Exercise 3: Add support for MKCOL.
+methods.MKCOL = function(path, respond) {
+    return fsp.mkdir(path).then(function(success) {
+        //console.log("mkdir success");
+        return noContent;
+    }, function(error) {
+        //console.log("mkdir error");
+        if (error && error.code == "EEXIST") {
+            //console.log("Exists");
+            return inspectPath(path).then(function(stats) {   
+                if (!stats.isDirectory())
+                    return {code: 403};
+                else
+                    return noContent;
+            });
+        }
+    });
+};
 
 if (0) (function() {
     var x = urlToPath("http://www.blah.com/foo/bar/baz");

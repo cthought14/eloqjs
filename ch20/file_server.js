@@ -35,6 +35,21 @@ $ curl -s -S http://localhost:8000/files/../files/a.txt
 This is a.txt.
 ---
 
+# Exercise 3 - success case (should return 204)
+
+$ rm dir1
+$ mkdir -p dir1 && rmdir dir1 && curl -s -S -X MKCOL http://localhost:8000/dir1 -I
+
+# Exercise 3 - error case 1 - directory already exists (should return 204)
+
+$ rm dir1
+$ mkdir -p dir1 && curl -s -S -X MKCOL http://localhost:8000/dir1 -I
+
+# Exercise 3 - error case 2 - exists but it is not a directory (should return 403)
+
+$ rmdir dir1
+$ rm -f dir1 && mkdir -p dir1 && rmdir dir1 && touch dir1 && curl -s -S -X MKCOL http://localhost:8000/dir1 -I
+
 ***/
 
 var http = require("http"),
@@ -114,6 +129,27 @@ methods.DELETE = function(path, respond) {
     });
 };
 
+// Exercise 3: Add support for MKCOL.
+methods.MKCOL = function(path, respond) {
+    fs.mkdir(path, function(error) {
+        if (error && error.code == "EEXIST") {
+            console.log("Exists");
+            fs.stat(path, function(error, stats) {
+                if (error)
+                    respond(409); // 409: Conflict.
+                else if (!stats.isDirectory())
+                    respond(403);
+                else
+                    respond(204); // 204: Request is already fulfilled.
+            });
+        }
+        else if (error)
+            respond(500, error.toString());
+        else
+            respond(204);
+    });
+};
+
 function respondErrorOrNothing(respond) {
     return function(error) {
         if (error)  
@@ -139,7 +175,7 @@ if (0) (function() {
     console.log(x);
 })();
 
-if (1) (function() {
+if (0) (function() {
     var path = urlToPath("http://www.blah.com/foo/bar/baz.jpg");
     //console.log(path);
     
@@ -150,6 +186,18 @@ if (1) (function() {
     var z = mime.extension("image/gif");
     console.log(z);
 })();
+
+if (0) (function() {
+    var respond = function(code, body, type) {
+        console.log("Response code " + code.toString());
+    };
+    //console.log("Trying to remove a directory...");
+    //fs.rmdir("my_dir1", respondErrorOrNothing(respond));
+    console.log("Trying to make a directory...");
+    fs.mkdir("my_dir1", respondErrorOrNothing(respond));
+    process.exit(0);
+})();
+
 
 if (1) (function() {
     var port = 8000;
