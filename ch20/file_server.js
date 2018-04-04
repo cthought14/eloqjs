@@ -133,7 +133,7 @@ methods.DELETE = function(path, respond) {
 methods.MKCOL = function(path, respond) {
     fs.mkdir(path, function(error) {
         if (error && error.code == "EEXIST") {
-            console.log("Exists");
+            //console.log("Exists");
             fs.stat(path, function(error, stats) {
                 if (error)
                     respond(409); // 409: Conflict.
