@@ -105,3 +105,8 @@
 - [x] www.
 - [ ] (TODO) www: Interactive editing.
 
+### Ch21 Project: Skill-Sharing Website
+- [ ] skillsharing_server: Add disk persistence.
+- [ ] skillsharing_client: Improve the comment field redrawing.
+- [ ] skillsharing_client: Better templates.
+- [ ] skillsharing_html: Implement a non-JavaScript version of the site.
