@@ -93,11 +93,21 @@ function urlToPath(theUrl) {
     return ret;
 }
 
+function rewrite(path) {
+    if (/^[.]\/+$/.exec(path)) {
+        path = "./index.html";
+        console.log("Rewriting path to:", path);
+    }
+    return path;
+}
+
 methods.GET = function(path, respond) {
+    console.log("GET",path);
     if (!path) {
         respond(403, "Forbidden");
         return;
     }
+    path = rewrite(path);
     fs.stat(path, function(error, stats) {
         if (error && error.code == "ENOENT")
             respond(404, "File not found");

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="testutil.js"></script>
+    <script src="jquery-3.3.1.js"></script>
+    <script src="decodeEntities.js"></script>
+    <script src="ch13_notes.js"></script>
+    <title>My home page</title>
+    <style>
+        /* 256 Style rules */
+        .class1 strong {
+            font-style: italic;
+            color: gray;
+        }
+        .subtle {
+            color: gray;
+            font-size: 80%;
+        }
+        #header {
+            background: cyan;
+            color white;
+        }
+        /* p elements, with classes a and b, and id main. */
+        /* DOES NOT WORK. */
+        /*
+        p.a.b#main {
+            margin-bottom: 20px;
+            border: 1px dotted magenta;
+        }
+        */
+        /* p element that has id main, that has class b, which 
+            descends from class a. */
+        .a .b p#main {
+            margin-bottom: 20px;
+            border: 1px dotted magenta;
+        }
+    </style>
+</head>
+<body>
+    <p>Please activate your JavaScript console.</p>
+    <h1>My home page</h1>
+    <p>Hello!</p>
+    <p>Marijn Haverbeke wrote <a href="http://eloquentjavascript.net/">a book</a>.</p>
+    <p>An ostrich. <br><img id="ostrich1" src="img/ostrich_300px.png"/></p>
+    <p>About birds:
+        <ul>
+            <li><a class="WikiLink" href="https://en.wikipedia.org/wiki/Common_ostrich">Ostrich</a>
+            <li><a class="WikiLink" href="https://en.wikipedia.org/wiki/Bird">Bird</a></span>
+        </ul>
+    </p>
+    <!-- 247 Demonstrating the insertBefore node method. -->
+    <p>One
+    <p>Two
+    <p>Three
+    <!-- 248 The Cat and the Hat. -->
+    <p>The <img src="img/cat_100px.png" alt="Cat"> in the
+        <img src="img/hat_100px.png" alt="Hat">.</p>
+    <p>
+        <button onclick="replaceImages()">Replace</button>
+        <button id="logButton">Log</button>
+    </p>
+    <!-- 249 Adding an attribution to a quote. -->
+    <blockquote id="quote">
+        No book can ever be finished. While working on it we learn
+        just enough to find it immature the moment we turn away 
+        from it.
+    </blockquote>
+    <!-- 250 Using custom attributes. -->
+    <p data-classified="secret">The launch code is 00000000.</p>
+    <p data-classified="unclassified">I have two feet.</p>
+    <p> <button id="concealButton">Conceal Secrets</button></p>
+    <!-- 251 Highlighting code in a <pre> node. -->
+    <p>Example button event handler in JavaScript and jQuery:</p>
+    <pre data-language="javascript">
+function forEach(collection, fn) {
+    for (var i = 0; i < collection.length; i++) {
+        fn(collection[i]);
+    }
+}
+
+$(document).ready(function() {
+
+    var img_arrayish = document.body.getElementsByTagName("img");
+    var img_real = Array.prototype.slice.call(img_arrayish, 0);
+
+    $("#logButton").click(function(ev) {
+        ev.preventDefault();
+        forEach(img_real, function(elt) { 
+            console.log(elt);
+        });
+    });
+});
+</pre>
+    <p>Example program in C:</p>
+    <pre data-language="c">
+#include &lt;ctype.h>
+#include &lt;stdio.h>
+#include &lt;string.h>
+
+void reverse_name(char *name);
+
+int main(void)
+{
+    char name[] = "Marijn Haverbeke";
+    reverse_name(name);
+    printf("%s\n", name);
+}
+
+void reverse_name(char *name)
+{
+    char *p = name;
+    // Find first non-space.
+    while (*p &amp;&amp; isspace(*p))
+        p++;
+    if (!*p) return;
+    // Found the initial.
+    char initial = *p;
+    // Find end of word.
+    while (*p &amp;&amp; !isspace(*p))
+        p++;
+    // Find beginning of word.
+    while (*p &amp;&amp; isspace(*p))
+        p++;
+    if (!*p) return;
+    char *last_beg = p; // Beginning of last name.
+    // Find end of word.
+    while (*p &amp;&amp; !isspace(*p))
+        p++;
+    char *last_end = p; // End of last name.
+    // Move last name (last_end - last_beg) to beginning (name).
+    memmove(name, last_beg, last_end - last_beg);
+    p = name;
+    // Move to end of last name.
+    p += last_end - last_beg;
+    // Add ", ".
+    *p++ = ',';
+    *p++ = ' ';
+    // Add initial and ".".
+    *p++ = initial;
+    *p++ = '.';
+    // Done.
+    *p = '\0';
+}
+</pre>
+    <p> <button id="highlightButton">Highlight Syntax</button> </p>
+    <!-- 252 Layout. -->
+    <p id="boxedIn" style="border: 3px solid red;">
+        I'm boxed in.
+    </p>
+    <h2>Optimizing DOM updates</h2>
+    <p><button id="naiveButton">Naive</button>
+    <p><span id="one"></span></p>
+    <p><button id="cleverButton">Clever</button>
+    <p><span id="two"></span></p>
+    <!-- 254 Styling. -->
+    <h2>Styling example</h2>
+    <!-- -Note: The href "." supposedly takes you back to the current page, but there is
+        a subtlety. If you are currently on a page called www.example.com/dir1/page1/, 
+        the href "." will take you to the same page, www.example.com/dir1/page1/
+        But if you are currently on a page called www.example.com/dir1/page1.html, 
+        the href "." will take you to www.example.com/dir1/
+        The href "#" takes you to the same page in both cases.
+    -->
+    <p><a href="#">Normal link</a></p>
+    <p><a href="#" style="color: green;">Green link</a></p>
+    <p>
+        This text is displayed <strong style="border: 1px dotted red;">inline</strong>,
+        <strong style="display: block; border: 1px dotted red;">as a block</strong>, and
+        <strong style="display: none; border: 1px dotted red;" 
+                id="hiddenText">not at all</strong>.
+    </p>
+    <p><button id="displayButton">Display Hidden Element</button>
+    <p id="para2" style="color: purple;">
+        Pretty text
+    </p>
+    <p><button id="changeButton">Change Text Color</button>
+    <!-- 256 Cascading styles. -->
+    <h2>Style sheet example</h2>
+    <div class="class1">
+        <p>Now <strong>strong text</strong> is italic and gray.</p>
+    </div>
+    <p>This is <span class="subtle">subtle text</span>.</p>
+    <div id="header">
+    <p>This is a header.
+    </div>
+    <div class="a"><div class="b c">
+        <p>Not selected.</p>
+            <p id="main">Selected.</p>
+        
+        <p>Not selected.</p>
+    </div></div>
+    <!-- 256 Query selectors. -->
+    <h2>Query selectors using querySelectorAll() and querySelector()</h2>
+    <p>And if you go chasing
+        <span class="animal">rabbits</span>
+    </p>
+    <p>And you know you're going to fall</p>
+    <p>Tell 'em a <span class="character">hookah smoking
+            <span class="animal">caterpillar</span></span>
+    </p>
+    <p>Has given you the call</p>
+    <!-- 258 Positioning and animating. -->
+    <h2>Using the position style property</h2>
+    <p style="text-align: center;" class="cat">
+        <img src="img/cat.png" style="position: relative;">
+    </p>
+    <p>
+        <button id="animateButton">Animate cat</button>
+        <button id="stopButton">Stop animation</button>
+    </p>
+    
+</body>
+</html>
