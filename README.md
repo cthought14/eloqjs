@@ -102,8 +102,8 @@
 - [x] nodeAccept.
 - [x] file_server: Fix parent directory traversal exploit.
 - [x] file_server: Add support for MKCOL method.
-- [x] www.
-- [ ] (TODO) www: Interactive editing.
+- [x] www_server.
+- [ ] (TODO) www_server: Interactive editing.
 
 ### Ch21 Project: Skill-Sharing Website
 - [ ] skillsharing_server: Add disk persistence.
