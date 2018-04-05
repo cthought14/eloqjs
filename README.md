@@ -102,6 +102,6 @@
 - [x] nodeAccept.
 - [x] file_server: Fix parent directory traversal exploit.
 - [x] file_server: Add support for MKCOL method.
-- [ ] webFileServer.
-
+- [x] www.
+- [ ] (TODO) www: Interactive editing.
 
