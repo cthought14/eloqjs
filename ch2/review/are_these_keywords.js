@@ -1,8 +1,10 @@
 // Chapter 2.
+"use strict";
 
 /* 	--Q: Are the following truly keywords?
 		implements interface let package private
 		protected public static yield
+    --A: Yes, but only if you are in strict mode.
 */
 
 var implements = 1;

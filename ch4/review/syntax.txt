@@ -4,7 +4,7 @@ Use PDF page numbers.
 	:: [1, 2, 3]
 	:: a[n]
 	:: value.x
-	:: value[x]
+	:: value['x']
 76
 	:: typeof
 	:: "".toUpperCase()

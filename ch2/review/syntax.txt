@@ -12,6 +12,7 @@ Use PDF page numbers.
 	--Q: Are the following truly keywords?
 		implements interface let package private
 		protected public static yield
+	--A: Yes, but only if you are in strict mode.
 	:: alert
 40
 	:: Math.min
@@ -33,7 +34,6 @@ Use PDF page numbers.
 48
 	:: break
 	:: %
-	:: infinite loop
 	:: += 
 	:: -=
 	:: ++
