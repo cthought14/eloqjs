@@ -33,3 +33,7 @@ Use PDF page numbers.
 	:: Math.ceil()
 	:: Math.round()
 	:: sum(...)
+		- Defined in an exercise.
+	:: range(...)
+		- Defined in an exercise.
+

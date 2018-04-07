@@ -2,8 +2,6 @@ Use PDF page numbers.
 
 18
 	:: console.log()
-	:: sum(...)
-	:: range(a, b)
 26
 	:: \t
 	:: \n
@@ -21,3 +19,7 @@ Use PDF page numbers.
 	:: ===
 	:: !==
 	:: null
+	:: typeof undefined
+		---> "undefined"
+	:: typeof null
+		---> "object"
