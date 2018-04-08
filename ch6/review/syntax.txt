@@ -119,8 +119,8 @@ Use PDF page numbers.
 		-- Example:
 			Person; // Person(fn, ln, age) defined earlier.
 			function Manager(fn, ln, age) {
-				this.subs = {};
 				Person.call(this, fn, ln, age);
+				this.subs = {};
 			}
 			Manager.prototype = Object.create(Person.prototype);
 			Manager.prototype.manage = function(person) {
