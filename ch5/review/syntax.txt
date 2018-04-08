@@ -4,18 +4,57 @@ Use PDF page numbers.
 	:: forEach
 104
 	:: f.apply(e, args)
+		-- 
+			Example 1: f.apply(null, args1);
+			Example 2: g.apply(this, args2);
 	:: JSON.stringify(o)
 	:: JSON.parse(s)
 106
 	:: [].filter()
+		-- Example:
+			actors.filter(function(actor) {
+				actor.type == "player";
+			});
 	:: map
+		-- Example:
+			[1,2,3,4].map(function(x) { return x*2; });
+			--> [2,4,6,8]
 	:: reduce
+		-- Example:
+			[1,2,3,4].reduce(function(total, x) { 
+				return total + x; 
+			}, 0);
 114
 	:: f.bind(e, arg)
+		-- Example:
+			return array.map(function(elt) {
+				return this.prop + elt;
+			}.bind(this));
 	> flatten.js
 	:: typeof o != "object"
 	> ageDifference.js
 	:: if (p in o)
+		-- Example:
+			a = {}; a.x = 123; a.y = 456;
+			[('x' in a), ('y' in a), ('z' in a)];
+			--> [true, true, false]
 116
 	> everyAndSome.js
-	:: "".search(s)
+	:: "".search(regex)
+		-- Example:
+			function hasOp(expr) {
+				return expr.search("[-=+<>/%*!~^&()!|]") != -1;
+			}
+			hasOp("(1 + 5) % 4");
+			--> true
+			hasOp("1, 2, 3, 4");
+			--> false
+	:: "".indexOf(s)
+		-- Example:
+			function contains(haystack, needle) {
+				return haystack.indexOf(needle) != -1;
+			}
+			contains("Hello [ world ]", "[");
+			--> true
+			contains("Hello world", "[");
+			--> false
