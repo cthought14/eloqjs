@@ -34,6 +34,6 @@ expect(some(a4, function(n) { return n > 99; }), false);
 
 expect(ancestry.every(function(p) { return p.sex == "m" || p.sex == "f"; }), true);
 expect(every(ancestry, function(p) { return p.sex == "m" || p.sex == "f"; }), true);
-function contains(s, t) { return s.search(t) != -1; }
+function contains(s, t) { return s.indexOf(t) != -1; }
 expect(ancestry.some(function(p) { return contains(p.name, "Haverbeke"); }), true);
 expect(some(ancestry, function(p) { return contains(p.name, "Haverbeke"); }), true);
