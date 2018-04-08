@@ -2,21 +2,110 @@ Use PDF page numbers.
 
 118
 	:: this
-	:: f.call(self, arg)
+	:: f.call(self, arguments...)
 120
 	:: o.toString
 	:: Object.prototype
+		-- Example:
+			Object.prototype.nonsense = "Hi there.";
+			o1 = {a: 123};
+			o1.nonsense;
+			--> "Hi there."
 	:: Object.getPrototypeOf(o)
 	:: Function.prototype
-	:: Object.create
+		-- Example:
+			f1 = function(n) { return n + 1; };
+			function f2(n) { return n + 1; }
+			f3 = new Function("n", "return n + 1;");
+			f4 = "return n + 1";
+			function isFunction(f) {
+				return Object.getPrototypeOf(f) == Function.prototype;
+			}
+			[isFunction(f1), isFunction(f2), isFunction(f3), isFunction(f4)];
+			--> [true, true, true, false]
+	:: Object.create 
+		-- Create an object with a specific prototype.
+		-- Example:
+			Object.prototype.nonsense = "Hi there.";
+			o1 = {a: 123};
+			o2 = Object.create(null);
+			o2.a = 123;
+			[['a' in o1, 'nonsense' in o1], ['a' in o2, 'nonsense' in o2]];
+			--> [[true, true], [true, false]]
 	:: new
 	:: C.prototype.f
+		Used to define methods of class C.
+		-- Example:
+			function Person(fn, ln, age) {
+				this.fn = fn;
+				this.ln = ln;
+				this.age = age;
+			}
+			Person.prototype.sayHi = function() {
+				console.log("Hi, I am " + this.fn + " " + this.ln + ".");
+			}
+			Person.prototype.isOlderThan = function(age) {
+				return this.age > age;
+			}
+			
+			bob = new Person("Bob", "Jones", 30);
+			bob.sayHi();
+			--> "Hi, I am Bob Jones."
+			bob.isOlderThan(18);
+			--> true
 124
 	:: Object.defineProperty(p, name, dict)
+		-- Used to define getters and setters.
+		-- Example:
+			function Percent(value) { this._value = value; }
+			Object.defineProperty(Percent.prototype, "value", {
+				get: function() {
+					if (typeof this._value != "number")
+						return 99;
+					else
+						return this._value;
+				},
+				set: function(newV) {
+					if (typeof newV != "number")
+						this._value = 99;
+					else if (newV < 0)
+						this._value = 0;
+					else if (newV > 100)
+						this._value = 100;
+					else
+						this._value = x;
+					return this._value;
+				}
+			});
+			
+			p1 = new Percent(10);
+			p1.value;
+			--> 10
+			p1.value = 101;
+			p1.value;
+			--> 100
+			p1.value = "???";
+			p1.value;
+			--> 99
+			
+		--Q: In the above example, why does writing "p1.value = 101" at the console result in the
+			output line:
+				--> 101
+			Despite this output, the value assigned is actually 100, not 101.
 	:: o.hasOwnProperty(name)
 126
 	:: if (map.hasOwnProperty(name)) ...
+		-- Example:
+			Object.prototype.nonsense = "Hi there.";
+			o1 = {a: 123};
+			['a' in o1, o1.hasOwnProperty('a')];
+			--> [true, true]
+			['nonsense' in o1, o1.hasOwnProperty('nonsense')];
+			--> [true, false]
 	:: String()
+		-- Example:
+			String(123).charAt(2)
+			--> "3"
 	:: o.toString()
 130
 	:: "".split(sep)
@@ -27,6 +116,32 @@ Use PDF page numbers.
 	:: if (typeof x == "number") ...
 136
 	:: instanceof
+		-- Example:
+			Person; // Person(fn, ln, age) defined earlier.
+			function Manager(fn, ln, age) {
+				this.subs = {};
+				Person.call(this, fn, ln, age);
+			}
+			Manager.prototype = Object.create(Person.prototype);
+			Manager.prototype.manage = function(person) {
+				this.subs[person.fn + ";;" + person.ln] = 1;
+			}
+			Manager.prototype.manages = function(person) {
+				return (person.fn + ";;" + person.ln) in this.subs;
+			}
+			
+			bob = new Person("Bob", "Jones", 30);
+			sally = new Person("Sally", "Smith", 28);
+			greta = new Person("Greta", "Peterson", 47);
+			john = new Manager("John", "Anderson", 50);
+			john.manage(bob);
+			john.manage(sally);
+			[john.manages(bob), john.manages(sally), john.manages(greta)];
+			--> [true, true, false]
+			[bob instanceof Person, sally instanceof Person, greta instanceof Person, john instanceof Person];
+			--> [true, true, true, true]
+			[bob instanceof Manager, sally instanceof Manager, greta instanceof Manager, john instanceof Manager];
+			--> [false, false, false, true]
 138
 	> Vector.js
 	:: Object.defineProperty(p, name, def)
