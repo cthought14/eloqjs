@@ -4,6 +4,10 @@ Use PDF page numbers.
 	:: (function(exports) { ... })(this.weekDay = {})
 206
 	:: Function(args, body)
+		-- Example:
+			plusOne = new Function("n", "return n + 1;");
+			plusOne(100);
+			--> 101
 210
 	:: backgroundReadFile(filename, f)
 214
