@@ -4,6 +4,9 @@ Use PDF page numbers.
 	:: RegExp
 	:: /re/
 	:: /re/.test("abc")
+		-- Example:
+			/!$/.test("Hello, world!");
+			--> true
 	:: s.indexOf(t)
 178
 	:: re.test(s)
@@ -23,9 +26,21 @@ Use PDF page numbers.
 	:: /re/i
 	:: re.exec(s) # Returns: match
 	:: match.index
+		-- Example:
+			timeRe = /\d\d:\d\d:\d\d/;
+			message = "The time is 12:34:56.";
+			match = timeRe.exec(message);
+			a = match.index;
+			b = a + match[0].length;
+			message.slice(a, b);
+			--> "12:34:56"
 182
 	:: Date
 	:: date.getTime()
+		-- Example:
+			unixTime1 = new Date(1970, 0, 2).getTime();
+			unixTime1;
+			--> 79200000
 	:: Date(y, mFromZero, d)
 	:: Date(unixTime)
 	:: (\d{1,2})-(\d{1,2})-(\d{4})
@@ -38,6 +53,9 @@ Use PDF page numbers.
 	:: s.replace(/re/g, t)
 	:: s.replace(/re/g, "$2 $1")
 	:: s.replace(/re/g, ":: $& ::")
+		-- Example:
+			"Hello, world!".replace(/world/g, ":: $& ::");
+			--> "Hello, :: world ::!"
 192
 	:: s.search(/re/)
 	:: re.source
