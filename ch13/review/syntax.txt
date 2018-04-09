@@ -1,0 +1,63 @@
+Use PDF page numbers.
+
+242
+	:: <!-- ... --> - HTML comment. It is best not to use -- (two hyphens) within an HTML comment, except to begin or to end the comment.
+244
+	:: node.firstChild
+	:: node.lastChild
+246
+	:: document.getElementById()
+	:: document.getElementsByClassName()
+	:: document.getElementsByTagName()
+	:: node.removeChild()
+	:: node.appendChild()
+	:: node.insertBefore()
+248
+	:: document.createTextNode()
+	:: image.parentNode.replaceChild()
+	:: document.createElement(tag) : Node
+250
+	:: node.getAttribute()
+	:: node.setAttribute()
+	:: data-
+	:: para.parentNode.removeChild(para)
+	:: /re/.lastIndex
+252
+	:: class - Reserved word in JavaScript.
+	:: node.className - To access a node's 'class' property, use the className property. It is called className to avoid clashing with JavaScript's class reserved word.
+	:: node.offsetWidth
+	:: node.offsetHeight
+	:: node.clientWidth
+	:: node.clientHeight
+	:: node.getBoundingClientRect()
+	:: pageXOffset
+	:: pageYOffset
+254
+	:: Date.now()
+	:: <a href=".">
+	:: style="display: block"
+	:: style="display: none" - Prevents an element from showing up on the screen.
+	:: node.style
+256
+	:: node.style["font-family"]
+	:: node.style.fontFamily
+	:: .abc (CSS rule) - Applies to all elements with "abc" in their class attributes.
+	:: #xyz (CSS rule) - Applies to the element with an id attribute of "xyz".
+	:: p > a ...{} (CSS rule) - Applies the given styles to all <a> tags that are direct children of <p> tags.
+	:: p a ...{} (CSS rule) - Applies to all <a> tags inside <p> tags, whether they are direct or indirect children.
+	:: node.querySelectorAll()
+258
+	:: position (CSS style property)
+	:: style="position: static"
+	:: style="position: relative"
+	:: style="position: absolute"
+	:: requestAnimationFrame()
+260
+	:: Math.cos()
+	:: Math.sin()
+262
+	:: Object.keys()
+	:: style.textAlign
+	:: node.tagName
+	:: string.toLowerCase()
+	:: string.toUpperCase()

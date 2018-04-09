@@ -1,0 +1,28 @@
+Use PDF page numbers.
+
+242
+	Document Object Model (DOM)
+	document - This global variable gives access to the document.
+	document.documentElement - Refers to the object representing the <html> tag of the document. The root of the DOM.
+	node
+	children
+	tree
+	syntax tree
+	leaf | leaves
+	elements
+	document.body
+	leaf node
+248
+	live - Something is live when it is updated as the document changes.
+	solid - The opposite of live.
+252
+	block elements
+	inline elements
+	pixel
+254
+	declaration
+256
+	CSS (Cascading Style Sheet)
+	style sheet
+	specificity - A CSS rule's specificity is a measure of how precisely it describes matching elements.
+	selector
