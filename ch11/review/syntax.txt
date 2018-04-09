@@ -1,0 +1,9 @@
+Use PDF page numbers.
+
+224
+	:: ?:
+226
+	:: Array.prototype.slice.call(arrayLikeObject, 0)
+230
+	:: ReferenceError
+	:: Object.prototype.hasOwnProperty.call(scope, name)
