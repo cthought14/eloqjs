@@ -1,0 +1,34 @@
+Use PDF page numbers.
+
+232
+	Internet
+	network protocol
+	Transmission Control Protocol (TCP)
+	port
+	SMTP
+	port 25
+	server
+	client
+234
+	The World Wide Web
+	port 80
+	Hypertext Transfer Protocol (HTTP)
+	Uniform Resource Locator (URL)
+	IP address
+	domain name
+	HTML (Hypertext Markup Language)
+	tags - <p>, <a>, etc.
+	<!doctype html> - Tells the browser to interpret the document as modern HTML.
+	modern HTML | HTML5
+236
+	opening tag - E.g. <p>.
+	closing tag - E.g. </p>.
+	attribute - E.g. <a href="http://example.com">.
+	&lt; - Less than.
+	&gt; - Greater than.
+	entity - In HTML, an ampersant (&) character followed by a word and a semicolon. &lt;, &gt;, &amp;, etc. are entities.
+	doctype
+	<script>...</script>
+238
+	sandboxing
+	browser wars
