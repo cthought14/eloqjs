@@ -1,0 +1,9 @@
+Use PDF page numbers.
+
+### 19 Project: A Paint Program
+378
+	data URL
+380
+	tainted
+384
+	red, green, blue, and alpha (opaqueness) components

@@ -1,0 +1,21 @@
+Use PDF page numbers.
+
+### 19 Project: A Paint Program
+374
+	:: node.getBoundingClientRect() : Rect
+	:: rect.clientX
+	:: rect.clientY
+	:: rect.left
+	:: rect.top
+376
+	:: "mousemove" event
+	:: globalCompositOperation property
+	:: "source-over"; "destination-out"
+	:: <input type="color">
+378
+	:: data:text/html,<p>Hi.</p>
+	:: canvas.toDataURL()
+	:: SecurityError
+380
+	:: javascript:
+	:: fileReader.readAsDataURL(file : File)
