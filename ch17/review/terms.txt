@@ -1,0 +1,43 @@
+Use PDF page numbers.
+
+336
+	Hypertext Transfer Protocol
+	port 80
+	GET
+	request
+	method
+	DELETE
+	POST
+	path
+	HTTP/1.1 200 OK
+	404
+	headers - Lines in the form "name: value" that specify extra information about a request.
+338
+	HTML form
+	query string
+	ampersand & - Used to separate name-value pairs in a query string.
+	URL encoding - Encoding characters such as ? as %3F.
+340
+	Mozilla
+	Firfox
+	Internet Explorer
+	Microsoft
+	1990s
+342
+	asynchronous
+344
+	domain
+	callback
+346
+	promise - Wrap an asynchronous action in an object, which can be passed around and told to do certain things when the action finishes or fails.
+348
+	handle - A promise acts as a handle to the request's outcome.
+350
+	remote procedure call
+	secure HTTP protocol
+	https://
+	HTTPS
+	client
+	server
+352
+	content negotiation

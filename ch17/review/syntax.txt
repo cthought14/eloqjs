@@ -1,0 +1,24 @@
+Use PDF page numbers.
+
+338
+	:: encodeURIComponent(plainString)
+	:: decodeURIComponent(encodedString)
+340
+	:: XMLHttpRequest : Request
+	:: request.open(method, path, async : bool)
+	:: "Content-Type"
+	:: request.setRequestHeader()
+342
+	:: request.responseXML : Document
+	:: document.documentElement
+	:: document.querySelectorAll(name) : []
+344
+	:: "Access-Control-Allow-Origin: *" header
+346
+	:: Promise
+348
+	:: promise.then(fn)
+352
+	:: "Accept" header
+	:: request.setRequestHeader()
+	:: promise.all(Promise[]) : Promise
