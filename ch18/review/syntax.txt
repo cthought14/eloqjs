@@ -1,0 +1,68 @@
+Use PDF page numbers.
+
+### 18 Forms and Form Fields
+354
+	:: <form>
+	:: <input>
+	:: type="text"
+	:: type="password"
+	:: type="checkbox"
+	:: type="radio"
+	:: type="file"
+	:: <textarea>...</textarea>
+	:: <select>
+	:: <option>
+356
+	:: "change" event
+	:: focus()
+	:: blur()
+	:: document.activeElement
+	:: autofocus (HTML attribute)
+	:: tabindex (HTML attribute)
+	:: checked attribute
+	:: disabled attribute
+	:: <button>
+358
+	:: formNode.elements : []
+	:: <input ... name="name">
+	:: <button type="submit">
+	:: action attribute
+	:: "submit" event
+	:: event.preventDefault()
+	:: textNode.selectionStart : int
+	:: textNode.selectionEnd : int
+360
+	:: "change" event
+	:: "input" event
+	:: <input ... checked>
+	:: <input ... id="purple">
+	:: <label for="purple">
+	:: <input ... value="abcdef">
+	:: document.getElementsByName(name) : []
+	:: event.target.value
+362
+	:: <select multiple>
+	:: <select ... size="3">
+	:: selectNode.options : Option[]
+	:: option.seleted : bool
+	:: selectNode.options.length : int
+	:: <input type="file">
+364
+	:: fileNode.files : File[]
+	:: file.name : string
+	:: file.size : int
+	:: file.type : string - E.g. "text/plain"
+	:: FileReader - Similar to XMLHttpRequest, but for files.
+	:: FileReader : Reader
+	:: reader.readAsText(file : File)
+	:: Array.prototype.forEach()
+366
+	:: localStorage
+	:: localStorage.setItem(key, value : string)
+	:: localStorage.getItem(key) : string
+	:: localStorage.removeItem(key)
+	:: o.hasOwnProperty(name)
+	:: JSON.parse(...) || {"defaultKey": "defaultValue"}
+368
+	:: "change" event
+	:: sessionStorage - Similar to localStorage,  but forgotten at the end of each session.
