@@ -1,0 +1,59 @@
+Use PDF page numbers.
+
+264
+	:: addEventListener()
+	:: document.querySelector()
+	:: "click"
+	:: node.onclick
+266
+	:: event.which
+	:: event.type
+	:: event.stopPropagation()
+	:: event.target : Node
+268
+	:: event.target.nodeName : string
+	:: node.nodeName : string
+	:: "BUTTON"
+	:: event.preventDefault()
+	:: "keydown"
+	:: "keyup"
+	:: string.charCodeAt()
+270
+	:: "keypress"
+	:: node.tabindex
+	:: "mousedown"
+	:: "mouseup"
+	:: "click"
+	:: "dblclick"
+	:: event.pageX
+	:: event.pageY
+272
+	:: event.clientX
+	:: event.clientY
+	:: "mousemove"
+	:: removeEventListener()
+	:: "mouseover"
+	:: "mouseout"
+274
+	:: event.relatedTarget : Node
+	:: :hover
+	:: "scroll"
+276
+	:: style="position: fixed"
+	:: "focus"
+	:: "blur"
+	:: innerWidth
+	:: innerHeight
+	:: pageXOffset
+	:: pageYOffset
+	:: "load"
+	:: "beforeunload"
+278
+	:: postMessage()
+	:: Worker
+	:: worker.postMessage()
+	:: setTimeout()
+280
+	:: clearTimeout()
+	:: setInterval()
+	:: clearInterval()

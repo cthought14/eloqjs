@@ -1,0 +1,16 @@
+Use PDF page numbers.
+
+264
+	polling
+	handlers
+266
+	propagate - An event is said to propagate outward, from the node where it happened to that node's parent node and on to the root of the document.
+274
+	CSS pseudoselector
+278
+	threads of execution
+	web worker - Isolated JavaScript environment that runs alongside the main program for a document and can communicate with it only by sending and receiving messages.
+280
+	debouncing
+282
+	tabbed interface
