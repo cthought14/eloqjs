@@ -1,0 +1,10 @@
+Use PDF page numbers.
+
+292
+	:: (CSS property) table-layout
+	:: (CSS property) border-spacing
+	:: (CSS color) rgb(R, G, B)
+294
+	:: (CSS property) box-shadow
+296
+	:: <link rel="stylesheet" ...>

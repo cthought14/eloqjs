@@ -1,0 +1,17 @@
+Use PDF page numbers.
+
+284
+	platform game | jump and run game
+	Dark Blue
+290
+	phase - The phase of Math.sin's wave is 2 * Math.PI.
+298
+	physics engine - Library that simulates interaction between physical objects in two or three dimensions.
+304
+	key handler
+	key code
+	key name
+306
+	asynchronous programming
+308
+	leak - Event handlers are kept around even when no game is running. You could say they leak out of our system.
