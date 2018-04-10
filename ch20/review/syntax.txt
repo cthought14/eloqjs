@@ -1,0 +1,54 @@
+Use PDF page numbers.
+
+### 20 Node.js
+390
+	:: node (command)
+	:: process
+	:: process.exit()
+	:: process.argv
+	:: global - - Global scope object in Node.js.
+	:: window - - Global scope object in browsers.
+392
+	:: require()
+	:: node_modules (directory)
+	:: module.exports = ...
+	:: String.fromCharCode()
+	:: npm (command)
+394
+	:: package.json (file used by NPM packages)
+	:: "fs" module (Node.js file system module)
+	:: require("fs")
+	:: fs.readFile(fileName, encoding : string, callback)
+	:: "utf8"
+	:: Buffer
+	:: fs.writeFile(fileName, data, callback)
+396
+	:: fs.readdir()
+	:: fs.stat()
+	:: fs.rename()
+	:: fs.unlink()
+	:: fs.readFileSync(fileName, encoding)
+	:: "http" module
+	:: http.createServer() : Server
+	:: server.listen(port : int)
+	:: "https" package
+398
+	:: on() method  - - Objects that emit events in Node have a method called on that is similar to the addEventListener method in the browser.
+	:: "data" event
+	:: "end" event
+	:: process.stdout.write()
+400
+	:: pipe() method
+	:: decodeURIComponent(path)
+	:: "mime" package
+402
+	:: fs.stat()
+	:: "ENOENT"
+	:: stats.size
+	:: stats.mtime
+	:: stats.isDirectory() : bool
+404
+	:: curl (command)
+	:: curl -X PUT -d hello URL
+	:: "promise" module
+	:: promise.denodeify()

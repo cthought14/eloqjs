@@ -1,0 +1,41 @@
+Use PDF page numbers.
+
+### 20 Node.js
+388
+	Node.js - Allows you to apply your JavaScript skills outside the browser.
+	synchronous I/O
+	I/O - Input/output.
+	asynchronous I/O
+390
+	standard output stream
+392
+	CommonJS module system
+	NPM
+	figlet - Module on NPM for drawing ASCII art.
+	ASCII art - Drawings made out of text characters.
+394
+	character encoding
+	UTF-8
+396
+	Ctrl+C
+	HTTP client
+398
+	:: on() method  - - Objects that emit events in Node have a method called on that is similar to the addEventListener method in the browser.
+	:: "data" event
+	:: "end" event
+	:: process.stdout.write()
+400
+	:: pipe() method
+	:: decodeURIComponent(path)
+	:: "mime" package
+402
+	:: fs.stat()
+	:: "ENOENT"
+	:: stats.size
+	:: stats.mtime
+	:: stats.isDirectory() : bool
+404
+	:: curl (command)
+	:: curl -X PUT -d hello URL
+	:: "promise" module
+	:: promise.denodeify()
