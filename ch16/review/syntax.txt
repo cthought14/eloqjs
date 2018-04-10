@@ -1,0 +1,49 @@
+Use PDF page numbers.
+
+310
+	:: <svg xmlns="..."> - xmlns changes an element to a different XML namespace.
+	:: "2d" - Two-dimensional graphics interface.
+	:: "webgl" - Three-dimensional graphics interface through OpenGL.
+	:: canvas.getContext("2d") : Context
+	:: context.fillStyle : String
+	:: context.fillRect(x, y, w, h)
+312
+	:: context.strokeRect()
+	:: context.beginPath()
+	:: context.moveTo(x, y)
+	:: context.lineTo(x, y)
+	:: context.stroke()
+314
+	:: context.fill()
+	:: context.closePath()
+	:: context.quadraticCurveTo(controlX, controlY, goalX, goalY)
+	:: context.bezierCurveTo(c1X, c1Y, c2X, c2Y, goalX, goalY)
+316
+	:: context.arcTo(cX, cY, gX, gY, radius)
+318
+	:: context.fillText(string, baselineX, baselineY)
+	:: context.strokeText()
+	:: context.font : String
+	:: "28px Georgia"
+	:: "bold 28px Georgia"
+	:: "italic 28px Georgia"
+	:: context.fillStyle : String
+	:: "fuchsia"
+320
+	:: textAlign - - "end"; "center"
+	:: textBaseline - - "top"; "middle"; "bottom"
+	:: "load" event
+322
+	:: context.scale(factorX, factorY)
+	:: context.lineWidth : int
+324
+	:: context.drawImage(img, srcX, srcY, sW, sH, dstX, dstY, dW, dH)
+	:: context.save()
+	:: context.restore()
+326
+	:: context.translate(a, b)
+	:: context.rotate(angle)
+	:: context.width
+	:: context.height
+328
+	:: "rgb(R, G, B)"

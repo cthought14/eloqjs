@@ -1,0 +1,27 @@
+Use PDF page numbers.
+
+308
+	transform
+	Scalable Vector Graphics (SVG)
+	canvas - DOM element that encapsulates a picture.
+310
+	XML namespace
+	context - Object whose methods provide the drawing interface.
+	WebGL
+312
+	filled
+	strokes
+	path - Sequence of lines.
+	closed - A path is closed when its start and end are in the same position.
+314
+	attract - E.g. attracting a line, giving a curve.
+316
+	arc - Fragment of a circle.
+320
+	baseline - The line of text where the latters stand on, not counting hanging parts in letters like j or p.
+	vector graphics
+	bitmap graphics
+	pixel data
+	sprite - Subpicture of an image. Usually the image contains several elements, such as a character in different poses.
+322
+	stack - Transformations stack, meaning that each one happens relative to the previous transformations.
