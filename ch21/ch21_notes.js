@@ -1,4 +1,4 @@
-// Chapter 21 (Project: Skill_sharing Website)
+// Chapter 21 (Project: Skill-sharing Website)
 "use strict";
 
 /////
