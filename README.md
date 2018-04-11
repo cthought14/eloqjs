@@ -106,7 +106,7 @@
 - [ ] (TODO) www_server: Interactive editing.
 
 ### Ch21 Project: Skill-Sharing Website
-- [ ] skillsharing_server: Add disk persistence.
-- [ ] skillsharing_client: Improve the comment field redrawing.
-- [ ] skillsharing_client: Better templates.
-- [ ] skillsharing_html: Implement a non-JavaScript version of the site.
+- [ ] (TODO) skillsharing_server: Add disk persistence.
+- [ ] (TODO) skillsharing_client: Improve the comment field redrawing.
+- [ ] (TODO) skillsharing_client: Better templates.
+- [ ] (TODO) skillsharing_html: Implement a non-JavaScript version of the site.
