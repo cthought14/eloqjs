@@ -22,7 +22,7 @@ $ curl -s -S -X DELETE http://localhost:8000/file1.txt
 $ curl -s -S http://localhost:8000/file1.txt
 File not found
 
-$ curl -s -S http://localhost:8000/files/%2e%2e/%2e%2e/etc/passwd
+$ curl -s -S http://localhost:8000/files/%2e%2e/%2e%2e/my_etc/passwd
 Forbidden
 
 $ curl -s -S http://localhost:8000/files/%2e%2e/files/a.txt
