@@ -25,12 +25,12 @@ File not found
 $ curl -s -S http://localhost:8000/files/%2e%2e/%2e%2e/my_etc/passwd
 Forbidden
 
-$ curl -s -S http://localhost:8000/files/%2e%2e/files/a.txt
+$ curl -s -S http://localhost:8000/www/%2e%2e/www/index.html
 Forbidden
 
 --Q: Why is this allowed by curl (does curl translate the /../ component?)
 
-$ curl -s -S http://localhost:8000/files/../files/a.txt
+$ curl -s -S http://localhost:8000/www/.../www/index.html
 ---
 This is a.txt.
 ---
