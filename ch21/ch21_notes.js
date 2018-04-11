@@ -102,3 +102,110 @@ tprint("### Long polling");
 //
 tprint("### HTTP interface");
 
+// Example request to create a talk about idling.
+var path;
+path = "/talks/" + encodeURIComponent("How to Idle");
+console.log("PUT "+path.toString()+" HTTP/1.1");
+
+var newTalk;
+newTalk = {
+    "presenter": "Dana",
+    "summary": "Standing still on a unicycle"};
+var newTalkStr;
+newTalkStr = JSON.stringify(newTalk);
+var newTalkRequest;
+newTalkRequest = "Content-Type: application/json\n\
+Content-Length: __length__\n\
+\n\
+"+newTalkStr;
+
+newTalkRequest = newTalkRequest.replace("__length__", newTalkStr.length);
+console.log(newTalkRequest);
+
+// Example request to comment on a talk.
+console.log("");
+path = "/talks/" + encodeURIComponent("Unituning") + "/comments";
+console.log("PUT "+path.toString()+" HTTP/1.1");
+
+var commentTalk;
+commentTalk = {
+    "author": "Alice",
+    "message": "Will you talk about raising a cycle?"};
+var commentTalkStr;
+commentTalkStr = JSON.stringify(commentTalk);
+var commentTalkRequest;
+commentTalkRequest = "Content-Type: application/json\n\
+Content-Length: "+commentTalkStr.length+"\n\
+\n\
+"+commentTalkStr;
+
+console.log(commentTalkRequest);
+
+// Long polling support.
+console.log("");
+console.log("Current server time: " + Date.now());
+
+var thursday = new Date(2018, 3, 5).getTime(); // Thu 3 Apr 2018
+console.log("Thu 3 Apr 2018: " + thursday);
+console.log("");
+
+path = "/talks?changesSince=" + thursday;
+console.log("GET "+path.toString()+" HTTP/1.1");
+
+var answer;
+answer = {
+    "serverTime": thursday + 1345,
+    "talks": [
+        {"title": "Unituning",
+         "deleted": true}]};
+var answerStr;
+answerStr = JSON.stringify(answer);
+var answerResponse;
+answerResponse = "HTTP/1.1 200 OK\n\
+Content-Type: application/json\n\
+Content-Length: "+answerStr.length+"\n\
+\n\
+"+answerStr;
+    
+console.log(answerResponse);
+
+//
+// 416
+//
+tprint("### The server");
+
+tprint("#### Routing");
+
+// router.js
+
+var talkRe = /^\/talks\/([^\/]+)$/;
+expect(talkRe.test("/talks/aTalk"), true);
+expect(talkRe.test("/talks"), false);
+expect(talkRe.test("asdfghjkl;'"), false);
+
+var match;
+match = talkRe.exec("/talks/" + encodeURIComponent("How to Idle"));
+console.log(match.slice(1).map(decodeURIComponent));
+
+//
+// 418
+//
+tprint("#### Serving files");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
