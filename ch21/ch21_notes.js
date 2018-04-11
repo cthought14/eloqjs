@@ -178,6 +178,19 @@ tprint("#### Routing");
 
 // router.js
 
+var Router = require("./router");
+var router = new Router();
+console.log(router.sayHi());
+
+router.add("GET", /^\/talks\/([^\/]+)$/, function(request, response, urlPart1) {
+    console.log(">>> Handler got url part: " + urlPart1.toString());
+});
+
+router.resolve(
+    {url: "http://www.example.com/talks/aTalk123",
+     method: "GET"},
+    {infoStr: "This is a response."});
+
 var talkRe = /^\/talks\/([^\/]+)$/;
 expect(talkRe.test("/talks/aTalk"), true);
 expect(talkRe.test("/talks"), false);
